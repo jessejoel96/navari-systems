@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Navari Systems
 
-## Getting Started
+AI Automation & Workflow Systems — marketing site for [navari.systems](https://navari.systems).
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router, standalone output)
+- **Tailwind CSS v4** + Navari design tokens
+- **Framer Motion** scroll animations
+- **Supabase** — contact submissions + newsletter subscribers
+- **Resend** — transactional email
+- **MDX** blog (`content/blog/`)
+
+## Local development
 
 ```bash
+npm install
+cp .env.example .env.local
+# Fill in Supabase + Resend credentials
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+See `.env.example`. Required for forms:
 
-## Learn More
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `RESEND_API_KEY`
+- `RESEND_FROM_EMAIL`
+- `NOTIFICATION_EMAIL`
+- `NEXT_PUBLIC_SITE_URL`
 
-To learn more about Next.js, take a look at the following resources:
+## Database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run `supabase/migrations/001_initial.sql` in your Supabase SQL editor.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Production (Hostinger Business)
 
-## Deploy on Vercel
+See [HOSTINGER.md](./HOSTINGER.md) for GitHub deploy and env var setup.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Routes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Path | Description |
+|------|-------------|
+| `/` | Landing page (11 sections) |
+| `/blog` | MDX blog with industry filters |
+| `/blog/[slug]` | Individual post |
+| `/insights` | YouTube video hub |
+| `/api/contact` | Contact form handler |
+| `/api/newsletter` | Newsletter signup |
