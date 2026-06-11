@@ -20,12 +20,12 @@ export function Nav() {
   }
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between border-b border-gold/15 bg-navy/97 px-5 backdrop-blur-md md:px-10">
+    <nav className="fixed inset-x-0 top-0 z-50 flex h-[4.25rem] items-center justify-between border-b border-gold/15 bg-navy/97 px-5 backdrop-blur-md md:px-10">
       <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
         <ConvergenceMark />
         <div className="flex flex-col leading-none">
           <span className="font-display text-[15px] font-extrabold tracking-[0.18em] text-white">NAVARI</span>
-          <span className="mt-0.5 font-display text-[9px] tracking-[0.22em] text-silver">SYSTEMS</span>
+          <span className="mt-0.5 font-display text-[11px] tracking-[0.18em] text-silver-dark-bg">SYSTEMS</span>
         </div>
       </Link>
 
@@ -34,8 +34,8 @@ export function Nav() {
           <li key={link.href}>
             <Link
               href={link.href}
-              className={`text-[13px] font-medium tracking-wide transition-colors hover:text-white ${
-                isActive(link.href) ? "text-white" : "text-silver"
+              className={`text-[15px] font-medium tracking-wide transition-colors hover:text-white ${
+                isActive(link.href) ? "text-white" : "text-silver-dark-bg"
               }`}
             >
               {link.label}
@@ -44,12 +44,10 @@ export function Nav() {
         ))}
         <li>
           <Link
-            href={SITE.calendly}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded bg-gold px-5 py-2 text-[12px] font-semibold tracking-wider text-navy transition-colors hover:bg-gold-light"
+            href="/audit"
+            className="rounded bg-gold px-5 py-2.5 text-sm font-semibold tracking-wide text-navy transition-colors hover:bg-gold-light"
           >
-            Book a Call
+            Free Audit
           </Link>
         </li>
       </ul>
@@ -66,13 +64,13 @@ export function Nav() {
       </button>
 
       {open && (
-        <div className="absolute inset-x-0 top-16 border-b border-gold/15 bg-navy px-5 py-6 md:hidden">
+        <div className="absolute inset-x-0 top-[4.25rem] border-b border-gold/15 bg-navy px-5 py-6 md:hidden">
           <ul className="flex flex-col gap-4">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="block text-sm font-medium text-silver hover:text-white"
+                  className="block text-base font-medium text-silver-dark-bg hover:text-white"
                   onClick={() => setOpen(false)}
                 >
                   {link.label}
@@ -81,13 +79,11 @@ export function Nav() {
             ))}
             <li>
               <Link
-                href={SITE.calendly}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/audit"
                 className="inline-block rounded bg-gold px-5 py-2 text-sm font-semibold text-navy"
                 onClick={() => setOpen(false)}
               >
-                Book a Call
+                Free Audit
               </Link>
             </li>
           </ul>

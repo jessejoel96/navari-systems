@@ -10,27 +10,46 @@ export function Cta() {
 
       <div className="relative z-10 mx-auto max-w-[1100px]">
         <FadeIn>
-          <h2 className="font-display text-[clamp(28px,4vw,44px)] font-extrabold leading-tight tracking-tight text-white">
-            See where your business<br />is bleeding in 30 minutes.
+          {/* Free audit — primary CTA */}
+          <div className="inline-flex items-center gap-2 rounded-sm border border-gold-border px-4 py-2 font-mono text-xs font-medium uppercase tracking-[0.12em] text-gold mb-7">
+            <span className="h-px w-5 bg-gold" />
+            Free · ~4 min · No card
+          </div>
+
+          <h2 className="font-display text-[clamp(32px,4.5vw,48px)] font-extrabold leading-[1.15] tracking-tight text-white">
+            Find where your business<br />is losing money.
           </h2>
-          <p className="mx-auto mt-4 max-w-[520px] text-[17px] font-light text-silver">
-            Book a free discovery call. You&apos;ll leave with a specific observation
-            about your highest-cost process — whether we work together or not.
+          <p className="mx-auto mt-4 max-w-[520px] text-lg leading-relaxed text-silver-dark-bg">
+            Short intake. We map your top three leaks, run the numbers, and show what automation looks like — free.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
+              href="/audit"
+              className="inline-flex items-center gap-2 rounded bg-gold px-9 py-4 font-display text-[15px] font-bold tracking-wide text-navy transition-all hover:-translate-y-px hover:bg-gold-light"
+            >
+              Take the Free Audit →
+            </Link>
+            <Link
               href={SITE.calendly}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded bg-gold px-8 py-3.5 font-display text-[13px] font-bold tracking-wider text-navy transition-all hover:-translate-y-px hover:bg-gold-light"
+              className="inline-flex items-center gap-2 rounded border border-white/20 px-8 py-4 font-display text-[15px] font-semibold tracking-wide text-white transition-colors hover:border-white/40 hover:bg-white/5"
             >
-              Book a Discovery Call →
+              Book a 30-Min Review Call
             </Link>
           </div>
 
-          <p className="mt-10 font-mono text-[10px] uppercase tracking-wider text-silver">Or send a message</p>
-          <ContactForm />
+          <div className="mx-auto mt-6 flex max-w-sm flex-wrap justify-center gap-5 text-sm text-silver-dark-bg/60 font-mono">
+            <span>✓ Instant results</span>
+            <span>✓ Cost estimates</span>
+            <span>✓ No obligation</span>
+          </div>
+
+          <div className="mt-16 border-t border-white/8 pt-12">
+            <p className="font-mono text-sm uppercase tracking-wide text-silver-dark-bg/50 mb-6">Prefer to write? Send a message</p>
+            <ContactForm />
+          </div>
         </FadeIn>
       </div>
     </section>

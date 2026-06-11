@@ -15,7 +15,7 @@ const montserrat = Montserrat({
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["400", "500", "600"],
 });
 
 const geistMono = Geist_Mono({
@@ -27,7 +27,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} — AI Automation & Workflow Systems`,
+    default: `${SITE.name} — Business Automation & Operations Systems`,
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     locale: "en_GB",
     url: SITE.url,
     siteName: SITE.name,
-    title: `${SITE.name} — AI Automation & Workflow Systems`,
+    title: `${SITE.name} — Business Automation & Operations Systems`,
     description: SITE.description,
   },
   twitter: {
@@ -67,7 +67,7 @@ export default function RootLayout({
       lang="en"
       className={`${montserrat.variable} ${inter.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">
+      <body suppressHydrationWarning className="flex min-h-full flex-col">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

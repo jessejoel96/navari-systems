@@ -9,7 +9,7 @@ export function SectionLabel({ children, className }: SectionLabelProps) {
   return (
     <div
       className={cn(
-        "mb-4 flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.22em] text-gold",
+        "mb-4 flex items-center gap-2.5 font-mono text-xs font-medium uppercase tracking-[0.14em] text-gold",
         className
       )}
     >

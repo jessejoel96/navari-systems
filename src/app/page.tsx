@@ -1,5 +1,6 @@
 import { Cta } from "@/components/sections/CTA";
 import { Deliverables } from "@/components/sections/Deliverables";
+import { Fit } from "@/components/sections/Fit";
 import { Hero } from "@/components/sections/Hero";
 import { Industries } from "@/components/sections/Industries";
 import { Problem } from "@/components/sections/Problem";
@@ -13,10 +14,11 @@ export default function HomePage() {
     <>
       <Hero />
       <Problem />
+      <Fit />
+      <Results />
       <Process />
       <Services />
       <Industries />
-      <Results />
       <Deliverables />
       <Trust />
       <Cta />

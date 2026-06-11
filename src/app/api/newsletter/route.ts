@@ -3,6 +3,7 @@ import { z } from "zod";
 import { newsletterWelcomeHtml } from "@/lib/emails";
 import { rateLimit } from "@/lib/rate-limit";
 import { getResend } from "@/lib/resend";
+import { upsertResendContact } from "@/lib/resend/contacts";
 import { createServerClient } from "@/lib/supabase/server";
 
 const schema = z.object({
@@ -62,6 +63,15 @@ export async function POST(request: Request) {
       { error: "Service temporarily unavailable" },
       { status: 503 }
     );
+  }
+
+  const resendContact = await upsertResendContact({
+    email,
+    source: "newsletter",
+  });
+
+  if (!resendContact.ok) {
+    console.error("[newsletter] Resend contact sync failed:", resendContact.error);
   }
 
   const from = process.env.RESEND_FROM_EMAIL ?? "Navari Systems <hello@navari.systems>";

@@ -30,11 +30,12 @@ export default async function BlogPage({ searchParams }: Props) {
       <div className="mx-auto max-w-[1100px]">
         <FadeIn>
           <SectionLabel>Insights &amp; Teardowns</SectionLabel>
-          <h1 className="mb-4 font-display text-[clamp(28px,4vw,44px)] font-extrabold leading-tight tracking-tight text-navy">
+          <h1 className="mb-4 font-display text-[clamp(32px,4.5vw,48px)] font-extrabold leading-[1.15] tracking-tight text-navy">
             The Navari Blog
           </h1>
-          <p className="mb-10 max-w-[640px] text-[17px] font-light leading-relaxed text-body-text">
-            Business teardowns, automation walkthroughs, and operational mistakes — written for owners who know something is leaking but cannot see where.
+          <p className="mb-10 max-w-[680px] text-lg leading-relaxed text-body-text">
+            Operational teardowns and infrastructure walkthroughs — written for founders doing
+            $15k/mo+ who know something is leaking but have not mapped where.
           </p>
         </FadeIn>
 
@@ -43,7 +44,7 @@ export default async function BlogPage({ searchParams }: Props) {
             <Link
               key={ind}
               href={ind === "All" ? "/blog" : `/blog?industry=${encodeURIComponent(ind)}`}
-              className={`rounded-full border px-4 py-1.5 font-mono text-[11px] uppercase tracking-wider transition-colors ${
+              className={`rounded-full border px-4 py-2 font-mono text-sm uppercase tracking-wide transition-colors ${
                 industry === ind
                   ? "border-gold bg-gold/10 text-gold"
                   : "border-gold-border/30 text-silver hover:border-gold-border hover:text-navy"
@@ -64,12 +65,12 @@ export default async function BlogPage({ searchParams }: Props) {
                   href={`/blog/${post.slug}`}
                   className="block rounded-lg border border-gold-border/20 bg-white p-8 transition-all hover:border-gold-border hover:shadow-md"
                 >
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-gold">
+                  <span className="font-mono text-xs font-medium uppercase tracking-wide text-gold">
                     {post.industry}
                   </span>
-                  <h2 className="mt-2 font-display text-xl font-bold text-navy">{post.title}</h2>
-                  <p className="mt-2 text-sm leading-relaxed text-silver">{post.description}</p>
-                  <time className="mt-4 block font-mono text-[11px] text-silver/70">
+                  <h2 className="mt-2 font-display text-2xl font-bold text-navy">{post.title}</h2>
+                  <p className="mt-2 text-base leading-relaxed text-silver">{post.description}</p>
+                  <time className="mt-4 block font-mono text-sm text-silver">
                     {new Date(post.date).toLocaleDateString("en-GB", {
                       day: "numeric",
                       month: "long",
@@ -83,8 +84,8 @@ export default async function BlogPage({ searchParams }: Props) {
         )}
 
         <FadeIn className="mt-16 rounded-lg border border-gold-border/20 bg-white p-8">
-          <h2 className="font-display text-lg font-bold text-navy">Get the Navari Weekly</h2>
-          <p className="mt-2 text-sm text-silver">
+          <h2 className="font-display text-xl font-bold text-navy">Get the Navari Weekly</h2>
+          <p className="mt-2 text-base text-silver">
             One operational insight per week. No fluff.
           </p>
           <NewsletterForm className="mt-4 max-w-md" />

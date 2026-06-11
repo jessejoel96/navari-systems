@@ -23,9 +23,9 @@ export function contactNotificationHtml(data: {
 export function contactAutoReplyHtml(name: string) {
   return `
     <p>Hi ${escapeHtml(name)},</p>
-    <p>Thanks for reaching out to Navari Systems. I have received your message and will respond within one business day.</p>
-    <p>If you would like to book a discovery call directly, you can do so here: <a href="${SITE.calendly}">${SITE.calendly}</a></p>
-    <p>— Jesse-Joel Nzumafor<br>Navari Systems</p>
+    <p>Your message has been received by Navari Systems. We review every submission and respond within one business day.</p>
+    <p>To book a free 30-minute operations review directly: <a href="${SITE.calendly}">${SITE.calendly}</a></p>
+    <p>— Navari Systems</p>
   `;
 }
 

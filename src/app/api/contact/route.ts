@@ -6,6 +6,7 @@ import {
 } from "@/lib/emails";
 import { rateLimit } from "@/lib/rate-limit";
 import { getResend } from "@/lib/resend";
+import { upsertResendContact } from "@/lib/resend/contacts";
 import { createServerClient } from "@/lib/supabase/server";
 
 const schema = z.object({
@@ -49,10 +50,16 @@ export async function POST(request: Request) {
   const { name, email, company, industry, service_interest, message } =
     parsed.data;
 
+  const nameParts = name.trim().split(/\s+/);
+  const firstName = nameParts[0] ?? name;
+  const lastName = nameParts.slice(1).join(" ") || undefined;
+
   try {
     const supabase = createServerClient();
     const { error: dbError } = await supabase.from("contact_submissions").insert({
       name,
+      first_name: firstName,
+      last_name: lastName ?? null,
       email,
       company: company ?? null,
       industry: industry ?? null,
@@ -74,6 +81,18 @@ export async function POST(request: Request) {
       { error: "Service temporarily unavailable" },
       { status: 503 }
     );
+  }
+
+  const resendContact = await upsertResendContact({
+    email,
+    firstName,
+    lastName,
+    company: company ?? undefined,
+    source: "contact-form",
+  });
+
+  if (!resendContact.ok) {
+    console.error("[contact] Resend contact sync failed:", resendContact.error);
   }
 
   const from = process.env.RESEND_FROM_EMAIL ?? "Navari Systems <hello@navari.systems>";

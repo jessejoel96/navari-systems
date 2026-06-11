@@ -1,0 +1,26 @@
+import { z } from "zod";
+
+export const auditAnswersSchema = z.object({
+  firstName: z.string().min(1).max(100),
+  lastName: z.string().min(1).max(100),
+  email: z.string().email(),
+  phone: z.string().min(6).max(30),
+  company: z.string().min(1).max(200),
+  industry: z.string().min(1).max(100),
+  subIndustry: z.string().max(100).default(""),
+  primaryGoal: z.string().max(200).default(""),
+  secondaryGoals: z.array(z.string()).default([]),
+  revenue: z.string().max(100),
+  teamSize: z.string().max(100),
+  workforceType: z.string().max(200).default(""),
+  departments: z.array(z.string()).default([]),
+  tools: z.array(z.string()).default([]),
+  dynamicQ1: z.string().max(500).default(""),
+  dynamicA1: z.string().max(500).default(""),
+  dynamicQ2: z.string().max(500).default(""),
+  dynamicA2: z.string().max(500).default(""),
+  suggestedChallenges: z.array(z.string()).default([]),
+  selectedChallenges: z.array(z.string()).default([]),
+  urgency: z.string().max(200).default(""),
+  painPoint: z.string().max(500).default(""),
+});

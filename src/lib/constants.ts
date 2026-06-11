@@ -1,8 +1,8 @@
 ﻿export const SITE = {
   name: "Navari Systems",
-  tagline: "Precision enters where chaos was.",
+  tagline: "Automate what costs you the most.",
   description:
-    "AI Automation & Workflow Systems for small and mid-sized businesses. I find the three processes costing you the most time and money, then build AI systems that eliminate them permanently.",
+    "We find your three costliest manual processes and automate them. Fixed price. Fixed timeline. For owners doing $15k+/month.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://navari.systems",
   email: "jesse@navari.systems",
   calendly: "https://calendly.com/jesse-navari",

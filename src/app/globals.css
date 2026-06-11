@@ -6,8 +6,9 @@
   --gold: #c9a84c;
   --gold-light: #e8c96a;
   --slate-bg: #f4f6f9;
-  --silver: #8a9bb0;
-  --body-text: #2c3e50;
+  --silver: #5a6d80;
+  --silver-dark-bg: #c5d0dc;
+  --body-text: #1a2b3c;
   --white: #ffffff;
   --border: rgba(138, 155, 176, 0.2);
   --gold-border: rgba(201, 168, 76, 0.3);
@@ -20,6 +21,7 @@
   --color-gold-light: var(--gold-light);
   --color-slate-bg: var(--slate-bg);
   --color-silver: var(--silver);
+  --color-silver-dark-bg: var(--silver-dark-bg);
   --color-body-text: var(--body-text);
   --color-gold-border: var(--gold-border);
   --color-footer-bg: var(--footer-bg);
@@ -34,7 +36,8 @@ body {
   background: var(--slate-bg);
   color: var(--body-text);
   font-family: var(--font-inter), sans-serif;
-  line-height: 1.6;
+  font-size: 1.0625rem;
+  line-height: 1.75;
   overflow-x: hidden;
 }
 
@@ -68,4 +71,5 @@ body {
   --tw-prose-headings: var(--navy);
   --tw-prose-links: var(--gold);
   --tw-prose-bold: var(--navy);
+  line-height: 1.75;
 }

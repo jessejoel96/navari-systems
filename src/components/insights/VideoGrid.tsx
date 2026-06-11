@@ -14,7 +14,7 @@ export function VideoGrid({ videos }: { videos: CuratedVideo[] }) {
             <LiteYouTubeEmbed id={video.id} title={video.title} />
             <div className="p-5">
               <h2 className="font-display text-base font-bold text-navy">{video.title}</h2>
-              {video.description && <p className="mt-2 text-sm text-silver">{video.description}</p>}
+              {video.description && <p className="mt-2 text-base leading-relaxed text-silver">{video.description}</p>}
             </div>
           </div>
         </FadeIn>

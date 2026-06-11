@@ -58,17 +58,17 @@ export default async function BlogPostPage({ params }: Props) {
 
       <div className="mx-auto max-w-[720px]">
         <FadeIn>
-          <Link href="/blog" className="font-mono text-[11px] uppercase tracking-wider text-gold hover:underline">
+          <Link href="/blog" className="font-mono text-sm uppercase tracking-wide text-gold hover:underline">
             ← Back to Blog
           </Link>
 
-          <span className="mt-6 block font-mono text-[10px] uppercase tracking-widest text-gold">
+          <span className="mt-6 block font-mono text-xs font-medium uppercase tracking-wide text-gold">
             {post.industry}
           </span>
-          <h1 className="mt-2 font-display text-[clamp(28px,4vw,40px)] font-extrabold leading-tight tracking-tight text-navy">
+          <h1 className="mt-2 font-display text-[clamp(32px,4.5vw,44px)] font-extrabold leading-[1.15] tracking-tight text-navy">
             {post.title}
           </h1>
-          <time className="mt-4 block font-mono text-[11px] text-silver">
+          <time className="mt-4 block font-mono text-sm text-silver">
             {new Date(post.date).toLocaleDateString("en-GB", {
               day: "numeric",
               month: "long",
@@ -76,24 +76,25 @@ export default async function BlogPostPage({ params }: Props) {
             })}
           </time>
 
-          <div className="prose-navari prose prose-lg mt-10 max-w-none">
+          <div className="prose-navari prose prose-xl mt-10 max-w-none">
             <MDXRemote source={post.content} />
           </div>
 
           <div className="mt-16 rounded-lg border border-gold-border/20 bg-slate-bg p-8 text-center">
-            <h2 className="font-display text-lg font-bold text-navy">
-              Recognise your business in this?
+            <h2 className="font-display text-xl font-bold text-navy">
+              Recognise your operation in this?
             </h2>
-            <p className="mt-2 text-sm text-silver">
-              Book a discovery call and get a specific observation about your highest-cost process.
+            <p className="mt-2 text-base text-silver">
+              Book a free 30-minute operations review. You will leave knowing your
+              highest-cost manual process — whether we work together or not.
             </p>
             <Link
               href={SITE.calendly}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex rounded bg-gold px-8 py-3 font-display text-[13px] font-bold tracking-wider text-navy transition-colors hover:bg-gold-light"
+              className="mt-6 inline-flex rounded bg-gold px-8 py-4 font-display text-[15px] font-bold tracking-wide text-navy transition-colors hover:bg-gold-light"
             >
-              Book a Discovery Call →
+              Book a Free Operations Review →
             </Link>
           </div>
         </FadeIn>

@@ -2,11 +2,11 @@
 import { SectionLabel } from "@/components/ui/SectionLabel";
 
 const industries = [
-  { icon: "🏡", title: "Real Estate", desc: "Listing sync, lead follow-up, document processing, maintenance routing" },
-  { icon: "🎓", title: "Online Education", desc: "Student onboarding, content delivery, enrollment tracking, email sequences" },
-  { icon: "⚖️", title: "Professional Services", desc: "Client intake, document generation, scheduling, invoice follow-up" },
-  { icon: "🛒", title: "E-commerce", desc: "Order processing, inventory updates, customer service, returns handling" },
-  { icon: "📊", title: "Marketing Agencies", desc: "Client reporting, campaign tracking, approval workflows, billing automation" },
+  { abbr: "RE", title: "Real Estate", leak: "~18 hrs/wk", desc: "Listings, lead follow-up, documents — 15–20 hrs/week that should run automatically." },
+  { abbr: "ED", title: "Online Education", leak: "~12 hrs/wk", desc: "Onboarding, enrolment tracking, certificates — manual follow-up that loses students." },
+  { abbr: "PS", title: "Professional Services", leak: "~10 hrs/wk", desc: "Intake, scheduling, document prep — senior staff on work a system should filter." },
+  { abbr: "EC", title: "E-commerce", leak: "~15 hrs/wk", desc: "Orders, inventory, returns — growth blocked by coordination, not demand." },
+  { abbr: "MA", title: "Marketing Agencies", leak: "~14 hrs/wk", desc: "Reporting, tracking, billing — margin eaten by internal manual work." },
 ];
 
 export function Industries() {
@@ -15,17 +15,32 @@ export function Industries() {
       <div className="mx-auto max-w-[1100px]">
         <FadeIn>
           <SectionLabel>Industries</SectionLabel>
-          <h2 className="font-display text-[clamp(28px,4vw,44px)] font-extrabold leading-tight tracking-tight text-navy">
-            Built for businesses that run<br />on manual processes they haven&apos;t fixed yet.
+          <h2 className="font-display text-[clamp(32px,4.5vw,48px)] font-extrabold leading-[1.15] tracking-tight text-navy">
+            Every industry has different tasks.<br />The pattern is the same.
           </h2>
+          <p className="mt-5 max-w-[520px] text-lg leading-relaxed text-body-text">
+            Manual work, disconnected tools, staff bridging gaps. We find the three biggest leaks in any sector.
+          </p>
         </FadeIn>
 
         <div className="mt-12 grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(200px,1fr))]">
           {industries.map((ind, i) => (
-            <FadeIn key={ind.title} delay={i * 0.06} className="rounded-md border border-gold-border/20 bg-slate-bg p-7 transition-colors hover:border-gold-border">
-              <span className="mb-3 block text-2xl">{ind.icon}</span>
-              <h4 className="mb-1.5 font-display text-sm font-bold text-navy">{ind.title}</h4>
-              <p className="text-xs leading-relaxed text-silver">{ind.desc}</p>
+            <FadeIn
+              key={ind.title}
+              delay={i * 0.06}
+              className="group relative overflow-hidden rounded-lg border border-gold-border/20 bg-slate-bg p-7 transition-all hover:border-gold-border hover:shadow-md"
+            >
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-gold/0 via-gold to-gold/0 opacity-0 transition-opacity group-hover:opacity-100" />
+              <div className="mb-4 flex items-center justify-between">
+                <span className="flex h-10 w-10 items-center justify-center rounded-md bg-navy font-mono text-xs font-bold text-gold">
+                  {ind.abbr}
+                </span>
+                <span className="rounded-full bg-[#E85D4A]/10 px-2.5 py-1 font-mono text-[10px] text-[#E85D4A]">
+                  {ind.leak}
+                </span>
+              </div>
+              <h4 className="mb-1.5 font-display text-lg font-bold text-navy">{ind.title}</h4>
+              <p className="text-base leading-relaxed text-silver">{ind.desc}</p>
             </FadeIn>
           ))}
         </div>
