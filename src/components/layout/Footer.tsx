@@ -32,10 +32,10 @@ export function Footer() {
         <div>
           <h5 className="mb-4 font-display text-sm font-bold uppercase tracking-wide text-white">Industries</h5>
           <ul className="flex flex-col gap-2.5 text-base text-silver-dark-bg">
-            <li><Link href="/#industries" className="hover:text-gold">Real Estate</Link></li>
-            <li><Link href="/#industries" className="hover:text-gold">Online Education</Link></li>
-            <li><Link href="/#industries" className="hover:text-gold">Professional Services</Link></li>
-            <li><Link href="/#industries" className="hover:text-gold">E-commerce</Link></li>
+            <li><Link href="/#workflows" className="hover:text-gold">Real Estate</Link></li>
+            <li><Link href="/#workflows" className="hover:text-gold">Online Education</Link></li>
+            <li><Link href="/#workflows" className="hover:text-gold">Professional Services</Link></li>
+            <li><Link href="/#workflows" className="hover:text-gold">Healthcare</Link></li>
           </ul>
         </div>
 

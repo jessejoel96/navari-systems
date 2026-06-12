@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 const SECTION_IDS = [
   "how-it-works",
   "services",
-  "industries",
+  "workflows",
   "results",
   "book-call",
 ] as const;
