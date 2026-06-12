@@ -24,8 +24,8 @@ export default function InsightsPage() {
             Navari Insights
           </h1>
           <p className="mb-12 max-w-[680px] text-lg leading-relaxed text-body-text">
-            Curated operational teardowns and deployment walkthroughs — the same bottleneck
-            patterns we diagnose in client engagements, documented on camera.
+            Operational teardowns and deployment walkthroughs. The same bottleneck
+            patterns we diagnose in client work, documented on camera.
           </p>
         </FadeIn>
 

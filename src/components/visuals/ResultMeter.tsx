@@ -25,7 +25,9 @@ export function ResultMeter({ metric, label, fill, color = "#c9a84c" }: ResultMe
           transition={{ duration: 1, ease: "easeOut" }}
         />
       </div>
-      <p className="mt-1 font-mono text-[10px] uppercase tracking-wide text-silver-dark-bg">{label}</p>
+      {label && (
+        <p className="mt-1 font-mono text-[10px] uppercase tracking-wide text-silver-dark-bg">{label}</p>
+      )}
     </div>
   );
 }

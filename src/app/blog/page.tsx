@@ -34,8 +34,8 @@ export default async function BlogPage({ searchParams }: Props) {
             The Navari Blog
           </h1>
           <p className="mb-10 max-w-[680px] text-lg leading-relaxed text-body-text">
-            Operational teardowns and infrastructure walkthroughs — written for founders doing
-            $15k/mo+ who know something is leaking but have not mapped where.
+            Operational teardowns and infrastructure walkthroughs for founders doing
+            $15k/mo+ who know something is wrong but have not mapped where.
           </p>
         </FadeIn>
 

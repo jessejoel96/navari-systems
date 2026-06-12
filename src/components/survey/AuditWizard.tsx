@@ -238,25 +238,25 @@ const WORKFORCE_TYPES = [
 ];
 
 const URGENCY_OPTIONS = [
-  { value: "Actively costing me now — need a solution this month", label: "Urgent", sub: "Costing me now — need this month" },
+  { value: "Actively costing me now, need a solution this month", label: "Urgent", sub: "Costing me now, need this month" },
   { value: "Want to fix in the next 3 months", label: "Soon", sub: "Fix in the next 3 months" },
-  { value: "Planning ahead — not urgent but important", label: "Planning", sub: "Important, not urgent" },
+  { value: "Planning ahead, not urgent but important", label: "Planning", sub: "Important, not urgent" },
   { value: "Just exploring what's possible", label: "Exploring", sub: "Seeing what's possible" },
 ];
 
 const REVENUES = [
   { value: "Under $10k/month", label: "Under $10k", sub: "per month" },
-  { value: "$10k–$25k/month", label: "$10k–$25k", sub: "per month" },
-  { value: "$25k–$50k/month", label: "$25k–$50k", sub: "per month" },
-  { value: "$50k–$100k/month", label: "$50k–$100k", sub: "per month" },
+  { value: "$10k-$25k/month", label: "$10k-$25k", sub: "per month" },
+  { value: "$25k-$50k/month", label: "$25k-$50k", sub: "per month" },
+  { value: "$50k-$100k/month", label: "$50k-$100k", sub: "per month" },
   { value: "$100k+/month", label: "$100k+", sub: "per month" },
 ];
 
 const TEAM_SIZES = [
   { value: "Solo (just me)", label: "Solo", sub: "Just me" },
-  { value: "2–5 people", label: "2–5", sub: "people" },
-  { value: "6–15 people", label: "6–15", sub: "people" },
-  { value: "16–30 people", label: "16–30", sub: "people" },
+  { value: "2-5 people", label: "2-5", sub: "people" },
+  { value: "6-15 people", label: "6-15", sub: "people" },
+  { value: "16-30 people", label: "16-30", sub: "people" },
   { value: "30+ people", label: "30+", sub: "people" },
 ];
 
@@ -617,7 +617,7 @@ export default function AuditWizard() {
             Operations Audit Tool
           </h1>
           <p className="text-lg text-white/70 max-w-md mx-auto leading-relaxed mb-4">
-            In about 4 minutes, we map where your business is losing the most time and money — and show you exactly what an automated fix looks like.
+            In about 4 minutes, we map where your business loses the most time and money, and show you what an automated fix looks like.
           </p>
           <p className="text-sm font-mono text-white/40 mb-10">
             15 steps. ~5 minutes. No obligation.
@@ -722,7 +722,7 @@ export default function AuditWizard() {
                 <StepHeader
                   phase={PHASES.secondaryGoals}
                   question="Any other outcomes that matter? (up to 2)"
-                  hint="Optional — select secondary priorities besides your main goal"
+                  hint="Optional. Select secondary priorities besides your main goal."
                 />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
                   {PRIMARY_GOALS.filter((g) => g.value !== state.primaryGoal).map((item) => (
@@ -744,7 +744,7 @@ export default function AuditWizard() {
                     whileTap={{ scale: 0.98 }}
                     className="bg-gold text-navy font-semibold px-6 py-3 rounded-xl text-sm"
                   >
-                    {state.secondaryGoals.length > 0 ? "Continue →" : "Skip — just my main goal →"}
+                    {state.secondaryGoals.length > 0 ? "Continue →" : "Skip, just my main goal →"}
                   </motion.button>
                 </div>
                 {state.secondaryGoals.length > 0 && (
@@ -761,7 +761,7 @@ export default function AuditWizard() {
                 <StepHeader
                   phase={PHASES.revenue}
                   question="What is your current monthly revenue?"
-                  hint="Approximate is fine — this calibrates the cost estimates"
+                  hint="Approximate is fine. This calibrates the cost estimates."
                 />
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {REVENUES.map((item) => (
@@ -839,7 +839,7 @@ export default function AuditWizard() {
                 <StepHeader
                   phase={PHASES.departments}
                   question="Which departments still run on manual work?"
-                  hint="Select all that apply — these are where we look first"
+                  hint="Select all that apply. These are where we look first."
                 />
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
                   {DEPARTMENTS.map((item) => (
@@ -931,7 +931,7 @@ export default function AuditWizard() {
                 <StepHeader
                   phase={PHASES.dynamic1}
                   question={state.dynamicQuestions[0].question}
-                  hint="Based on what you told us — this narrows the diagnosis"
+                  hint="Based on what you told us. This narrows the diagnosis."
                 />
                 <div className="grid grid-cols-1 gap-3">
                   {state.dynamicQuestions[0].options.map((opt) => (
@@ -956,7 +956,7 @@ export default function AuditWizard() {
                 <StepHeader
                   phase={PHASES.dynamic2}
                   question={state.dynamicQuestions[1].question}
-                  hint="One more — this completes the picture"
+                  hint="One more. This completes the picture."
                 />
                 <div className="grid grid-cols-1 gap-3">
                   {state.dynamicQuestions[1].options.map((opt) => (
@@ -986,7 +986,7 @@ export default function AuditWizard() {
                 <StepHeader
                   phase={PHASES.challenges}
                   question="Which of these sound like your business?"
-                  hint="Select every challenge you recognise — the more you pick, the sharper the audit"
+                  hint="Select every challenge you recognise. The more you pick, the sharper the audit."
                 />
                 <div className="grid grid-cols-1 gap-2.5 mb-6">
                   {state.suggestedChallenges.map((challenge) => (
@@ -1065,7 +1065,7 @@ export default function AuditWizard() {
                 <StepHeader
                   phase={PHASES.painPoint}
                   question="In one sentence, what slows your business down most?"
-                  hint="Optional — but this makes your assessment much more specific"
+                  hint="Optional, but this makes your assessment more specific."
                 />
                 <PainPointForm
                   value={state.painPoint}
@@ -1412,7 +1412,7 @@ function PainPointForm({
         onClick={onSkip}
         className="w-full text-sm font-mono text-white/40 hover:text-white/60 transition-colors py-2"
       >
-        Skip — I&apos;ll keep it general
+        Skip, I&apos;ll keep it general
       </button>
       {atLimit && (
         <p className="text-xs font-mono text-gold/60 text-center">Character limit reached</p>

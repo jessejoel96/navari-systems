@@ -2,11 +2,11 @@
 import { SectionLabel } from "@/components/ui/SectionLabel";
 
 const industries = [
-  { abbr: "RE", title: "Real Estate", leak: "~18 hrs/wk", desc: "Listings, lead follow-up, documents — 15–20 hrs/week that should run automatically." },
-  { abbr: "ED", title: "Online Education", leak: "~12 hrs/wk", desc: "Onboarding, enrolment tracking, certificates — manual follow-up that loses students." },
-  { abbr: "PS", title: "Professional Services", leak: "~10 hrs/wk", desc: "Intake, scheduling, document prep — senior staff on work a system should filter." },
-  { abbr: "EC", title: "E-commerce", leak: "~15 hrs/wk", desc: "Orders, inventory, returns — growth blocked by coordination, not demand." },
-  { abbr: "MA", title: "Marketing Agencies", leak: "~14 hrs/wk", desc: "Reporting, tracking, billing — margin eaten by internal manual work." },
+  { abbr: "RE", title: "Real Estate", leak: "~18 hrs/wk", desc: "Listings, lead follow-up, documents. 15-20 hrs/week that should run automatically." },
+  { abbr: "ED", title: "Online Education", leak: "~12 hrs/wk", desc: "Onboarding, enrolment tracking, certificates. Manual follow-up that loses students." },
+  { abbr: "PS", title: "Professional Services", leak: "~10 hrs/wk", desc: "Intake, scheduling, document prep. Senior staff on work a system should filter." },
+  { abbr: "EC", title: "E-commerce", leak: "~15 hrs/wk", desc: "Orders, inventory, returns. Growth blocked by coordination, not demand." },
+  { abbr: "MA", title: "Marketing Agencies", leak: "~14 hrs/wk", desc: "Reporting, tracking, billing. Margin eaten by internal manual work." },
 ];
 
 export function Industries() {
@@ -19,7 +19,7 @@ export function Industries() {
             Every industry has different tasks.<br />The pattern is the same.
           </h2>
           <p className="mt-5 max-w-[520px] text-lg leading-relaxed text-body-text">
-            Manual work, disconnected tools, staff bridging gaps. We find the three biggest leaks in any sector.
+            Manual work, disconnected tools, staff bridging gaps. We find the three biggest time drains in any sector.
           </p>
         </FadeIn>
 

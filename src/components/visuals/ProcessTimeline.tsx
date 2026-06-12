@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const steps = [
@@ -15,36 +15,20 @@ const steps = [
 
 export function ProcessTimeline() {
   const [active, setActive] = useState(0);
+  const step = steps[active];
 
   return (
-    <div className="mt-14">
-      <motion.div
-        key={active}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-8 rounded-xl border border-gold-border/30 bg-white/5 p-6 text-center backdrop-blur-sm md:p-8"
-      >
-        <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-gold bg-gold/15 font-mono text-sm font-medium text-gold">
-          {steps[active].num}
-        </span>
-        <h3 className="mt-4 font-display text-xl font-bold text-white">
-          {steps[active].title}
-        </h3>
-        <p className="mx-auto mt-2 max-w-md text-base leading-relaxed text-silver-dark-bg">
-          {steps[active].desc}
-        </p>
-      </motion.div>
-
+    <div className="mx-auto mt-12 max-w-[640px]">
       <div className="relative">
         <div className="pointer-events-none absolute left-0 right-0 top-1/2 hidden h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-gold-border to-transparent md:block" />
-        <div className="grid grid-cols-3 gap-3 md:grid-cols-6 md:gap-2">
+        <div className="grid grid-cols-3 gap-2 md:grid-cols-6">
           {steps.map((s, i) => (
             <button
               key={s.num}
               type="button"
               onClick={() => setActive(i)}
               className={cn(
-                "relative z-10 flex flex-col items-center rounded-lg px-2 py-3 transition-all",
+                "relative z-10 flex flex-col items-center rounded-lg px-1.5 py-2.5 transition-all",
                 active === i
                   ? "bg-gold/15 ring-1 ring-gold/40"
                   : "hover:bg-white/5"
@@ -52,7 +36,7 @@ export function ProcessTimeline() {
             >
               <span
                 className={cn(
-                  "flex h-10 w-10 items-center justify-center rounded-full border font-mono text-xs font-medium transition-colors",
+                  "flex h-9 w-9 items-center justify-center rounded-full border font-mono text-[11px] font-medium transition-colors",
                   active === i
                     ? "border-gold bg-gold text-navy"
                     : "border-gold-border bg-gold/8 text-gold"
@@ -60,16 +44,34 @@ export function ProcessTimeline() {
               >
                 {s.num}
               </span>
-              <span className={cn(
-                "mt-2 hidden font-display text-[11px] font-bold uppercase tracking-wide md:block",
-                active === i ? "text-white" : "text-silver-dark-bg"
-              )}>
+              <span
+                className={cn(
+                  "mt-1.5 hidden font-display text-[10px] font-bold uppercase tracking-wide md:block",
+                  active === i ? "text-white" : "text-silver-dark-bg"
+                )}
+              >
                 {s.title}
               </span>
             </button>
           ))}
         </div>
       </div>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={step.num}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.25 }}
+          className="mt-5 border-l-2 border-gold/50 pl-4"
+        >
+          <h3 className="font-display text-base font-bold text-white">{step.title}</h3>
+          <p className="mt-1 max-w-[520px] text-sm leading-relaxed text-silver-dark-bg">
+            {step.desc}
+          </p>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }

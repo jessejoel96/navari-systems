@@ -27,7 +27,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} — Business Automation & Operations Systems`,
+    default: `${SITE.name} | Business Automation & Operations Systems`,
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     locale: "en_GB",
     url: SITE.url,
     siteName: SITE.name,
-    title: `${SITE.name} — Business Automation & Operations Systems`,
+    title: `${SITE.name} | Business Automation & Operations Systems`,
     description: SITE.description,
   },
   twitter: {

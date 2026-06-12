@@ -10,17 +10,16 @@ export function Cta() {
 
       <div className="relative z-10 mx-auto max-w-[1100px]">
         <FadeIn>
-          {/* Free audit — primary CTA */}
           <div className="inline-flex items-center gap-2 rounded-sm border border-gold-border px-4 py-2 font-mono text-xs font-medium uppercase tracking-[0.12em] text-gold mb-7">
             <span className="h-px w-5 bg-gold" />
-            Free · ~4 min · No card
+            Free · ~4 min · No credit card
           </div>
 
           <h2 className="font-display text-[clamp(32px,4.5vw,48px)] font-extrabold leading-[1.15] tracking-tight text-white">
-            Find where your business<br />is losing money.
+            Find out exactly where your<br />business is losing time and money.
           </h2>
           <p className="mx-auto mt-4 max-w-[520px] text-lg leading-relaxed text-silver-dark-bg">
-            Short intake. We map your top three leaks, run the numbers, and show what automation looks like — free.
+            Four minutes. We map your top three problem areas, put a dollar value on each, and show you what a fix looks like. No sales call required.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -40,14 +39,18 @@ export function Cta() {
             </Link>
           </div>
 
-          <div className="mx-auto mt-6 flex max-w-sm flex-wrap justify-center gap-5 text-sm text-silver-dark-bg/60 font-mono">
-            <span>✓ Instant results</span>
-            <span>✓ Cost estimates</span>
-            <span>✓ No obligation</span>
+          <div className="mx-auto mt-6 flex max-w-md flex-wrap justify-center gap-5 font-mono text-sm text-silver-dark-bg/60">
+            <span>✓ Results in 4 minutes</span>
+            <span>✓ Dollar estimates included</span>
+            <span>✓ No sales call</span>
           </div>
 
+          <p className="mt-5 font-mono text-xs text-silver-dark-bg/40">
+            We take 4 new clients per month. We do the work ourselves.
+          </p>
+
           <div className="mt-16 border-t border-white/8 pt-12">
-            <p className="font-mono text-sm uppercase tracking-wide text-silver-dark-bg/50 mb-6">Prefer to write? Send a message</p>
+            <p className="mb-6 font-mono text-sm uppercase tracking-wide text-silver-dark-bg/50">Prefer to write? Send a message</p>
             <ContactForm />
           </div>
         </FadeIn>

@@ -8,19 +8,21 @@ import { Process } from "@/components/sections/Process";
 import { Results } from "@/components/sections/Results";
 import { Services } from "@/components/sections/Services";
 import { Trust } from "@/components/sections/Trust";
+import { Workflows } from "@/components/sections/Workflows";
 
 export default function HomePage() {
   return (
     <>
       <Hero />
       <Problem />
-      <Fit />
       <Results />
-      <Process />
-      <Services />
-      <Industries />
-      <Deliverables />
       <Trust />
+      <Fit />
+      <Workflows />
+      <Industries />
+      <Process />
+      <Deliverables />
+      <Services />
       <Cta />
     </>
   );

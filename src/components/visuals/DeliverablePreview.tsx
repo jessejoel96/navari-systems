@@ -131,7 +131,7 @@ function ProcessMap() {
 function LiveSystem() {
   return (
     <div>
-      <p className="mb-4 font-display text-sm font-bold text-navy">Deployed Automation — Live</p>
+      <p className="mb-4 font-display text-sm font-bold text-navy">Deployed Automation (Live)</p>
       <div className="space-y-3">
         {[
           { label: "Listing sync", status: "Running", runs: "847 runs this week" },

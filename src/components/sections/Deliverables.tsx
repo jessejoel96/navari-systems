@@ -6,12 +6,12 @@ const items = [
   {
     num: "01",
     title: "Process Map",
-    desc: "How your business runs today — who does what, how long, where errors happen.",
+    desc: "How your business runs today: who does what, how long it takes, where errors happen.",
   },
   {
     num: "02",
     title: "The Three Leaks Report",
-    desc: "Three costliest manual tasks — hours, dollars, and what to fix first.",
+    desc: "Three costliest manual tasks, with hours, dollars, and what to fix first.",
   },
   {
     num: "03",

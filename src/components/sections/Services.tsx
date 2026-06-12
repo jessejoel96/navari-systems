@@ -9,39 +9,41 @@ const services = [
     price: "$497",
     note: "Fixed price · Delivered in 5 days",
     title: "The Navari Audit",
-    desc: "Written assessment — not a sales call. Where you leak time and money, ranked by what to fix first.",
+    desc: "A written report, not a sales call. We map where you lose time and money, rank what to fix first, and show what automation looks like for your business.",
     features: [
       "Visual map of how your business runs today",
-      "The Three Leaks Report, each leak costed in hours and dollars",
+      "The Three Leaks Report, each one costed in hours and dollars",
       "Rating of how automatable each process is",
       "Recommended tools for your situation and budget",
       "A phased plan: what to build first, second, third",
     ],
+    note2: "Audit fee credited toward your Build if you proceed.",
     cta: "Start with the Audit",
     featured: false,
   },
   {
     badge: "Core Service",
-    price: "$800–$2,000",
-    note: "Fixed price · 10–21 days",
+    price: "$800-$2,000",
+    note: "Fixed price · 10-21 days",
     title: "The Navari Build",
-    desc: "We build and install automation for your costliest manual process. Live in your business, with SOPs and handover. Your team owns it.",
+    desc: "We build and install automation for your costliest manual process. It runs live in your business. Your team owns it.",
     features: [
       "One process, three connected processes, or full operations scope",
-      "Working automation, installed and tested, not a prototype",
+      "Working automation, installed and tested. Not a prototype.",
       "Written standard operating procedures (SOPs)",
       "Handover walkthrough so your team knows how to run it",
-      "14-day check-in after launch, then it is yours",
+      "14-day post-launch check-in, then it is yours",
     ],
-    cta: "Book a Free Operations Review",
+    note2: "Fixed scope. No retainer. You own everything we build.",
+    cta: "Start with a Free Operations Review",
     featured: true,
   },
   {
     badge: "After Your Build",
-    price: "$500–$1,500",
+    price: "$500-$1,500",
     note: "Per month · Optional",
     title: "Infrastructure Expansion",
-    desc: "After a Build — one new automation or improvement per month. Not inbox management or IT support.",
+    desc: "After a Build, one new automation or improvement per month. Your systems grow with the business without adding headcount.",
     features: [
       "Monthly review of what your systems are saving you",
       "One new automation or improvement per month",
@@ -49,6 +51,7 @@ const services = [
       "Quarterly scan for new leaks as you grow",
       "Only available after a Navari Build is complete",
     ],
+    note2: null,
     cta: "Discuss Expansion",
     featured: false,
   },
@@ -61,10 +64,10 @@ export function Services() {
         <FadeIn>
           <SectionLabel>Pricing</SectionLabel>
           <h2 className="font-display text-[clamp(32px,4.5vw,48px)] font-extrabold leading-[1.15] tracking-tight text-navy">
-            Clear price. Clear deliverable.<br />No surprises.
+            Fixed price. Fixed scope.<br />You own everything we build.
           </h2>
           <p className="mt-5 max-w-[560px] text-lg leading-relaxed text-body-text">
-            Start with the $497 Audit. Most owners proceed to a Build once they see the numbers. Fixed scope — we hand over and train your team.
+            Start with the $497 Audit. Most owners move to a Build once they see the numbers. No retainer. No lock-in.
           </p>
         </FadeIn>
 
@@ -76,11 +79,16 @@ export function Services() {
               <div className={`mb-5 font-mono text-sm ${s.featured ? "text-silver-dark-bg" : "text-silver"}`}>{s.note}</div>
               <h3 className={`mb-3 font-display text-2xl font-bold ${s.featured ? "text-white" : "text-navy"}`}>{s.title}</h3>
               <p className={`mb-6 text-base leading-relaxed ${s.featured ? "text-silver-dark-bg" : "text-body-text"}`}>{s.desc}</p>
-              <ul className="mb-8 flex flex-col gap-2.5">
+              <ul className="mb-6 flex flex-col gap-2.5">
                 {s.features.map((f) => (
                   <li key={f} className={`relative border-b pb-2.5 pl-4 text-base before:absolute before:left-0 before:top-[9px] before:h-1.5 before:w-1.5 before:rounded-full before:bg-gold ${s.featured ? "border-white/8 text-white/90" : "border-gold-border/20 text-body-text"}`}>{f}</li>
                 ))}
               </ul>
+              {s.note2 && (
+                <p className={`mb-5 rounded px-3 py-2 text-xs font-medium leading-relaxed ${s.featured ? "bg-white/8 text-silver-dark-bg" : "bg-gold/8 text-navy"}`}>
+                  ✓ {s.note2}
+                </p>
+              )}
               <Link href={SITE.calendly} target="_blank" rel="noopener noreferrer" className={`block rounded px-6 py-3.5 text-center font-display text-sm font-bold uppercase tracking-wide transition-colors ${s.featured ? "bg-gold text-navy hover:bg-gold-light" : "border border-navy text-navy hover:bg-navy hover:text-white"}`}>
                 {s.cta}
               </Link>

@@ -23,16 +23,21 @@ export function Hero() {
             <Link href="/audit" className="inline-flex items-center gap-2 rounded bg-gold px-8 py-4 font-display text-[15px] font-bold tracking-wide text-navy transition-all hover:-translate-y-px hover:bg-gold-light">
               Take the Free Audit →
             </Link>
-            <Link href="#services" className="inline-flex items-center gap-2 rounded border border-white/20 px-8 py-4 font-display text-[15px] font-semibold tracking-wide text-white transition-colors hover:border-white/40 hover:bg-white/5">
-              See Pricing
+            <Link href="#how-it-works" className="inline-flex items-center gap-2 rounded border border-white/20 px-8 py-4 font-display text-[15px] font-semibold tracking-wide text-white transition-colors hover:border-white/40 hover:bg-white/5">
+              See How It Works
             </Link>
           </div>
 
-          <div className="mt-12 flex flex-wrap justify-center gap-8 border-t border-white/7 pt-8 lg:justify-start">
+          <p className="mt-4 text-center text-sm text-silver-dark-bg/60 lg:text-left">
+            No tech knowledge needed. No new software to learn.
+          </p>
+
+          <div className="mt-10 flex flex-wrap justify-center gap-8 border-t border-white/7 pt-8 lg:justify-start">
             {[
-              { num: "15–20", label: "Hrs/week recovered" },
-              { num: "60", label: "Days to results" },
+              { num: "15-20", label: "Hrs/week recovered" },
+              { num: "60", label: "Days to first results" },
               { num: "$0", label: "New hires needed" },
+              { num: "4", label: "Clients per month" },
             ].map((s) => (
               <div key={s.label} className="text-center lg:text-left">
                 <span className="mb-1 block font-mono text-2xl font-medium leading-none text-gold">{s.num}</span>

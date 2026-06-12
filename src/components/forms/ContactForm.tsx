@@ -85,9 +85,9 @@ export function ContactForm() {
         <span className="mb-1.5 block font-mono text-sm uppercase tracking-wide text-silver-dark-bg">Service interest (optional)</span>
         <select name="service_interest" className={selectClass}>
           <option value="">Select service</option>
-          <option value="The Navari Audit">The Navari Audit — $497</option>
-          <option value="The Navari Build">The Navari Build — from $800</option>
-          <option value="Infrastructure Expansion">Infrastructure Expansion — from $500/mo</option>
+          <option value="The Navari Audit">The Navari Audit ($497)</option>
+          <option value="The Navari Build">The Navari Build (from $800)</option>
+          <option value="Infrastructure Expansion">Infrastructure Expansion (from $500/mo)</option>
           <option value="Not sure yet">Not sure yet</option>
         </select>
       </label>

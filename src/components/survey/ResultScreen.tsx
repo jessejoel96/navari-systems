@@ -145,7 +145,7 @@ export function ResultScreen({ name, email, industry, revenue, analysis, emailSe
       >
         <span className="text-amber-400 text-sm mt-0.5 shrink-0">⚠</span>
         <p className="text-xs font-mono text-amber-300/70">
-          <strong>Simulation &amp; Estimate</strong> — These figures are projections based on industry data and your inputs. Exact costs and timelines require the full Navari Audit.
+          <strong>Simulation &amp; Estimate.</strong> These figures are projections based on industry data and your inputs. Exact costs and timelines require the full Navari Audit.
         </p>
       </motion.div>
 
@@ -257,7 +257,7 @@ export function ResultScreen({ name, email, industry, revenue, analysis, emailSe
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-gold text-navy font-bold px-7 py-3.5 rounded-xl text-sm hover:bg-gold/90 transition-colors"
               >
-                Start the Audit — $497
+                Start the Audit ($497)
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </a>
             </div>
@@ -297,7 +297,7 @@ export function ResultScreen({ name, email, industry, revenue, analysis, emailSe
           </p>
         ) : (
           <p className="text-xs text-amber-400/80 font-mono">
-            We could not deliver the email to {email}. Your results are shown above — screenshot or contact us if you need a copy.
+            We could not deliver the email to {email}. Your results are shown above. Screenshot or contact us if you need a copy.
           </p>
         )}
         <p className="text-xs text-white/20 font-mono mt-1">

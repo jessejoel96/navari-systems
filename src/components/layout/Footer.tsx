@@ -15,7 +15,7 @@ export function Footer() {
             </div>
           </Link>
           <p className="mt-3 text-base leading-relaxed text-silver-dark-bg">
-            We find where your business leaks time and money, build the automation that fixes
+            We find where your business loses time and money, build the automation that fixes
             it, and hand it over to your team. {SITE.tagline}
           </p>
         </div>
@@ -23,9 +23,9 @@ export function Footer() {
         <div>
           <h5 className="mb-4 font-display text-sm font-bold uppercase tracking-wide text-white">Services</h5>
           <ul className="flex flex-col gap-2.5 text-base text-silver-dark-bg">
-            <li><Link href="/#services" className="hover:text-gold">The Navari Audit — $497</Link></li>
-            <li><Link href="/#services" className="hover:text-gold">The Navari Build — from $800</Link></li>
-            <li><Link href="/#services" className="hover:text-gold">Infrastructure Expansion — from $500/mo</Link></li>
+            <li><Link href="/#services" className="hover:text-gold">The Navari Audit ($497)</Link></li>
+            <li><Link href="/#services" className="hover:text-gold">The Navari Build (from $800)</Link></li>
+            <li><Link href="/#services" className="hover:text-gold">Infrastructure Expansion (from $500/mo)</Link></li>
           </ul>
         </div>
 

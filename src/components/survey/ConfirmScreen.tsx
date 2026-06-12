@@ -73,7 +73,7 @@ export function ConfirmScreen({ name, industry, subIndustry, reflection, onConfi
             whileTap={{ scale: 0.98 }}
             className="flex-1 bg-gold text-navy font-bold py-4 rounded-xl text-base hover:bg-gold/90 transition-colors"
           >
-            Yes — show me the numbers →
+            Yes, show me the numbers →
           </motion.button>
           <motion.button
             onClick={onEdit}
@@ -81,7 +81,7 @@ export function ConfirmScreen({ name, industry, subIndustry, reflection, onConfi
             whileTap={{ scale: 0.98 }}
             className="flex-1 sm:flex-none sm:w-auto border border-white/15 text-white/70 px-5 py-4 rounded-xl text-sm hover:border-white/30 hover:text-white transition-colors"
           >
-            This is off — let me adjust
+            This is off, let me adjust
           </motion.button>
         </div>
       </motion.div>
