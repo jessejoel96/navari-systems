@@ -20,7 +20,7 @@ Supabase and Resend remain external services — only the Next.js app runs on Ho
 
 1. **Websites** → **Add Website** → **Node.js Web App**
 2. Connect your GitHub account and select the `navari-systems` repository
-3. Branch: `main`
+3. Branch: `master` (or `main` if you rename the branch)
 4. Framework: **Next.js** (auto-detected)
 
 ### 2. Build settings
@@ -127,6 +127,7 @@ Tables: `contact_submissions`, `newsletter_subscribers` (RLS enabled, no public 
 
 | Issue | Fix |
 |-------|-----|
+| Build fails: `Cannot find module '@tailwindcss/postcss'` | Tailwind packages must be in `dependencies` (not `devDependencies`) — Hostinger skips devDeps when `NODE_ENV=production` |
 | Build fails on Hostinger | Check Node 20.x; run `npm run build` locally first |
 | 502 on start | Confirm start command uses `$PORT`; check runtime logs in hPanel |
 | Blog posts 404 in prod | Ensure `content/blog/` is in repo (GitHub deploy includes it) |
@@ -136,6 +137,6 @@ Tables: `contact_submissions`, `newsletter_subscribers` (RLS enabled, no public 
 
 ## Updates
 
-**GitHub deploy:** push to `main` → Hostinger rebuilds automatically.
+**GitHub deploy:** push to `master` (or `main`) → Hostinger rebuilds automatically.
 
 **Manual deploy:** rebuild locally, re-upload standalone folder, restart app in hPanel.
