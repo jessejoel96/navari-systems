@@ -46,7 +46,7 @@ export function Cta() {
           </div>
 
           <p className="mt-5 font-mono text-xs text-silver-dark-bg/40">
-            We take 4 new clients per month. We do the work ourselves.
+            We keep client intake small so the person who scopes the system can build it properly.
           </p>
 
           <div className="mt-16 border-t border-white/8 pt-12">

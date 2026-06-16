@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { ConvergenceMark } from "@/components/ui/ConvergenceMark";
-import { NAV_LINKS, SITE } from "@/lib/constants";
+import { BrandLogo } from "@/components/ui/BrandLogo";
+import { NAV_LINKS } from "@/lib/constants";
 import { useActiveSection } from "./useActiveSection";
 
 export function Nav() {
@@ -20,13 +20,9 @@ export function Nav() {
   }
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-50 flex h-[4.25rem] items-center justify-between border-b border-gold/15 bg-navy/97 px-5 backdrop-blur-md md:px-10">
-      <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-        <ConvergenceMark />
-        <div className="flex flex-col leading-none">
-          <span className="font-display text-[15px] font-extrabold tracking-[0.18em] text-white">NAVARI</span>
-          <span className="mt-0.5 font-display text-[11px] tracking-[0.18em] text-silver-dark-bg">SYSTEMS</span>
-        </div>
+    <nav className="fixed inset-x-0 top-0 z-50 flex h-[7.5rem] items-center justify-between border-b border-gold/15 bg-navy/97 px-5 backdrop-blur-md md:px-10">
+      <Link href="/" className="flex items-center" onClick={() => setOpen(false)}>
+        <BrandLogo variant="transparent" priority />
       </Link>
 
       <ul className="hidden items-center gap-8 md:flex">
@@ -64,7 +60,7 @@ export function Nav() {
       </button>
 
       {open && (
-        <div className="absolute inset-x-0 top-[4.25rem] border-b border-gold/15 bg-navy px-5 py-6 md:hidden">
+        <div className="absolute inset-x-0 top-[7.5rem] border-b border-gold/15 bg-navy px-5 py-6 md:hidden">
           <ul className="flex flex-col gap-4">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>

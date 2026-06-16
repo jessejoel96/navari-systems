@@ -1,5 +1,5 @@
 ﻿import Link from "next/link";
-import { ConvergenceMark } from "@/components/ui/ConvergenceMark";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 import { SITE } from "@/lib/constants";
 
 export function Footer() {
@@ -7,16 +7,11 @@ export function Footer() {
     <footer className="border-t border-gold/10 bg-footer-bg px-5 py-12 md:px-10">
       <div className="mx-auto flex max-w-[1100px] flex-wrap justify-between gap-10">
         <div className="max-w-xs">
-          <Link href="/" className="flex items-center gap-3">
-            <ConvergenceMark />
-            <div className="flex flex-col leading-none">
-              <span className="font-display text-[15px] font-extrabold tracking-[0.18em] text-white">NAVARI</span>
-              <span className="mt-0.5 font-display text-[11px] tracking-[0.18em] text-silver-dark-bg">SYSTEMS</span>
-            </div>
+          <Link href="/" className="inline-flex items-center">
+            <BrandLogo variant="transparent" className="h-12" />
           </Link>
           <p className="mt-3 text-base leading-relaxed text-silver-dark-bg">
-            We find where your business loses time and money, build the automation that fixes
-            it, and hand it over to your team. {SITE.tagline}
+            {SITE.shortDescription} {SITE.slogan}
           </p>
         </div>
 
@@ -52,7 +47,7 @@ export function Footer() {
 
       <div className="mx-auto mt-10 flex max-w-[1100px] flex-wrap items-center justify-between gap-3 border-t border-white/6 pt-6">
         <span className="font-mono text-sm tracking-wide text-silver-dark-bg/80">© 2026 NAVARI SYSTEMS · navari.systems</span>
-        <span className="font-mono text-sm tracking-wide text-silver-dark-bg/80">JESSE-JOEL NZUMAFOR · CIM LEVEL 6</span>
+        <span className="font-mono text-sm tracking-wide text-silver-dark-bg/80">JESSE-JOEL S. NZUMAFOR · CIM LEVEL 6</span>
       </div>
     </footer>
   );

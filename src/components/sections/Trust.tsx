@@ -23,7 +23,7 @@ const principles = [
 
 export function Trust() {
   return (
-    <section className="bg-white px-5 py-24 md:px-10">
+    <section id="how-it-works" className="bg-white px-5 py-24 md:px-10">
       <div className="mx-auto max-w-[1100px]">
         <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
           <FadeIn className="lg:pr-4">
@@ -37,7 +37,7 @@ export function Trust() {
               Most owners do not have an effort problem. They have a systems problem. The right work gets done manually, in the wrong order, every week.
             </blockquote>
             <p className="mt-8 pl-10 font-mono text-xs uppercase tracking-wide text-silver">
-              {SITE.founder} · Systems Architect, Navari Systems
+              {SITE.founder} · AI Automation Specialist &amp; Founder, Navari Systems
             </p>
           </FadeIn>
 
@@ -66,6 +66,14 @@ export function Trust() {
         <FadeIn delay={0.1} className="mt-16 border-t border-gold-border/20 pt-12">
           <p className="mb-8 font-mono text-xs uppercase tracking-wider text-silver">
             How we work
+          </p>
+          <h3 className="max-w-[640px] font-display text-[clamp(26px,3.6vw,40px)] font-extrabold leading-[1.15] tracking-tight text-navy">
+            From manual work to a system
+            <br />
+            your team actually owns.
+          </h3>
+          <p className="mt-4 max-w-[620px] text-base leading-relaxed text-silver md:text-lg">
+            Audit, build, hand over. Fixed scope. No endless calls or slide decks.
           </p>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {principles.map((p, i) => (

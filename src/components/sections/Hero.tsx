@@ -4,7 +4,7 @@ import { FadeIn } from "@/components/ui/FadeIn";
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-screen items-start overflow-hidden bg-navy px-5 pb-20 pt-28 md:items-center md:px-10">
+    <section className="relative flex min-h-screen items-start overflow-hidden bg-navy px-5 pb-20 pt-36 md:items-center md:px-10">
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(201,168,76,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(201,168,76,0.04)_1px,transparent_1px)] bg-[size:60px_60px]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#0A1628_80%)]" />
 
@@ -15,6 +15,9 @@ export function Hero() {
               Your team is doing work<br />
               a <span className="text-gold">system should handle.</span>
             </h1>
+            <p className="mb-6 font-display text-[clamp(18px,2vw,24px)] font-semibold italic tracking-tight text-gold">
+              Precision enters where chaos was.
+            </p>
           </FadeIn>
 
           <FadeIn delay={0.1} className="mx-auto mb-8 max-w-[480px] lg:hidden">
@@ -44,7 +47,7 @@ export function Hero() {
                 { num: "15-20", label: "Hrs/week recovered" },
                 { num: "60", label: "Days to first results" },
                 { num: "$0", label: "New hires needed" },
-                { num: "4", label: "Clients per month" },
+                { num: "Small", label: "Client intake" },
               ].map((s) => (
                 <div key={s.label} className="text-center lg:text-left">
                   <span className="mb-1 block font-mono text-2xl font-medium leading-none text-gold">{s.num}</span>

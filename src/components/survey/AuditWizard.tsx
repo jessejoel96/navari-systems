@@ -564,10 +564,10 @@ export default function AuditWizard() {
   const transition = { duration: 0.28, ease: [0.4, 0, 0.2, 1] as [number, number, number, number] };
 
   return (
-    <div ref={topRef} className="min-h-screen bg-footer-bg flex flex-col pt-[4.25rem]">
+    <div ref={topRef} className="min-h-screen bg-footer-bg flex flex-col pt-[7.5rem]">
       {/* Progress bar + step counter — sits below the nav */}
       {stepIndex >= 0 && (
-        <div className="sticky top-[4.25rem] z-40 bg-footer-bg/95 backdrop-blur-sm border-b border-white/8">
+        <div className="sticky top-[7.5rem] z-40 bg-footer-bg/95 backdrop-blur-sm border-b border-white/8">
           <div className="max-w-2xl mx-auto px-5 pt-3 pb-2 flex items-center justify-between">
             <span className="text-xs font-mono text-white/40 tracking-widest uppercase">
               {PHASES[state.step] ?? ""}

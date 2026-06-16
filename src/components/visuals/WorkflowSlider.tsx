@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   industryWorkflows,
   workflowArchitectures,
@@ -10,10 +10,24 @@ import {
 } from "@/lib/workflows";
 import { cn } from "@/lib/utils";
 
-function TransitionArrow({ className }: { className?: string }) {
+function TransitionArrow({
+  className,
+  onToggle,
+  expanded,
+}: {
+  className?: string;
+  onToggle: () => void;
+  expanded: boolean;
+}) {
   return (
-    <div className={cn("flex shrink-0 items-center justify-center", className)} aria-hidden>
-      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-gold/40 bg-gold/10">
+    <div className={cn("flex shrink-0 items-center justify-center", className)}>
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-label={expanded ? "Collapse how it works steps" : "Expand how it works steps"}
+        aria-expanded={expanded}
+        className="flex h-10 w-10 items-center justify-center rounded-full border border-gold/40 bg-gold/10 transition-colors hover:bg-gold/15"
+      >
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-gold">
           <path
             d="M4 9h10M10 5l4 4-4 4"
@@ -23,7 +37,7 @@ function TransitionArrow({ className }: { className?: string }) {
             strokeLinejoin="round"
           />
         </svg>
-      </div>
+      </button>
     </div>
   );
 }
@@ -31,9 +45,13 @@ function TransitionArrow({ className }: { className?: string }) {
 function IndustrySlide({
   industry,
   architecture,
+  showHowItWorksSteps,
+  onToggleHowItWorksSteps,
 }: {
   industry: IndustryWorkflow;
   architecture: WorkflowArchitecture | undefined;
+  showHowItWorksSteps: boolean;
+  onToggleHowItWorksSteps: () => void;
 }) {
   return (
     <motion.div
@@ -50,8 +68,9 @@ function IndustrySlide({
           What happens now
         </span>
         <h4 className="mb-4 font-display text-lg font-bold leading-snug text-navy md:text-xl">
-          {industry.challengeHeadline}
+          {industry.header}
         </h4>
+        <p className="mb-5 text-sm leading-relaxed text-silver">{industry.subhead}</p>
 
         <ul className="mb-5 flex flex-1 flex-col gap-3">
           {industry.problems.map((problem) => (
@@ -76,7 +95,11 @@ function IndustrySlide({
         </div>
       </div>
 
-      <TransitionArrow className="rotate-90 lg:rotate-0 lg:self-center" />
+      <TransitionArrow
+        className="rotate-90 lg:rotate-0 lg:self-center"
+        onToggle={onToggleHowItWorksSteps}
+        expanded={showHowItWorksSteps}
+      />
 
       {/* Solution */}
       <div className="flex flex-col rounded-xl border border-gold/30 bg-gradient-to-br from-gold/8 to-white p-5 md:p-6">
@@ -113,6 +136,47 @@ function IndustrySlide({
               </span>
             </div>
             <p className="text-sm leading-relaxed text-silver-dark-bg">{architecture.outcome}</p>
+
+            <AnimatePresence initial={false}>
+              {showHowItWorksSteps && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="overflow-hidden"
+                >
+                  <div className="mt-3 grid gap-2 rounded-md border border-white/10 bg-white/5 p-3">
+                    <div className="grid gap-1">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-silver-dark-bg">
+                        Trigger
+                      </span>
+                      <p className="text-sm leading-relaxed text-silver-dark-bg">{architecture.trigger}</p>
+                    </div>
+                    <div className="grid gap-1">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-silver-dark-bg">
+                        AI action
+                      </span>
+                      <p className="text-sm leading-relaxed text-silver-dark-bg">{architecture.aiAction}</p>
+                    </div>
+                    <div className="grid gap-1">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-silver-dark-bg">
+                        System action
+                      </span>
+                      <p className="text-sm leading-relaxed text-silver-dark-bg">
+                        {architecture.systemAction}
+                      </p>
+                    </div>
+                    <div className="grid gap-1">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-silver-dark-bg">
+                        Output
+                      </span>
+                      <p className="text-sm leading-relaxed text-silver-dark-bg">{architecture.outcome}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         )}
       </div>
@@ -122,7 +186,19 @@ function IndustrySlide({
 
 export function WorkflowSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [archIndex, setArchIndex] = useState(0);
+  const [showHowItWorksSteps, setShowHowItWorksSteps] = useState(false);
+
+  const industryTabButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const scrollIndustryTabIntoView = useCallback((index: number) => {
+    // Defer to next frame so layout is up to date before scrolling.
+    requestAnimationFrame(() => {
+      industryTabButtonRefs.current[index]?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    });
+  }, []);
 
   const industry = industryWorkflows[activeIndex];
   const linkedArch = workflowArchitectures.find(
@@ -132,23 +208,13 @@ export function WorkflowSlider() {
   const goTo = useCallback((index: number) => {
     const next = (index + industryWorkflows.length) % industryWorkflows.length;
     setActiveIndex(next);
-    const arch = workflowArchitectures.find(
-      (a) => a.id === industryWorkflows[next].solution.architectureId
-    );
-    if (arch) {
-      const archIdx = workflowArchitectures.findIndex((a) => a.id === arch.id);
-      if (archIdx >= 0) setArchIndex(archIdx);
-    }
-  }, []);
+    setShowHowItWorksSteps(false);
+    scrollIndustryTabIntoView(next);
+  }, [scrollIndustryTabIntoView]);
 
-  const selectArchitecture = (index: number) => {
-    setArchIndex(index);
-    const arch = workflowArchitectures[index];
-    const industryIdx = industryWorkflows.findIndex(
-      (i) => i.solution.architectureId === arch.id
-    );
-    if (industryIdx >= 0) setActiveIndex(industryIdx);
-  };
+  useEffect(() => {
+    scrollIndustryTabIntoView(activeIndex);
+  }, [activeIndex, scrollIndustryTabIntoView]);
 
   return (
     <div className="mt-12">
@@ -160,6 +226,9 @@ export function WorkflowSlider() {
               key={ind.id}
               type="button"
               onClick={() => goTo(i)}
+              ref={(el) => {
+                industryTabButtonRefs.current[i] = el;
+              }}
               className={cn(
                 "flex shrink-0 items-center gap-2.5 rounded-lg border px-4 py-3 transition-all",
                 activeIndex === i
@@ -175,7 +244,7 @@ export function WorkflowSlider() {
               >
                 {ind.abbr}
               </span>
-              <span className="whitespace-nowrap font-display text-sm font-bold">{ind.title}</span>
+              <span className="whitespace-nowrap font-display text-sm font-bold">{ind.tabTitle}</span>
             </button>
           ))}
         </div>
@@ -187,7 +256,7 @@ export function WorkflowSlider() {
                 key={i}
                 type="button"
                 onClick={() => goTo(i)}
-                aria-label={`Go to ${industryWorkflows[i].title}`}
+                aria-label={`Go to ${industryWorkflows[i].tabTitle}`}
                 className={cn(
                   "h-2 rounded-full transition-all",
                   activeIndex === i ? "w-6 bg-gold" : "w-2 bg-gold-border/40 hover:bg-gold/50"
@@ -226,41 +295,21 @@ export function WorkflowSlider() {
           <p className="mb-1 font-mono text-[11px] uppercase tracking-wider text-silver">
             {activeIndex + 1} of {industryWorkflows.length}
           </p>
-          <h3 className="font-display text-xl font-bold text-navy md:text-2xl">
-            {industry.title}
-          </h3>
-          <p className="mt-1 text-sm text-silver">{industry.tagline}</p>
+          <p className="mb-2 inline-flex rounded-full bg-slate-bg px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-navy">
+            {industry.personaTag}
+          </p>
+          <h3 className="font-display text-xl font-bold text-navy md:text-2xl">{industry.header}</h3>
+          <p className="mt-1 text-sm text-silver">{industry.subhead}</p>
         </div>
 
         <AnimatePresence mode="wait">
-          <IndustrySlide industry={industry} architecture={linkedArch} />
+          <IndustrySlide
+            industry={industry}
+            architecture={linkedArch}
+            showHowItWorksSteps={showHowItWorksSteps}
+            onToggleHowItWorksSteps={() => setShowHowItWorksSteps((v) => !v)}
+          />
         </AnimatePresence>
-      </div>
-
-      {/* Architecture nav */}
-      <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h4 className="font-display text-lg font-bold text-navy">
-          The systems behind each outcome
-        </h4>
-        <div className="flex gap-2">
-          {workflowArchitectures.map((arch, i) => (
-            <button
-              key={arch.id}
-              type="button"
-              onClick={() => selectArchitecture(i)}
-              aria-label={arch.title}
-              aria-current={archIndex === i ? "true" : undefined}
-              className={cn(
-                "flex h-10 w-10 items-center justify-center rounded-lg border font-mono text-sm font-bold transition-all",
-                archIndex === i
-                  ? "border-gold bg-navy text-gold shadow-md"
-                  : "border-gold-border/20 bg-white text-gold hover:border-gold-border"
-              )}
-            >
-              {arch.letter}
-            </button>
-          ))}
-        </div>
       </div>
     </div>
   );

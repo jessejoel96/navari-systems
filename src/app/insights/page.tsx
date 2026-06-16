@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function InsightsPage() {
   return (
-    <div className="bg-slate-bg px-5 pb-24 pt-28 md:px-10">
+    <div className="bg-slate-bg px-5 pb-24 pt-36 md:px-10">
       <div className="mx-auto max-w-[1100px]">
         <FadeIn>
           <SectionLabel>Video Hub</SectionLabel>

@@ -24,25 +24,47 @@ const geistMono = Geist_Mono({
   weight: ["400", "500"],
 });
 
+const defaultTitle = `${SITE.name} | ${SITE.titleSuffix}`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} | Business Automation & Operations Systems`,
+    default: defaultTitle,
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
+  keywords: [...SITE.keywords],
+  authors: [{ name: SITE.founder, url: SITE.founderSite }],
+  creator: SITE.founder,
+  publisher: SITE.name,
+  applicationName: SITE.name,
+  category: "Business Services",
   openGraph: {
     type: "website",
     locale: "en_GB",
     url: SITE.url,
     siteName: SITE.name,
-    title: `${SITE.name} | Business Automation & Operations Systems`,
+    title: defaultTitle,
     description: SITE.description,
+    images: [
+      {
+        url: SITE.brand.ogImage,
+        width: 1200,
+        height: 630,
+        alt: `${SITE.name} — ${SITE.slogan}`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE.name,
+    title: defaultTitle,
     description: SITE.description,
+    images: [SITE.brand.ogImage],
+  },
+  icons: {
+    icon: SITE.brand.logoIcon,
+    apple: SITE.brand.logoIcon,
+    shortcut: SITE.brand.logoIcon,
   },
   alternates: { canonical: SITE.url },
 };
@@ -53,8 +75,16 @@ const organizationJsonLd = {
   name: SITE.name,
   url: SITE.url,
   email: SITE.email,
-  founder: { "@type": "Person", name: SITE.founder },
+  logo: `${SITE.url}${SITE.brand.logoIcon}`,
+  slogan: SITE.slogan,
   description: SITE.description,
+  founder: {
+    "@type": "Person",
+    name: SITE.founder,
+    url: SITE.founderSite,
+    jobTitle: SITE.founderTitle,
+  },
+  sameAs: [SITE.linkedin, SITE.youtube],
 };
 
 export default function RootLayout({

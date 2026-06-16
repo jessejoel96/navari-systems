@@ -7,11 +7,11 @@ export type WorkflowProblem = {
 export type IndustryWorkflow = {
   id: string;
   abbr: string;
-  title: string;
-  tagline: string;
-  challengeHeadline: string;
+  tabTitle: string;
+  personaTag: string;
+  header: string;
+  subhead: string;
   problems: WorkflowProblem[];
-  leakSummary: string;
   financialImpact: string;
   solution: {
     name: string;
@@ -34,11 +34,76 @@ export type WorkflowArchitecture = {
 
 export const industryWorkflows: IndustryWorkflow[] = [
   {
-    id: "real-estate",
-    abbr: "RE",
-    title: "Real Estate & Property",
-    tagline: "Listing updates done by hand. Leads depending on someone remembering to reply.",
-    challengeHeadline: "You change a price on one site. The other three still show the old number.",
+    id: "law-firms",
+    abbr: "LAW",
+    tabTitle: "Law Firms",
+    personaTag: "The Stretched Partner",
+    header: "Partners doing intake work that isn't billable",
+    subhead: "A practice management system that's really just a calendar",
+    problems: [
+      {
+        name: "The Intake Drain",
+        desc: "A new enquiry lands by email. A partner reads it, qualifies it, replies, schedules the call, then drafts the engagement letter from a Word template and chases the client for a signed return. None of this is billable. All of it happens before any actual legal work begins.",
+        cost: "3–5 hrs/week per partner",
+      },
+      {
+        name: "The Scattered Case File",
+        desc: "Case documents live across email threads, a shared drive folder, and someone's desktop. Finding the latest version of anything means asking around first.",
+        cost: "Files in 3 places at once",
+      },
+    ],
+    financialImpact:
+      "3–5 non-billable hours weekly, per partner · clients calling to ask for status updates that should have been automatic",
+    solution: {
+      name: "AI-Powered Intake & Engagement Engine",
+      desc: "New enquiries are qualified automatically from your contact form, routed to the right partner, and booked straight into their calendar. Engagement letters draft themselves from the client's intake data, ready for a final read before signing.",
+      outcomes: [
+        "3–5 billable hours recovered per partner, weekly",
+        "Zero manual engagement letter drafting",
+        "Clients see status without calling to ask",
+      ],
+      architectureId: "legal-intake-engagement",
+    },
+  },
+  {
+    id: "mortgage-brokers",
+    abbr: "MB",
+    tabTitle: "Mortgage Brokers",
+    personaTag: "The Volume Broker",
+    header: "Leads going cold while they wait in a spreadsheet",
+    subhead: "Speed of response is your conversion rate — and right now it's manual",
+    problems: [
+      {
+        name: "The First-Contact Lag",
+        desc: "Leads arrive from comparison sites, referrals, and your website. They land in a spreadsheet or basic CRM with no automated follow-up. Whoever checks it next decides how fast that lead gets a reply.",
+        cost: "30+ min average response time",
+      },
+      {
+        name: "The Document Black Hole",
+        desc: "A checklist gets emailed manually. Nobody's tracking what's actually come back versus what's still outstanding until someone goes looking.",
+        cost: "No visibility on what's missing",
+      },
+    ],
+    financialImpact:
+      "Conversion drops sharply once response time passes 30 minutes · cases stall for days waiting on documents nobody's chasing",
+    solution: {
+      name: "Instant Lead Response & Document Pipeline",
+      desc: "Every lead is qualified and responded to within minutes of arriving, any time of day. Document checklists go out automatically and update in real time as items come back.",
+      outcomes: [
+        "Lead response time under 5 minutes",
+        "Live view of every case's missing documents",
+        "Zero leads sitting unanswered overnight",
+      ],
+      architectureId: "lead-to-docs",
+    },
+  },
+  {
+    id: "estate-agents",
+    abbr: "EA",
+    tabTitle: "Estate Agents",
+    personaTag: "Estate Agents & Property Management",
+    header: "You change a price on one site. The other three still show the old number.",
+    subhead: "Listing updates done by hand. Leads depending on someone remembering to reply.",
     problems: [
       {
         name: "The copy-paste update trap",
@@ -51,8 +116,8 @@ export const industryWorkflows: IndustryWorkflow[] = [
         cost: "50% lower conversion after 30 min delay",
       },
     ],
-    leakSummary: "Leads land in different inboxes. Nobody is watching all of them.",
-    financialImpact: "6-8 hrs/week on duplication. 50% lower conversion when response slips past 30 minutes.",
+    financialImpact:
+      "6-8 hrs/week on duplication. 50% lower conversion when response slips past 30 minutes.",
     solution: {
       name: "Update once. Every platform updates. Every lead gets a reply.",
       desc: "Change the price in one place and every listing updates. Every inquiry, WhatsApp, email, or portal, gets a reply and goes to the right person. Even after hours.",
@@ -65,96 +130,131 @@ export const industryWorkflows: IndustryWorkflow[] = [
     },
   },
   {
-    id: "professional-services",
-    abbr: "PS",
-    title: "Legal, Accounting & Consulting",
-    tagline: "Your most expensive person is answering emails from people who may never sign.",
-    challengeHeadline: "Senior staff spending Monday morning on admin that should not reach them.",
+    id: "accounting",
+    abbr: "ACC",
+    tabTitle: "Accounting",
+    personaTag: "The Compliance-First Practice Owner",
+    header: "Client onboarding that's really just manual re-typing",
+    subhead: "Software that does the job, surrounded by people doing the job manually anyway",
     problems: [
       {
-        name: "Partners answering enquiry emails",
-        desc: "Someone fills in your contact form. A senior person responds, books a call, prepares notes, and the lead does not show. That is 45 minutes of your highest-paid resource on someone who was never going to sign.",
-        cost: "2-3 hrs/week on unqualified leads",
+        name: "The Re-Entry Risk",
+        desc: "A new client fills out a PDF form. Someone on your team reads it and manually retypes the same information into your accounting software, then builds the folder structure, then sends the welcome sequence by hand.",
+        cost: "Every new client, typed twice",
       },
       {
-        name: "Typing the same information three times",
-        desc: "A client fills in an intake form. Someone types it into the case system. Later the same details go into the invoice. One wrong digit and you spend a week chasing the error.",
-        cost: "10+ hrs/week non-billable admin",
+        name: "The Document Chase",
+        desc: "Receipts and statements get requested by email. What's arrived and what's still missing lives in someone's memory, or a spreadsheet that's only as current as the last time someone updated it.",
+        cost: "Hours lost every tax season",
       },
     ],
-    leakSummary: "The most expensive staff are doing the cheapest work. Revenue is delayed because admin is slow.",
-    financialImpact: "10+ hrs/week non-billable. Billing errors from re-typing data.",
+    financialImpact:
+      "Manual re-entry introduces the exact errors your compliance obligations can't absorb · document chasing scales painfully every tax season",
     solution: {
-      name: "Leads filter themselves. Documents draft themselves.",
-      desc: "A new enquiry comes in. The system checks fit, books the meeting, and sends confirmation without senior staff touching it. After the call, the engagement letter drafts from what was already collected. Your team reviews and sends.",
+      name: "Automated Onboarding & Document Tracking System",
+      desc: "Client intake data flows directly into your accounting software with zero retyping. Document requests go out automatically, get tracked against what's received, and chase themselves until complete.",
       outcomes: [
-        "3 hrs/week saved per senior person",
-        "Only qualified leads on the calendar",
-        "Documents ready faster, no re-typing",
+        "Zero manual data re-entry, zero transcription errors",
+        "Real-time view of who's outstanding on documents",
+        "Onboarding sequence runs the same way every time",
       ],
-      architectureId: "document-intake",
+      architectureId: "accounting-onboarding",
     },
   },
   {
-    id: "education",
-    abbr: "ED",
-    title: "Online Education & Coaching",
-    tagline: "A student pays, then hears nothing for two days.",
-    challengeHeadline: "Students drop off before they start because onboarding is manual.",
+    id: "online-coaching",
+    abbr: "OC",
+    tabTitle: "Online Coaching",
+    personaTag: "The Seven-Figure Founder at Six-Figure Operations",
+    header: "Growth that's outpaced the systems running it",
+    subhead: "Kajabi or Teachable in place, the rest of the business running through your inbox",
     problems: [
       {
-        name: "Silence after payment",
-        desc: "Someone pays for your course. They get a receipt and then nothing. An admin has to grant access, add them to the community, and send a welcome message when they get around to it.",
-        cost: "Up to 30% of students never start",
+        name: "The Manual Welcome",
+        desc: "A student enrols and pays. Someone sends the welcome email, manually grants access, and hopes the onboarding sequence happens the way it's supposed to — because nothing is actually enforcing it.",
+        cost: "Every student, by hand",
       },
       {
-        name: "Progress tracked on sticky notes",
-        desc: "You check a spreadsheet to see if a student finished Week 1 before sending Week 2. If they go quiet, you only find out when they cancel.",
-        cost: "4-6 hrs/week per coach",
+        name: "The Silent Drop-Off",
+        desc: "Progress check-ins either don't happen or happen when someone remembers. Students who stall don't get caught until they ask for a refund.",
+        cost: "No one notices until refunds happen",
       },
     ],
-    leakSummary: "Students churn before they get value. The course is fine. The experience after payment is slow.",
-    financialImpact: "4-6 hrs/week per coach. 20% churn from poor onboarding.",
+    financialImpact:
+      "Completion rate and refund rate are both worse than they should be · growth is capped by how much manual onboarding one founder can personally do",
     solution: {
-      name: "Payment clears. Access goes live. The journey runs itself.",
-      desc: "When payment clears, access is granted, a welcome message goes out, and the student joins the right community. The system watches progress and sends nudges when someone stalls.",
+      name: "Automated Enrolment & Engagement System",
+      desc: "The moment payment clears, access is granted, the welcome sequence fires, and progress check-ins run on schedule — automatically flagging students who've gone quiet before it becomes a refund request.",
       outcomes: [
-        "6 hrs/week recovered per coach",
-        "20% higher course completion",
-        "No manual onboarding steps",
+        "Onboarding runs identically for student 1 and student 1,000",
+        "Stalled students flagged before they ask for a refund",
+        "Founder time freed from manual enrolment tasks entirely",
       ],
       architectureId: "lifecycle-nurture",
     },
   },
   {
-    id: "healthcare",
-    abbr: "HC",
-    title: "Healthcare & Therapy",
-    tagline: "The front desk is calling every patient by hand to say remember tomorrow.",
-    challengeHeadline: "Manual scheduling and paper intake eat the day. Patients still slip through.",
+    id: "recruitment",
+    abbr: "REC",
+    tabTitle: "Recruitment",
+    personaTag: "The Billing-Focused Director",
+    header: "Consultants doing admin instead of billing placements",
+    subhead: "An ATS that exists, surrounded by a process that ignores it",
     problems: [
       {
-        name: "Calling every patient to confirm",
-        desc: "The front desk calls each patient the day before. When someone does not pick up, nothing tries again. A no-show means an empty slot that still cost staff time to chase.",
-        cost: "15% no-show rate",
+        name: "The CV Screening Bottleneck",
+        desc: "Every application gets read and shortlisted by hand. Candidate status lives in a spreadsheet running parallel to the ATS, updated whenever someone remembers.",
+        cost: "40% of the week, no placement value",
       },
       {
-        name: "Re-typing what the patient already wrote",
-        desc: "A patient fills in a paper form or emails a PDF. Someone types the same information into your system. One misread number and you have an error in the record with no trail.",
-        cost: "5 hrs/week re-entering data",
+        name: "The Scheduling Back-and-Forth",
+        desc: "Interview scheduling happens through email chains between consultant, candidate, and client — three-way coordination with no system tracking any of it.",
+        cost: "Interviews lost to slow coordination",
       },
     ],
-    leakSummary: "Staff do work that could run automatically, leaving less time for patients and more room for errors.",
-    financialImpact: "15% no-shows. 5 hrs/week on data re-entry. Burnout from repetitive tasks.",
+    financialImpact:
+      "40% of consultant time spent on admin that generates zero placement fees · slow scheduling loses candidates to faster-moving competitors",
     solution: {
-      name: "Reminders go out. Notes go in. No phone tag.",
-      desc: "Confirmations and reminders send themselves, with a follow-up if there is no response. No-shows trigger a rebooking message. Intake forms go straight into your records.",
+      name: "AI Screening & Scheduling Pipeline",
+      desc: "Applications are screened and ranked automatically against the role brief. Shortlisted candidates move straight into an automated scheduling flow that finds time across all three calendars without a single email.",
       outcomes: [
-        "Fewer no-shows",
-        "90% less manual data entry",
-        "Complete records with a clear trail",
+        "40% of consultant time redirected to billable activity",
+        "Screening time cut from hours to minutes",
+        "Interviews booked without manual back-and-forth",
       ],
-      architectureId: "document-intake",
+      architectureId: "recruiting-screen-schedule",
+    },
+  },
+  {
+    id: "healthcare",
+    abbr: "HC",
+    tabTitle: "Healthcare",
+    personaTag: "The Clinic Owner-Clinician",
+    header: "Admin eating into clinical hours",
+    subhead: "A practice management system, surrounded by manual reminders and paper intake",
+    problems: [
+      {
+        name: "The No-Show Drain",
+        desc: "Appointment reminders go out manually or through a basic SMS tool with no follow-up logic. When a slot cancels, it sits empty instead of automatically going to someone on the waiting list.",
+        cost: "Higher cancellation rate than necessary",
+      },
+      {
+        name: "The Paper Intake Trail",
+        desc: "New patients fill out forms on paper or PDF. Someone manually transfers every field into the practice management software before the first appointment even starts.",
+        cost: "Re-typed into the system by hand",
+      },
+    ],
+    financialImpact:
+      "Avoidable no-shows cost clinical hours that can't be recovered · intake re-entry adds friction to every single new patient",
+    solution: {
+      name: "Automated Reminders & Digital Intake System",
+      desc: "Reminders escalate automatically as appointments approach. Cancelled slots offer themselves to the waiting list within minutes. New patient forms feed straight into your practice management software — no retyping.",
+      outcomes: [
+        "No-show rate reduced through smarter, escalating reminders",
+        "Cancelled slots refilled automatically",
+        "Zero manual intake data entry",
+      ],
+      architectureId: "clinic-intake-reminders",
     },
   },
 ];
@@ -199,5 +299,65 @@ export const workflowArchitectures: WorkflowArchitecture[] = [
     aiAction: "The system pulls numbers from sales, invoicing, and project tools and spots what changed",
     systemAction: "A summary goes to whoever needs it. Key changes post to your team channel. No one builds a spreadsheet.",
     outcome: "Current numbers every week. Decisions from real data. About 4 hrs/month saved on reports.",
+  },
+  {
+    id: "legal-intake-engagement",
+    letter: "E",
+    title: "Enquiry in. Qualification, booking, engagement letter drafted.",
+    industries: ["Law"],
+    trigger: "A new enquiry arrives via form or email",
+    aiAction: "Qualifies the matter and routes it to the right partner",
+    systemAction:
+      "Books the consult, drafts the engagement letter from intake data, and tracks signature status automatically",
+    outcome:
+      "Form submission triggers AI qualification → auto-routes to partner → drafts engagement letter → tracks signature status",
+  },
+  {
+    id: "lead-to-docs",
+    letter: "F",
+    title: "Lead captured. Response instant. Docs chased and tracked.",
+    industries: ["Mortgage"],
+    trigger: "A lead arrives from a site, referral, or your contact form",
+    aiAction: "Qualifies the lead and personalizes the first response",
+    systemAction:
+      "Sends a document checklist and keeps it updated with automatic reminders until complete",
+    outcome:
+      "New lead triggers instant qualification and response → personalized document checklist sent → auto-tracked until complete",
+  },
+  {
+    id: "accounting-onboarding",
+    letter: "G",
+    title: "Client onboarded. Data synced. Docs tracked and chased.",
+    industries: ["Accounting"],
+    trigger: "A new client completes intake",
+    aiAction: "Validates details and flags anything missing",
+    systemAction:
+      "Syncs intake into the accounting platform, generates a document checklist, and sends auto-reminders until received",
+    outcome:
+      "Intake form data syncs directly to your accounting platform → automated document checklist → auto-reminders until received",
+  },
+  {
+    id: "recruiting-screen-schedule",
+    letter: "H",
+    title: "Application screened. Shortlist routed. Interviews scheduled automatically.",
+    industries: ["Recruitment"],
+    trigger: "A candidate applies for a role",
+    aiAction: "Screens and ranks candidates against role criteria",
+    systemAction:
+      "Routes the shortlist to the consultant and schedules interviews across calendars without email back-and-forth",
+    outcome:
+      "Application triggers AI screening against role criteria → shortlist auto-routes to consultant → scheduling link sent and confirmed automatically",
+  },
+  {
+    id: "clinic-intake-reminders",
+    letter: "I",
+    title: "Appointment booked. Reminders escalate. Intake syncs automatically.",
+    industries: ["Healthcare"],
+    trigger: "An appointment is booked or updated",
+    aiAction: "Detects risk of no-show and adapts reminder timing",
+    systemAction:
+      "Runs reminder sequence, offers cancellations to waitlist, and syncs digital intake into practice software",
+    outcome:
+      "Appointment booked triggers reminder sequence → cancellation auto-offers slot to waitlist → digital intake syncs directly to practice software",
   },
 ];

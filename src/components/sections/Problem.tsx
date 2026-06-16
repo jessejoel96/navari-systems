@@ -59,9 +59,10 @@ export function Problem() {
 
         <FadeIn delay={0.2} className="mt-10 rounded-lg border border-[#E85D4A]/20 bg-[#E85D4A]/4 px-7 py-6">
           <p className="text-base leading-relaxed text-navy">
-            <span className="font-bold">The average business owner loses 15-20 hours a week to work like this.</span>{" "}
-            At $50/hr, that is over{" "}
-            <span className="font-bold text-[#E85D4A]">$40,000 a year</span> the business never gets back. Nobody is counting it.
+            <span className="font-bold">An average business owner forfeits 15–20 hours weekly to these activities.</span>{" "}
+            At $50 per hour, that&rsquo;s over{" "}
+            <span className="font-bold text-[#E85D4A]">$45,000 annually.</span>{" "}
+            Yet it rarely appears on any report and goes unmeasured.
           </p>
         </FadeIn>
       </div>

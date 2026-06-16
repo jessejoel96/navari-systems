@@ -50,7 +50,7 @@ export default async function BlogPostPage({ params }: Props) {
   };
 
   return (
-    <article className="bg-white px-5 pb-24 pt-28 md:px-10">
+    <article className="bg-white px-5 pb-24 pt-36 md:px-10">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -1,9 +1,9 @@
 import { Cta } from "@/components/sections/CTA";
 import { Deliverables } from "@/components/sections/Deliverables";
 import { Fit } from "@/components/sections/Fit";
+import { Founder } from "@/components/sections/Founder";
 import { Hero } from "@/components/sections/Hero";
 import { Problem } from "@/components/sections/Problem";
-import { Process } from "@/components/sections/Process";
 import { Results } from "@/components/sections/Results";
 import { Services } from "@/components/sections/Services";
 import { Trust } from "@/components/sections/Trust";
@@ -15,10 +15,10 @@ export default function HomePage() {
       <Hero />
       <Problem />
       <Results />
-      <Trust />
       <Fit />
       <Workflows />
-      <Process />
+      <Founder />
+      <Trust />
       <Deliverables />
       <Services />
       <Cta />

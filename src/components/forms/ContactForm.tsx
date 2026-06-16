@@ -1,18 +1,13 @@
 ﻿"use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const selectClass =
   "w-full rounded border border-white/15 bg-white/5 px-4 py-3.5 text-base text-white outline-none focus:border-gold [&>option]:bg-white [&>option]:text-navy";
 
 export function ContactForm() {
-  const [mounted, setMounted] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -45,10 +40,6 @@ export function ContactForm() {
       setStatus("error");
       setError(err instanceof Error ? err.message : "Something went wrong");
     }
-  }
-
-  if (!mounted) {
-    return <div className="mx-auto mt-10 max-w-lg min-h-[520px]" aria-hidden />;
   }
 
   return (
