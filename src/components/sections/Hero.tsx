@@ -15,9 +15,6 @@ export function Hero() {
               Your team is doing work<br />
               a <span className="text-gold">system should handle.</span>
             </h1>
-            <p className="mb-6 font-display text-[clamp(18px,2vw,24px)] font-semibold italic tracking-tight text-gold">
-              Precision enters where chaos was.
-            </p>
           </FadeIn>
 
           <FadeIn delay={0.1} className="mx-auto mb-8 max-w-[480px] lg:hidden">
@@ -42,7 +39,11 @@ export function Hero() {
               No tech knowledge needed. No new software to learn.
             </p>
 
-            <div className="mt-10 flex flex-wrap justify-center gap-8 border-t border-white/7 pt-8 lg:justify-start">
+            <p className="mt-10 mb-4 font-display text-[clamp(18px,2vw,24px)] font-semibold italic tracking-tight text-gold text-center lg:text-left">
+              Precision enters where chaos was.
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-8 border-t border-white/7 pt-8 lg:justify-start">
               {[
                 { num: "15-20", label: "Hrs/week recovered" },
                 { num: "60", label: "Days to first results" },
