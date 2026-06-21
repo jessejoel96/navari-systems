@@ -1,6 +1,24 @@
 {
   "version": 1,
   "skills": {
+    "clone-ui": {
+      "source": "santowilem/skills",
+      "sourceType": "github",
+      "skillPath": "skills/clone-ui/SKILL.md",
+      "computedHash": "941cff19cb594f39e52f93add3540f84d037a4ad0501d8d2f8c293af2baecfc7"
+    },
+    "design-taste-frontend": {
+      "source": "Leonxlnx/taste-skill",
+      "sourceType": "github",
+      "skillPath": "skills/taste-skill/SKILL.md",
+      "computedHash": "899b84384f74f540ea5284d9b2e9234e050998b42eacc805410b518d4226c0b3"
+    },
+    "frontend-design": {
+      "source": "vnzzzz/slim",
+      "sourceType": "github",
+      "skillPath": ".codex/skills/frontend-design/SKILL.md",
+      "computedHash": "6b5855b4bd6955a9127a32ce1778d538f0ae86a37821ff838a65ad2b178699dd"
+    },
     "supabase": {
       "source": "supabase/agent-skills",
       "sourceType": "github",

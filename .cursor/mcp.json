@@ -1,0 +1,84 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "url": "https://mcp.supabase.com/mcp?project_ref=lwqzqzoehhlzjktpnbqc"
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest"
+      ]
+    },
+    "accesslint": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@accesslint/mcp@latest"
+      ]
+    },
+    "hostinger-hosting": {
+      "command": "npx.cmd",
+      "args": [
+        "-y",
+        "--package=hostinger-api-mcp@latest",
+        "hostinger-hosting-mcp"
+      ],
+      "envFile": "${workspaceFolder}/projects/intel-hrc/.env.local"
+    },
+    "hostinger-domains": {
+      "command": "npx.cmd",
+      "args": [
+        "-y",
+        "--package=hostinger-api-mcp@latest",
+        "hostinger-domains-mcp"
+      ],
+      "envFile": "${workspaceFolder}/projects/intel-hrc/.env.local"
+    },
+    "hostinger-dns": {
+      "command": "npx.cmd",
+      "args": [
+        "-y",
+        "--package=hostinger-api-mcp@latest",
+        "hostinger-dns-mcp"
+      ],
+      "envFile": "${workspaceFolder}/projects/intel-hrc/.env.local"
+    },
+    "hostinger-billing": {
+      "command": "npx.cmd",
+      "args": [
+        "-y",
+        "--package=hostinger-api-mcp@latest",
+        "hostinger-billing-mcp"
+      ],
+      "envFile": "${workspaceFolder}/projects/intel-hrc/.env.local"
+    },
+    "hostinger-reach": {
+      "command": "npx.cmd",
+      "args": [
+        "-y",
+        "--package=hostinger-api-mcp@latest",
+        "hostinger-reach-mcp"
+      ],
+      "envFile": "${workspaceFolder}/projects/intel-hrc/.env.local"
+    },
+    "hostinger-vps": {
+      "command": "npx.cmd",
+      "args": [
+        "-y",
+        "--package=hostinger-api-mcp@latest",
+        "hostinger-vps-mcp"
+      ],
+      "envFile": "${workspaceFolder}/projects/intel-hrc/.env.local"
+    },
+    "hostinger-ecommerce": {
+      "command": "npx.cmd",
+      "args": [
+        "-y",
+        "--package=hostinger-api-mcp@latest",
+        "hostinger-ecommerce-mcp"
+      ],
+      "envFile": "${workspaceFolder}/projects/intel-hrc/.env.local"
+    }
+  }
+}
