@@ -44,7 +44,7 @@ export function InvoiceList({ invoices, entities }: InvoiceListProps) {
       >
         <Link
           href="/invoices/new"
-          className="flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-brand-blue-deep shadow-sm transition-colors hover:bg-blue-50"
+          className="flex items-center gap-2 rounded-lg bg-brand-blue px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-blue-deep"
         >
           <Plus className="h-4 w-4" />
           Upload Invoice

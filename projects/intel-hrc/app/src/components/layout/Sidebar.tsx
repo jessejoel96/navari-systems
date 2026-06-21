@@ -17,6 +17,7 @@ import {
   WELCOME_HREF,
 } from "@/lib/navigation";
 import { BrandLogo } from "@/components/layout/BrandLogo";
+import { GradientDivider, gradientBorderVertical } from "@/components/layout/gradient-border";
 
 function groupIsActive(pathname: string, hrefs: string[]) {
   return hrefs.some(
@@ -49,10 +50,20 @@ export function Sidebar() {
   };
 
   return (
-    <aside className="flex w-64 flex-col border-r border-gray-200/80 bg-gradient-to-b from-white via-white to-[#EAF4FB]/60">
-      <div className="border-b border-gray-100 bg-gradient-to-r from-[#063B63]/5 via-[#1F6DB3]/8 to-[#39B54A]/10 px-4 py-4">
+    <aside className="relative flex h-full w-64 shrink-0 flex-col bg-white shadow-sm">
+      <div
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute inset-y-0 right-0 w-[1px]",
+          gradientBorderVertical
+        )}
+      />
+
+      <div className="px-4 py-4">
         <BrandLogo href={WELCOME_HREF} imageClassName="h-9 w-auto max-w-[200px]" />
       </div>
+
+      <GradientDivider className="mx-3" />
 
       <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
         <Link
@@ -91,7 +102,7 @@ export function Sidebar() {
           Platform Overview
         </Link>
 
-        <div className="my-3 border-t border-gray-100" />
+        <GradientDivider className="my-3" />
 
         {WORKFLOW_GROUPS.map((group) => {
           const open = isExpanded(group.id);
@@ -120,41 +131,44 @@ export function Sidebar() {
               </button>
 
               {open && (
-                <div className="ml-1 space-y-0.5 border-l border-gray-100 pl-2">
-                  {group.items.map((item) => {
-                    const isActive =
-                      pathname === item.href ||
-                      pathname.startsWith(`${item.href}/`);
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className={cn(
-                          "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                          isActive
-                            ? "bg-brand-blue-light text-brand-blue"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                        )}
-                      >
-                        <item.icon
+                <div className="ml-1 flex pl-2">
+                  <GradientDivider orientation="vertical" className="mr-2" />
+                  <div className="min-w-0 flex-1 space-y-0.5">
+                    {group.items.map((item) => {
+                      const isActive =
+                        pathname === item.href ||
+                        pathname.startsWith(`${item.href}/`);
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
                           className={cn(
-                            "h-4 w-4 shrink-0",
+                            "group flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                             isActive
-                              ? "text-brand-blue"
-                              : "text-gray-400 group-hover:text-gray-600"
+                              ? "bg-brand-blue-light text-brand-blue"
+                              : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                           )}
-                        />
-                        {item.name}
-                      </Link>
-                    );
-                  })}
+                        >
+                          <item.icon
+                            className={cn(
+                              "h-4 w-4 shrink-0",
+                              isActive
+                                ? "text-brand-blue"
+                                : "text-gray-400 group-hover:text-gray-600"
+                            )}
+                          />
+                          {item.name}
+                        </Link>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
             </div>
           );
         })}
 
-        <div className="my-3 border-t border-gray-100" />
+        <GradientDivider className="my-3" />
 
         {UTILITY_NAV.map((item) => {
           const isActive = pathname.startsWith(item.href);
@@ -181,7 +195,9 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="border-t border-gray-100 px-4 py-3">
+      <GradientDivider className="mx-3" />
+
+      <div className="px-4 py-3">
         <Link
           href="/settings"
           className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"

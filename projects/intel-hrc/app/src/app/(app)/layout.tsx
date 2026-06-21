@@ -7,7 +7,7 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen overflow-hidden bg-gradient-to-br from-[#F7F9FB] via-white to-[#EAF8EE]/50">
+    <div className="flex h-screen overflow-hidden bg-[#F7F9FB]">
       <Sidebar />
       <main className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-7xl px-6 py-8">

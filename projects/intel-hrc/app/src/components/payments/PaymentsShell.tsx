@@ -202,18 +202,16 @@ export function PaymentsShell({
           <select
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(Number(e.target.value))}
-            className="rounded-lg border border-white/20 bg-white/10 px-3 py-1.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/30"
+            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-blue/30"
           >
             {FULL_MONTHS.map((m, i) => (
-              <option key={m} value={i + 1} className="text-gray-900">
-                {m}
-              </option>
+              <option key={m} value={i + 1}>{m}</option>
             ))}
           </select>
           <select
             value={selectedYear}
             onChange={(e) => setSelectedYear(Number(e.target.value))}
-            className="rounded-lg border border-white/20 bg-white/10 px-3 py-1.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/30"
+            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-blue/30"
           >
             {[2025, 2026, 2027].map((y) => (
               <option key={y} value={y}>{y}</option>

@@ -64,20 +64,21 @@ export function PageHelpGuide({ guide }: { guide: PageGuide }) {
             aria-labelledby="page-help-title"
             aria-describedby="page-help-body"
           >
-            <div className="overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-[#063B63] via-[#1F6DB3] to-[#39B54A]/50 shadow-2xl">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_100%_0%,rgba(57,181,74,0.25),transparent)]" />
+            <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-blue/40 via-brand-blue/20 to-brand-green/40" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-blue/[0.04] via-transparent to-brand-green/[0.05]" />
               <div className="relative p-5">
                 <div className="mb-3 flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-2 text-blue-100/90">
+                  <div className="flex items-center gap-2 text-brand-blue">
                     <HelpCircle className="h-4 w-4 shrink-0" />
-                    <span className="text-xs font-semibold uppercase tracking-wider">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
                       Page guide · {slideIndex + 1} of {guide.slides.length}
                     </span>
                   </div>
                   <button
                     type="button"
                     onClick={dismiss}
-                    className="rounded-lg p-1.5 text-blue-100/80 transition hover:bg-white/10 hover:text-white"
+                    className="rounded-lg p-1.5 text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
                     aria-label="Close page guide"
                   >
                     <X className="h-4 w-4" />
@@ -92,10 +93,10 @@ export function PageHelpGuide({ guide }: { guide: PageGuide }) {
                     exit={{ opacity: 0, x: -24 }}
                     transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <h2 id="page-help-title" className="text-lg font-semibold text-white">
+                    <h2 id="page-help-title" className="text-lg font-semibold text-gray-900">
                       {slide.title}
                     </h2>
-                    <p id="page-help-body" className="mt-2 text-sm leading-relaxed text-blue-100/90">
+                    <p id="page-help-body" className="mt-2 text-sm leading-relaxed text-gray-600">
                       {slide.body}
                     </p>
                   </motion.div>
@@ -109,8 +110,8 @@ export function PageHelpGuide({ guide }: { guide: PageGuide }) {
                         className={cn(
                           "h-1.5 rounded-full transition-all",
                           index === slideIndex
-                            ? "w-6 bg-white"
-                            : "w-1.5 bg-white/35"
+                            ? "w-6 bg-brand-blue"
+                            : "w-1.5 bg-gray-200"
                         )}
                         aria-hidden
                       />
@@ -122,7 +123,7 @@ export function PageHelpGuide({ guide }: { guide: PageGuide }) {
                       type="button"
                       disabled={slideIndex === 0}
                       onClick={() => setSlideIndex((prev) => Math.max(0, prev - 1))}
-                      className="rounded-lg border border-white/20 p-2 text-white transition enabled:hover:bg-white/10 disabled:opacity-40"
+                      className="rounded-lg border border-gray-200 p-2 text-gray-600 transition enabled:hover:bg-gray-50 disabled:opacity-40"
                       aria-label="Previous tip"
                     >
                       <ChevronLeft className="h-4 w-4" />
@@ -131,7 +132,7 @@ export function PageHelpGuide({ guide }: { guide: PageGuide }) {
                       <button
                         type="button"
                         onClick={dismiss}
-                        className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-brand-blue-deep transition hover:bg-blue-50"
+                        className="rounded-lg bg-brand-blue px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-blue-deep"
                       >
                         Got it
                       </button>
@@ -141,7 +142,7 @@ export function PageHelpGuide({ guide }: { guide: PageGuide }) {
                         onClick={() =>
                           setSlideIndex((prev) => Math.min(guide.slides.length - 1, prev + 1))
                         }
-                        className="inline-flex items-center gap-1 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-brand-blue-deep transition hover:bg-blue-50"
+                        className="inline-flex items-center gap-1 rounded-lg bg-brand-blue px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-blue-deep"
                       >
                         Next
                         <ChevronRight className="h-4 w-4" />

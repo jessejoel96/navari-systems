@@ -151,7 +151,7 @@ export function DocumentsShell({
       >
         <button
           onClick={() => setShowUpload(true)}
-          className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-medium text-brand-blue-deep shadow-sm hover:bg-blue-50"
+          className="inline-flex items-center gap-2 rounded-lg bg-brand-blue px-4 py-2 text-sm font-medium text-white hover:bg-brand-blue-deep"
         >
           <Upload className="h-4 w-4" />
           Upload document

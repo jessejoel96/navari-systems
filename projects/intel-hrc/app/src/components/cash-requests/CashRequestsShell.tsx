@@ -885,11 +885,11 @@ export default function CashRequestsShell({ initialCycles }: { initialCycles: Cy
       >
         <div className="flex items-center gap-2">
           <button onClick={refresh} disabled={refreshing}
-            className="rounded-lg border border-white/25 bg-white/10 p-2 text-white transition-colors hover:bg-white/20">
+            className="rounded-lg border border-gray-200 p-2 text-gray-500 transition-colors hover:bg-gray-50">
             <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`} />
           </button>
           <button onClick={() => setShowModal(true)}
-            className="flex items-center gap-1.5 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-brand-blue-deep transition-colors hover:bg-blue-50">
+            className="flex items-center gap-1.5 rounded-xl bg-brand-blue px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-blue-deep">
             <Plus className="w-4 h-4" /> New Cycle
           </button>
         </div>
