@@ -1,5 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { UploadForm } from "@/components/invoices/UploadForm";
+import { AppPageHeader } from "@/components/layout/AppPageHeader";
 
 export const dynamic = "force-dynamic";
 
@@ -19,12 +20,10 @@ export default async function NewInvoicePage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <div>
-        <h1 className="text-xl font-semibold text-gray-900">Upload Invoice</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Upload a PDF, scan, or photo. AI will extract the key fields for your review.
-        </p>
-      </div>
+      <AppPageHeader
+        title="Upload Invoice"
+        description="Upload a PDF, scan, or photo. AI will extract the key fields for your review."
+      />
       <UploadForm entities={entities ?? []} suppliers={suppliers ?? []} />
     </div>
   );
