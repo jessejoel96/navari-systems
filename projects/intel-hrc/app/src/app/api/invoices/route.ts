@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
 import { notifyNewInvoice } from "@/lib/email/notify";
+import { applyPaymentDefaults } from "@/lib/invoices/payment-schedule";
 
 export async function POST(req: NextRequest) {
   const supabase = createServiceClient();
-  const body = await req.json();
+  const body = applyPaymentDefaults(await req.json());
+
+  const isRecurring = body.is_recurring ?? false;
 
   const { data, error } = await supabase
     .from("invoices")
@@ -21,13 +24,19 @@ export async function POST(req: NextRequest) {
       wht_amount: body.wht_amount || 0,
       expense_account: body.expense_account || null,
       po_number: body.po_number || null,
+      purchase_order_id: body.purchase_order_id || null,
+      proforma_number: body.proforma_number || null,
       status: body.ocr_json ? "extracted" : "received",
       ocr_json: body.ocr_json || null,
       ocr_confidence: body.ocr_confidence || null,
       label: body.description || body.invoice_number || "Invoice",
-      is_recurring: body.is_recurring ?? false,
+      is_recurring: isRecurring,
+      po_matched: isRecurring ? true : Boolean(body.purchase_order_id),
       payment_channel: body.payment_channel || "bank",
       payment_category: body.payment_category || null,
+      payment_schedule: body.payment_schedule,
+      scheduled_payment_day: body.scheduled_payment_day,
+      scheduled_payment_weekday: body.scheduled_payment_weekday,
     })
     .select("id")
     .single();

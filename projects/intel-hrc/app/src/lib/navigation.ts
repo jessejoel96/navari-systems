@@ -11,6 +11,7 @@ import {
   ArrowLeftRight,
   BarChart3,
   Bot,
+  FolderOpen,
 } from "lucide-react";
 
 export type NavItem = {
@@ -69,6 +70,7 @@ export const WORKFLOW_GROUPS: NavGroup[] = [
 ];
 
 export const UTILITY_NAV: NavItem[] = [
+  { name: "Document Library", href: "/documents", icon: FolderOpen },
   { name: "Reports", href: "/reports", icon: BarChart3 },
   { name: "AI Assistant", href: "/assistant", icon: Bot },
 ];

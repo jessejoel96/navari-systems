@@ -14,7 +14,7 @@ export default async function PaymentsPage() {
   const { data: bankInvoices } = await supabase
     .from("invoices")
     .select(
-      "id, invoice_number, description, gross_amount, invoice_date, is_recurring, payment_category, payment_channel, status, suppliers:supplier_id(name), entities(code)"
+      "id, invoice_number, description, gross_amount, invoice_date, is_recurring, payment_category, payment_channel, payment_schedule, scheduled_payment_day, scheduled_payment_weekday, status, suppliers:supplier_id(name), entities(code)"
     )
     .eq("status", "sage_imported")
     .eq("payment_channel", "bank")
@@ -24,7 +24,7 @@ export default async function PaymentsPage() {
   const { data: mavianceInvoices } = await supabase
     .from("invoices")
     .select(
-      "id, invoice_number, description, gross_amount, invoice_date, is_recurring, payment_category, payment_channel, status, suppliers:supplier_id(name), entities(code)"
+      "id, invoice_number, description, gross_amount, invoice_date, is_recurring, payment_category, payment_channel, payment_schedule, scheduled_payment_day, scheduled_payment_weekday, status, suppliers:supplier_id(name), entities(code)"
     )
     .eq("status", "sage_imported")
     .eq("payment_channel", "maviance")

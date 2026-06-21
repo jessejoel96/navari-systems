@@ -13,6 +13,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
+import { paymentScheduleLabel } from "@/lib/invoices/payment-schedule";
 import { BatchDocumentsPanel, type BatchWithDocs } from "@/components/payments/BatchDocumentsPanel";
 import { storageDownloadUrl } from "@/lib/payments/documents";
 
@@ -27,6 +28,9 @@ interface InvoiceRow {
   is_recurring: boolean;
   payment_category: string | null;
   payment_channel: string;
+  payment_schedule?: string | null;
+  scheduled_payment_day?: number | null;
+  scheduled_payment_weekday?: number | null;
   suppliers?: { name: string } | null;
   entities?: { code: string } | null;
   status: string;
@@ -194,7 +198,7 @@ export function PaymentsShell({
         <div>
           <h1 className="text-xl font-semibold text-gray-900">Payments</h1>
           <p className="mt-1 text-sm text-gray-500">
-            Generate, approve and track supplier payment sheets grouped by month.
+            Bank supplier runs monthly (15th) · Maviance one-offs weekly (Friday) · assign per invoice.
           </p>
         </div>
 
@@ -352,6 +356,7 @@ export function PaymentsShell({
                     <th className="px-5 py-3 text-xs font-medium text-gray-500">Description</th>
                     <th className="px-5 py-3 text-xs font-medium text-gray-500">Category</th>
                     <th className="px-5 py-3 text-xs font-medium text-gray-500">Date</th>
+                    <th className="px-5 py-3 text-xs font-medium text-gray-500">Schedule</th>
                     <th className="px-5 py-3 text-right text-xs font-medium text-gray-500">Amount</th>
                     <th className="px-5 py-3 text-xs font-medium text-gray-500">Type</th>
                   </tr>
@@ -374,6 +379,9 @@ export function PaymentsShell({
                       <td className="px-5 py-3.5 text-gray-500 text-xs">
                         {inv.invoice_date ? formatDate(inv.invoice_date) : "—"}
                       </td>
+                      <td className="px-5 py-3.5 text-gray-500 text-xs">
+                        {paymentScheduleLabel(inv)}
+                      </td>
                       <td className="px-5 py-3.5 text-right font-medium text-gray-800">
                         {formatCurrency(inv.gross_amount)}
                       </td>
@@ -394,7 +402,7 @@ export function PaymentsShell({
                 </tbody>
                 <tfoot>
                   <tr className="border-t border-gray-100 bg-gray-50/50">
-                    <td colSpan={5} className="px-5 py-3 text-xs font-semibold text-gray-500">
+                    <td colSpan={6} className="px-5 py-3 text-xs font-semibold text-gray-500">
                       TOTAL — {filtered.length} invoices
                     </td>
                     <td className="px-5 py-3 text-right text-sm font-bold text-gray-900">

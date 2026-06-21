@@ -14,6 +14,14 @@ import {
   Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  defaultPaymentSchedule,
+  defaultScheduledDay,
+  defaultScheduledWeekday,
+  WEEKDAY_LABELS,
+  type PaymentSchedule,
+} from "@/lib/invoices/payment-schedule";
+import { poRequiredForInvoice } from "@/lib/invoices/po-workflow";
 
 interface UploadFormProps {
   entities: any[];
@@ -62,10 +70,39 @@ export function UploadForm({ entities, suppliers }: UploadFormProps) {
     wht_amount: "",
     expense_account: "",
     po_number: "",
+    proforma_number: "",
     payment_channel: "bank",
     is_recurring: false,
     payment_category: "",
+    payment_schedule: "monthly" as PaymentSchedule,
+    scheduled_payment_day: "15",
+    scheduled_payment_weekday: "5",
   });
+
+  function syncPaymentDefaults(
+    channel: string,
+    recurring: boolean,
+    schedule?: PaymentSchedule
+  ) {
+    const payment_schedule = schedule ?? defaultPaymentSchedule({
+      payment_channel: channel,
+      is_recurring: recurring,
+    });
+    return {
+      payment_schedule,
+      scheduled_payment_day: String(defaultScheduledDay({
+        payment_channel: channel,
+        is_recurring: recurring,
+      })),
+      scheduled_payment_weekday: String(
+        defaultScheduledWeekday({
+          payment_channel: channel,
+          is_recurring: recurring,
+          payment_schedule,
+        }) ?? 5
+      ),
+    };
+  }
 
   async function runOcr(uploadedFile: File) {
     setExtracting(true);
@@ -196,6 +233,14 @@ export function UploadForm({ entities, suppliers }: UploadFormProps) {
           is_recurring: form.is_recurring,
           payment_channel: form.payment_channel,
           payment_category: form.payment_category || null,
+          proforma_number: form.proforma_number || null,
+          payment_schedule: form.payment_schedule,
+          scheduled_payment_day: parseInt(form.scheduled_payment_day, 10) || 15,
+          scheduled_payment_weekday:
+            form.payment_schedule === "weekly"
+              ? parseInt(form.scheduled_payment_weekday, 10)
+              : null,
+          po_number: form.is_recurring ? null : form.po_number || null,
         }),
       });
 
@@ -337,7 +382,22 @@ export function UploadForm({ entities, suppliers }: UploadFormProps) {
           />
           <FieldInput label="Invoice Number" value={form.invoice_number} onChange={(v) => update("invoice_number", v)} meta={fieldMeta.invoice_number} />
           <FieldInput label="Invoice Date" value={form.invoice_date} onChange={(v) => update("invoice_date", v)} type="date" required meta={fieldMeta.invoice_date} />
-          <FieldInput label="PO Number" value={form.po_number} onChange={(v) => update("po_number", v)} meta={fieldMeta.po_number} />
+          {!form.is_recurring && (
+            <FieldInput
+              label="Proforma # (if received)"
+              value={form.proforma_number}
+              onChange={(v) => update("proforma_number", v)}
+            />
+          )}
+          {poRequiredForInvoice({ is_recurring: form.is_recurring }) ? (
+            <div className="col-span-2 rounded-lg border border-amber-100 bg-amber-50/60 px-3 py-2.5 text-xs text-amber-800">
+              One-off payment — PO is required. After intake, create PO from proforma on the invoice detail page and match before approval.
+            </div>
+          ) : (
+            <div className="col-span-2 rounded-lg border border-blue-100 bg-blue-50/60 px-3 py-2.5 text-xs text-blue-800">
+              Recurring invoice — PO matching is not required.
+            </div>
+          )}
           <div className="col-span-2">
             <FieldInput label="Description" value={form.description} onChange={(v) => update("description", v)} meta={fieldMeta.description} />
           </div>
@@ -359,10 +419,16 @@ export function UploadForm({ entities, suppliers }: UploadFormProps) {
             <FieldSelect
               label="Payment Channel"
               value={form.payment_channel}
-              onChange={(v) => setForm((p) => ({ ...p, payment_channel: v }))}
+              onChange={(v) =>
+                setForm((p) => ({
+                  ...p,
+                  payment_channel: v,
+                  ...syncPaymentDefaults(v, p.is_recurring),
+                }))
+              }
               options={[
-                { value: "bank", label: "Bank Transfer" },
-                { value: "maviance", label: "Maviance (Mobile)" },
+                { value: "bank", label: "Bank Transfer (monthly)" },
+                { value: "maviance", label: "Maviance e-wallet (weekly)" },
               ]}
             />
             <FieldSelect
@@ -379,7 +445,13 @@ export function UploadForm({ entities, suppliers }: UploadFormProps) {
               <span className="text-xs font-medium text-gray-500">Recurring Invoice</span>
               <button
                 type="button"
-                onClick={() => setForm((p) => ({ ...p, is_recurring: !p.is_recurring }))}
+                onClick={() =>
+                  setForm((p) => ({
+                    ...p,
+                    is_recurring: !p.is_recurring,
+                    ...syncPaymentDefaults(p.payment_channel, !p.is_recurring),
+                  }))
+                }
                 className={cn(
                   "flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition-colors",
                   form.is_recurring
@@ -395,10 +467,46 @@ export function UploadForm({ entities, suppliers }: UploadFormProps) {
                 </div>
                 {form.is_recurring ? "Monthly recurring" : "One-off"}
               </button>
-              {form.is_recurring && (
-                <p className="text-[10px] text-blue-600">Scheduled: 15th of each month</p>
-              )}
             </label>
+          </div>
+
+          <div className="mt-4 grid grid-cols-3 gap-x-5 gap-y-4">
+            <FieldSelect
+              label="Payment Schedule"
+              value={form.payment_schedule}
+              onChange={(v) =>
+                setForm((p) => ({
+                  ...p,
+                  ...syncPaymentDefaults(p.payment_channel, p.is_recurring, v as PaymentSchedule),
+                }))
+              }
+              options={[
+                { value: "monthly", label: "Monthly" },
+                { value: "weekly", label: "Weekly" },
+              ]}
+            />
+            {form.payment_schedule === "monthly" ? (
+              <FieldInput
+                label="Day of month"
+                value={form.scheduled_payment_day}
+                onChange={(v) => update("scheduled_payment_day", v)}
+                type="number"
+              />
+            ) : (
+              <FieldSelect
+                label="Weekday"
+                value={form.scheduled_payment_weekday}
+                onChange={(v) => update("scheduled_payment_weekday", v)}
+                options={WEEKDAY_LABELS.map((label, i) => ({ value: String(i), label }))}
+              />
+            )}
+            <div className="flex items-end">
+              <p className="text-[11px] text-gray-500 pb-2">
+                {form.payment_channel === "bank"
+                  ? "Default: monthly on the 15th for supplier bank runs"
+                  : "Default: weekly on Friday for one-off e-wallet payments"}
+              </p>
+            </div>
           </div>
         </div>
       </div>

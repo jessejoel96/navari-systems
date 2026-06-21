@@ -14,12 +14,22 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { cn, formatCurrency, formatDate, getStatusColor, getStatusLabel } from "@/lib/utils";
+import { PoWorkflowPanel } from "@/components/invoices/PoWorkflowPanel";
+import { IntercoSplitPanel } from "@/components/invoices/IntercoSplitPanel";
+import { paymentScheduleLabel } from "@/lib/invoices/payment-schedule";
+import { canApproveWithoutPo } from "@/lib/invoices/po-workflow";
 
 interface InvoiceDetailProps {
   invoice: Record<string, any>;
+  intercoCodes?: Array<{
+    id: string;
+    code: string;
+    gl_account: string;
+    entities: { id: string; name: string; code: string } | null;
+  }>;
 }
 
-export function InvoiceDetail({ invoice }: InvoiceDetailProps) {
+export function InvoiceDetail({ invoice, intercoCodes = [] }: InvoiceDetailProps) {
   const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
   const [preview, setPreview] = useState<Record<string, any> | null>(null);
@@ -96,7 +106,13 @@ export function InvoiceDetail({ invoice }: InvoiceDetailProps) {
   }
 
   const canReview = ["received", "extracted", "rejected"].includes(invoice.status);
-  const canApprove = ["received", "extracted", "reviewed", "matched", "pending_approval", "rejected"].includes(invoice.status);
+  const canApprove =
+    ["received", "extracted", "reviewed", "matched", "pending_approval", "rejected"].includes(invoice.status) &&
+    canApproveWithoutPo(invoice);
+  const poBlocksApproval =
+    !invoice.is_recurring &&
+    !canApproveWithoutPo(invoice) &&
+    ["received", "extracted", "reviewed", "matched", "pending_approval"].includes(invoice.status);
   const canExport = ["approved", "sage_exported"].includes(invoice.status);
   const canConfirm = invoice.status === "sage_exported";
 
@@ -258,6 +274,23 @@ export function InvoiceDetail({ invoice }: InvoiceDetailProps) {
         </div>
       )}
 
+      {poBlocksApproval && (
+        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          Match this one-off invoice to a purchase order before approval.
+        </div>
+      )}
+
+      <PoWorkflowPanel invoice={invoice} onUpdated={() => router.refresh()} />
+
+      {invoice.invoice_type === "intercompany" && intercoCodes.length > 0 && (
+        <IntercoSplitPanel
+          invoiceId={invoice.id}
+          grossAmount={invoice.gross_amount}
+          intercoCodes={intercoCodes}
+          onSaved={() => router.refresh()}
+        />
+      )}
+
       {/* Details grid */}
       <div className="grid grid-cols-2 gap-6">
         <DetailCard title="Invoice">
@@ -280,14 +313,18 @@ export function InvoiceDetail({ invoice }: InvoiceDetailProps) {
           <DetailRow label="Channel" value={invoice.payment_channel === "maviance" ? "Maviance" : "Bank"} />
           <DetailRow label="Category" value={invoice.payment_category} />
           <DetailRow
+            label="Schedule"
+            value={paymentScheduleLabel(invoice)}
+          />
+          <DetailRow
             label="Recurring"
             value={
               invoice.is_recurring ? (
                 <span className="inline-flex items-center gap-1 text-blue-700">
-                  <RefreshCw className="h-3 w-3" /> Monthly (15th)
+                  <RefreshCw className="h-3 w-3" /> Yes — no PO required
                 </span>
               ) : (
-                "One-off"
+                "One-off — PO required"
               )
             }
           />

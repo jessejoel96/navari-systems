@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Plus, Download, RefreshCw, CheckCircle, Clock,
-  ChevronDown, ChevronRight, Calendar, FileText,
+  ChevronDown, ChevronRight, Calendar, FileText, Mail, ShieldCheck,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -359,6 +359,110 @@ export default function PrepaidShell({
   const [exportYear, setExportYear] = useState(new Date().getFullYear());
   const [exportEntity, setExportEntity] = useState("");
   const [exporting, setExporting] = useState(false);
+  const [reviewStatus, setReviewStatus] = useState<string | null>(null);
+  const [reviewLoading, setReviewLoading] = useState<string | null>(null);
+  const [reviewMessage, setReviewMessage] = useState<string | null>(null);
+
+  const loadReviewStatus = useCallback(async () => {
+    const res = await fetch(`/api/prepaid/monthly-review?month=${exportMonth}&year=${exportYear}`);
+    if (res.ok) {
+      const data = await res.json();
+      setReviewStatus(data?.status ?? null);
+    }
+  }, [exportMonth, exportYear]);
+
+  useEffect(() => {
+    loadReviewStatus();
+  }, [loadReviewStatus]);
+
+  async function compileCfoSummary() {
+    setReviewLoading("compile");
+    setReviewMessage(null);
+    try {
+      const res = await fetch("/api/prepaid/monthly-review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "compile", month: exportMonth, year: exportYear }),
+      });
+      if (!res.ok) {
+        const d = await res.json();
+        throw new Error(d.error);
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `prepaid-cfo-summary-${exportMonth}-${exportYear}.xlsx`;
+      a.click();
+      URL.revokeObjectURL(url);
+      setReviewStatus("draft");
+      setReviewMessage("Summary compiled — review before validating.");
+    } catch (err) {
+      setReviewMessage(err instanceof Error ? err.message : "Compile failed");
+    } finally {
+      setReviewLoading(null);
+    }
+  }
+
+  async function validateCfoSummary() {
+    setReviewLoading("validate");
+    setReviewMessage(null);
+    try {
+      const res = await fetch("/api/prepaid/monthly-review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "validate",
+          month: exportMonth,
+          year: exportYear,
+          validated_by: "Tina-Randa",
+        }),
+      });
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.error);
+      setReviewStatus("validated");
+      setReviewMessage("Validated — ready to send to CFO.");
+    } catch (err) {
+      setReviewMessage(err instanceof Error ? err.message : "Validation failed");
+    } finally {
+      setReviewLoading(null);
+    }
+  }
+
+  async function sendCfoSummary() {
+    if (!confirm("Send validated prepaid summary to CFO?")) return;
+    setReviewLoading("send");
+    setReviewMessage(null);
+    try {
+      const res = await fetch("/api/prepaid/monthly-review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "send_to_cfo", month: exportMonth, year: exportYear }),
+      });
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.error);
+      setReviewStatus("sent_to_cfo");
+      setReviewMessage(`Sent to ${d.sent_to}`);
+    } catch (err) {
+      setReviewMessage(err instanceof Error ? err.message : "Send failed");
+    } finally {
+      setReviewLoading(null);
+    }
+  }
+
+  const reviewBadge = (status: string | null) => {
+    const cfg: Record<string, string> = {
+      draft: "bg-amber-50 text-amber-700",
+      validated: "bg-emerald-50 text-emerald-700",
+      sent_to_cfo: "bg-blue-50 text-blue-700",
+    };
+    const label = status?.replace(/_/g, " ") ?? "not started";
+    return (
+      <span className={`inline-flex rounded-full px-2.5 py-0.5 text-[11px] font-medium capitalize ${cfg[status ?? ""] ?? "bg-slate-100 text-slate-600"}`}>
+        {label}
+      </span>
+    );
+  };
 
   async function refresh() {
     setRefreshing(true);
@@ -474,6 +578,49 @@ export default function PrepaidShell({
         <p className="text-xs text-slate-400 mt-2 flex items-center gap-1">
           <Clock className="w-3 h-3" /> Schedule lines post on the 22nd · Dr 6xx or 4711 / Cr 476xx
         </p>
+      </div>
+
+      {/* CFO monthly review */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4 mb-6">
+        <div className="flex items-center justify-between gap-3 mb-3">
+          <div className="flex items-center gap-2">
+            <Mail className="w-4 h-4 text-violet-600" />
+            <h2 className="text-sm font-semibold text-slate-800">CFO Monthly Amortization Summary</h2>
+          </div>
+          {reviewBadge(reviewStatus)}
+        </div>
+        <p className="text-xs text-slate-500 mb-3">
+          Compile Excel summary for {MONTHS[exportMonth - 1]} {exportYear}, validate amounts, then send to CFO.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={compileCfoSummary}
+            disabled={!!reviewLoading}
+            className="flex items-center gap-1.5 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg disabled:opacity-50"
+          >
+            <Download className="w-3.5 h-3.5" />
+            {reviewLoading === "compile" ? "Compiling…" : "1. Compile Summary"}
+          </button>
+          <button
+            onClick={validateCfoSummary}
+            disabled={!!reviewLoading || !reviewStatus}
+            className="flex items-center gap-1.5 px-3 py-2 bg-emerald-600 text-white text-xs font-semibold rounded-lg disabled:opacity-50"
+          >
+            <ShieldCheck className="w-3.5 h-3.5" />
+            {reviewLoading === "validate" ? "Validating…" : "2. Validate"}
+          </button>
+          <button
+            onClick={sendCfoSummary}
+            disabled={!!reviewLoading || reviewStatus !== "validated"}
+            className="flex items-center gap-1.5 px-3 py-2 bg-violet-600 text-white text-xs font-semibold rounded-lg disabled:opacity-50"
+          >
+            <Mail className="w-3.5 h-3.5" />
+            {reviewLoading === "send" ? "Sending…" : "3. Send to CFO"}
+          </button>
+        </div>
+        {reviewMessage && (
+          <p className="text-xs text-slate-600 mt-2">{reviewMessage}</p>
+        )}
       </div>
 
       {/* Contract list */}

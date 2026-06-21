@@ -24,5 +24,10 @@ export default async function InvoiceDetailPage({
     notFound();
   }
 
-  return <InvoiceDetail invoice={invoice} />;
+  const { data: intercoCodes } = await supabase
+    .from("interco_codes")
+    .select("id, code, gl_account, entities(id, name, code)")
+    .order("code");
+
+  return <InvoiceDetail invoice={invoice} intercoCodes={intercoCodes ?? []} />;
 }

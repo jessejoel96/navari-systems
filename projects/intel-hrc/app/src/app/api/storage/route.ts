@@ -13,7 +13,14 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Invalid path" }, { status: 400 });
   }
 
-  const allowedPrefixes = ["invoices/", "payment-sheets/", "sage-exports/"];
+  const allowedPrefixes = [
+    "invoices/",
+    "payment-sheets/",
+    "sage-exports/",
+    "library/",
+    "cash-requests/",
+    "prepaid/",
+  ];
   if (!allowedPrefixes.some((p) => storagePath.startsWith(p))) {
     return NextResponse.json({ error: "Path not allowed" }, { status: 403 });
   }
@@ -32,11 +39,15 @@ export async function GET(req: NextRequest) {
   const contentTypes: Record<string, string> = {
     pdf: "application/pdf",
     xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    xls: "application/vnd.ms-excel",
     txt: "text/plain; charset=utf-8",
+    csv: "text/csv",
     png: "image/png",
     jpg: "image/jpeg",
     jpeg: "image/jpeg",
     webp: "image/webp",
+    docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    doc: "application/msword",
   };
 
   const contentType = contentTypes[ext ?? ""] ?? "application/octet-stream";
