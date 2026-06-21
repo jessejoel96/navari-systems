@@ -1,5 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { ApprovalBoard } from "@/components/approvals/ApprovalBoard";
+import { AppPageHeader } from "@/components/layout/AppPageHeader";
 
 export const dynamic = "force-dynamic";
 
@@ -15,13 +16,10 @@ export default async function ApprovalsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-xl font-semibold text-gray-900">Approvals</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Track approval requests sent to the CFO or CEO. Reminders sent after 7 days.
-          Payment batches are approved from the Payments module.
-        </p>
-      </div>
+      <AppPageHeader
+        title="Approvals"
+        description="Track approval requests sent to the CFO or CEO. Reminders sent after 7 days. Payment batches are approved from the Payments module."
+      />
       <ApprovalBoard approvals={approvals ?? []} />
     </div>
   );

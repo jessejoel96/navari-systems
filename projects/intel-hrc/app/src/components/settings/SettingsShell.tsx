@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Pencil, Check, X, Save, AlertCircle, CheckCircle2, Mail, Building2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { AppPageHeader } from "@/components/layout/AppPageHeader";
 
 /* ── Types ──────────────────────────────────────────────── */
 
@@ -205,13 +206,10 @@ export default function SettingsShell({
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
-      {/* Page title */}
-      <div>
-        <h1 className="text-2xl font-bold text-slate-800">Settings</h1>
-        <p className="text-slate-500 text-sm mt-1">
-          Manage email contacts, system addresses, and entity configuration.
-        </p>
-      </div>
+      <AppPageHeader
+        title="Settings"
+        description="Manage email contacts, system addresses, and entity configuration."
+      />
 
       {/* ── Section: Email Addresses ── */}
       <section className="bg-white border border-slate-200 rounded-2xl overflow-hidden">

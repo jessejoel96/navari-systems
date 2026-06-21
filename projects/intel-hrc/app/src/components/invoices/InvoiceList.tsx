@@ -3,11 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  FileText,
-  Plus,
-  Search,
-} from "lucide-react";
+import { FileText, Plus, Search } from "lucide-react";
+import { AppPageHeader } from "@/components/layout/AppPageHeader";
 import { formatCurrency, formatDate, getStatusColor, getStatusLabel } from "@/lib/utils";
 
 interface InvoiceListProps {
@@ -41,22 +38,18 @@ export function InvoiceList({ invoices, entities }: InvoiceListProps) {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-end justify-between">
-        <div>
-          <h1 className="text-xl font-semibold text-gray-900">Invoice Inbox</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            {invoices.length} invoice{invoices.length !== 1 ? "s" : ""} total
-          </p>
-        </div>
+      <AppPageHeader
+        title="Invoice Inbox"
+        description={`${invoices.length} invoice${invoices.length !== 1 ? "s" : ""} total`}
+      >
         <Link
           href="/invoices/new"
-          className="flex items-center gap-2 rounded-lg bg-brand-blue px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-blue-deep"
+          className="flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-brand-blue-deep shadow-sm transition-colors hover:bg-blue-50"
         >
           <Plus className="h-4 w-4" />
           Upload Invoice
         </Link>
-      </div>
+      </AppPageHeader>
 
       {/* Filters — client-only to avoid extension-injected attribute hydration mismatches */}
       {filtersReady ? (

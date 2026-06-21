@@ -14,6 +14,7 @@ import {
   Package,
 } from "lucide-react";
 import { formatDate, formatCurrency } from "@/lib/utils";
+import { AppPageHeader } from "@/components/layout/AppPageHeader";
 
 interface SageExportListProps {
   exports: any[];
@@ -142,12 +143,10 @@ export function SageExportList({
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-xl font-semibold text-gray-900">Sage Exports</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Review invoices → generate .txt → import in Sage 100 → confirm import → payment queue.
-        </p>
-      </div>
+      <AppPageHeader
+        title="Sage Exports"
+        description="Review invoices → generate .txt → import in Sage 100 → confirm import → payment queue."
+      />
 
       {error && (
         <div className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">

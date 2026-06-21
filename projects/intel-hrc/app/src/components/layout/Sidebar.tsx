@@ -49,8 +49,8 @@ export function Sidebar() {
   };
 
   return (
-    <aside className="flex w-64 flex-col border-r border-gray-200 bg-white">
-      <div className="border-b border-gray-100 px-4 py-4">
+    <aside className="flex w-64 flex-col border-r border-gray-200/80 bg-gradient-to-b from-white via-white to-[#EAF4FB]/60">
+      <div className="border-b border-gray-100 bg-gradient-to-r from-[#063B63]/5 via-[#1F6DB3]/8 to-[#39B54A]/10 px-4 py-4">
         <BrandLogo href={WELCOME_HREF} imageClassName="h-9 w-auto max-w-[200px]" />
       </div>
 

@@ -13,6 +13,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
+import { AppPageHeader } from "@/components/layout/AppPageHeader";
 import { paymentScheduleLabel } from "@/lib/invoices/payment-schedule";
 import { BatchDocumentsPanel, type BatchWithDocs } from "@/components/payments/BatchDocumentsPanel";
 import { storageDownloadUrl } from "@/lib/payments/documents";
@@ -193,37 +194,33 @@ export function PaymentsShell({
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-xl font-semibold text-gray-900">Payments</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Bank supplier runs monthly (15th) · Maviance one-offs weekly (Friday) · assign per invoice.
-          </p>
-        </div>
-
-        {/* Month picker */}
+      <AppPageHeader
+        title="Payments"
+        description="Bank supplier runs monthly (15th) · Maviance one-offs weekly (Friday) · assign per invoice."
+      >
         <div className="flex items-center gap-2">
           <select
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(Number(e.target.value))}
-            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-blue/30"
+            className="rounded-lg border border-white/20 bg-white/10 px-3 py-1.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/30"
           >
             {FULL_MONTHS.map((m, i) => (
-              <option key={m} value={i + 1}>{m}</option>
+              <option key={m} value={i + 1} className="text-gray-900">
+                {m}
+              </option>
             ))}
           </select>
           <select
             value={selectedYear}
             onChange={(e) => setSelectedYear(Number(e.target.value))}
-            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-blue/30"
+            className="rounded-lg border border-white/20 bg-white/10 px-3 py-1.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/30"
           >
             {[2025, 2026, 2027].map((y) => (
               <option key={y} value={y}>{y}</option>
             ))}
           </select>
         </div>
-      </div>
+      </AppPageHeader>
 
       {/* Tabs */}
       <div className="border-b border-gray-200">

@@ -6,6 +6,7 @@ import {
   ChevronDown, ChevronRight, Calendar, FileText, Mail, ShieldCheck,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { AppPageHeader } from "@/components/layout/AppPageHeader";
 
 type Entity = { id: string; name: string; code: string };
 type Supplier = { id: string; name: string; aux_code: string };
@@ -507,24 +508,22 @@ export default function PrepaidShell({
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800">Prepaid Expenses</h1>
-          <p className="text-slate-500 text-sm mt-1">
-            Step 1: Dr 476 / Cr 401 · Step 2: monthly OPD on the 22nd · AP ends at Sage import
-          </p>
-        </div>
+      <AppPageHeader
+        title="Prepaid Expenses"
+        description="Step 1: Dr 476 / Cr 401 · Step 2: monthly OPD on the 22nd · AP ends at Sage import"
+        className="mb-6"
+      >
         <div className="flex gap-2">
           <button onClick={refresh} disabled={refreshing}
-            className="p-2 rounded-lg border border-slate-200 hover:bg-slate-50">
+            className="rounded-lg border border-white/25 bg-white/10 p-2 text-white hover:bg-white/20">
             <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`} />
           </button>
           <button onClick={() => setShowModal(true)}
-            className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-xl">
+            className="flex items-center gap-1.5 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-brand-blue-deep hover:bg-blue-50">
             <Plus className="w-4 h-4" /> New Prepaid
           </button>
         </div>
-      </div>
+      </AppPageHeader>
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 mb-6">

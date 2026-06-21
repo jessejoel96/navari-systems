@@ -1,5 +1,6 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { Users } from "lucide-react";
+import { AppPageHeader } from "@/components/layout/AppPageHeader";
 
 export const dynamic = "force-dynamic";
 
@@ -20,12 +21,10 @@ export default async function SuppliersPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-xl font-semibold text-gray-900">Suppliers</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          {suppliers?.length ?? 0} suppliers across all entities. Auxiliary codes match Sage structure.
-        </p>
-      </div>
+      <AppPageHeader
+        title="Suppliers"
+        description={`${suppliers?.length ?? 0} suppliers across all entities. Auxiliary codes match Sage structure.`}
+      />
 
       {Object.entries(grouped).map(([entityCode, entitySuppliers]) => (
         <div key={entityCode} className="rounded-xl border border-gray-100 bg-white">

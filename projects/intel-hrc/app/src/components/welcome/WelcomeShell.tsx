@@ -16,6 +16,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { TypewriterText } from "@/components/ui/TypewriterText";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { DASHBOARD_HREF } from "@/lib/navigation";
 import {
@@ -29,7 +30,6 @@ import {
 
 type ViewMode = "grid" | "list";
 
-const EASE_DRAMATIC = [0.08, 0.82, 0.17, 1] as const;
 const EASE_SMOOTH = [0.16, 1, 0.3, 1] as const;
 const EASE_SNAPPY = [0.25, 1, 0.5, 1] as const;
 
@@ -85,147 +85,6 @@ const T = {
   cta: SUBTEXT_END + 2.35,
   department: SUBTEXT_END + 2.65,
 };
-
-type TypewriterLine = {
-  segments: readonly { text: string; className?: string }[];
-};
-
-function buildTypewriterVariants(
-  reduced: boolean,
-  options: {
-    stagger: number;
-    delayChildren: number;
-    letterDuration: number;
-    dramatic?: boolean;
-  }
-) {
-  const instant = { duration: 0.01 } as const;
-
-  if (reduced) {
-    return {
-      container: {
-        hidden: { opacity: 0 },
-        show: { opacity: 1, transition: instant },
-      },
-      letter: {
-        hidden: { opacity: 0 },
-        show: { opacity: 1, transition: instant },
-      },
-    };
-  }
-
-  return {
-    container: {
-      hidden: {},
-      show: {
-        transition: {
-          staggerChildren: options.stagger,
-          delayChildren: options.delayChildren,
-        },
-      },
-    },
-    letter: {
-      hidden: options.dramatic
-        ? { opacity: 0, scale: 1.45, filter: "blur(10px)", y: -10, x: -4 }
-        : { opacity: 0, y: 10, filter: "blur(3px)" },
-      show: {
-        opacity: 1,
-        scale: 1,
-        filter: "blur(0px)",
-        y: 0,
-        x: 0,
-        transition: {
-          duration: options.letterDuration,
-          ease: options.dramatic ? EASE_DRAMATIC : EASE_SMOOTH,
-        },
-      },
-    },
-  };
-}
-
-function TypewriterText({
-  lines,
-  plainText,
-  className,
-  reduced,
-  stagger,
-  delayChildren,
-  letterDuration,
-  dramatic = false,
-  as = "span",
-}: {
-  lines?: readonly TypewriterLine[];
-  plainText?: string;
-  className?: string;
-  reduced: boolean;
-  stagger: number;
-  delayChildren: number;
-  letterDuration: number;
-  dramatic?: boolean;
-  as?: "h1" | "p" | "span";
-}) {
-  const variants = buildTypewriterVariants(reduced, {
-    stagger,
-    delayChildren,
-    letterDuration,
-    dramatic,
-  });
-
-  const content = lines ? (
-    lines.map((line, lineIndex) => (
-      <span key={`line-${lineIndex}`} className={lineIndex > 0 ? "mt-1 block" : "block"}>
-        {line.segments.map((segment, segmentIndex) =>
-          segment.text.split("").map((char, charIndex) => (
-            <motion.span
-              key={`${lineIndex}-${segmentIndex}-${charIndex}`}
-              variants={variants.letter}
-              className={cn("inline-block origin-left", segment.className)}
-              aria-hidden
-            >
-              {char === " " ? "\u00A0" : char}
-            </motion.span>
-          ))
-        )}
-      </span>
-    ))
-  ) : (
-    plainText?.split("").map((char, index) => (
-      <motion.span
-        key={`char-${index}`}
-        variants={variants.letter}
-        className="inline-block origin-left"
-        aria-hidden
-      >
-        {char === " " ? "\u00A0" : char}
-      </motion.span>
-    ))
-  );
-
-  const sharedProps = {
-    initial: "hidden" as const,
-    animate: "show" as const,
-    variants: variants.container,
-    className,
-  };
-
-  if (as === "h1") {
-    return (
-      <motion.h1 {...sharedProps} aria-label="Welcome, Tina. Your AP workflows, automated.">
-        {content}
-      </motion.h1>
-    );
-  }
-
-  if (as === "p") {
-    return (
-      <motion.p {...sharedProps} aria-label={plainText}>
-        {content}
-      </motion.p>
-    );
-  }
-
-  return <motion.span {...sharedProps}>{content}</motion.span>;
-}
 
 function buildTimeline(reduced: boolean) {
   const instant = { duration: 0.01 } as const;
@@ -577,6 +436,9 @@ export function WelcomeShell() {
                 delayChildren={T.title}
                 letterDuration={TITLE_LETTER_DURATION}
                 dramatic
+                showCursor
+                cursorClassName="text-emerald-300"
+                ariaLabel="Welcome, Tina. Your AP workflows, automated."
                 className="origin-left text-3xl font-bold leading-tight lg:text-5xl"
               />
 
@@ -587,6 +449,8 @@ export function WelcomeShell() {
                 stagger={SUBTEXT_STAGGER}
                 delayChildren={T.subtext}
                 letterDuration={SUBTEXT_LETTER_DURATION}
+                showCursor
+                cursorClassName="text-blue-200"
                 className="mt-5 text-base leading-relaxed text-blue-100/90 lg:text-lg"
               />
 

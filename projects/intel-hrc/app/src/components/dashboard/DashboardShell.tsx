@@ -18,6 +18,7 @@ import {
   AlertOctagon,
 } from "lucide-react";
 import { formatCurrency, getStatusColor, getStatusLabel, formatDate, cn } from "@/lib/utils";
+import { AppPageHeader } from "@/components/layout/AppPageHeader";
 
 type DashboardData = {
   totalInvoices: number;
@@ -168,22 +169,19 @@ export function DashboardShell({ data }: { data: DashboardData }) {
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="space-y-8">
-      <motion.div variants={item} className="flex items-end justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-900">
-            {greeting}, Tina
-          </h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Your week at a glance — what&apos;s done, what&apos;s next, and what needs attention.
-          </p>
-        </div>
-        <Link
-          href="/invoices/new"
-          className="flex items-center gap-2 rounded-lg bg-brand-blue px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-brand-blue-deep"
+      <motion.div variants={item}>
+        <AppPageHeader
+          title={`${greeting}, Tina`}
+          description="Your week at a glance — what's done, what's next, and what needs attention."
         >
-          <Plus className="h-4 w-4" />
-          Upload Invoice
-        </Link>
+          <Link
+            href="/invoices/new"
+            className="flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-brand-blue-deep shadow-sm transition-colors hover:bg-blue-50"
+          >
+            <Plus className="h-4 w-4" />
+            Upload Invoice
+          </Link>
+        </AppPageHeader>
       </motion.div>
 
       <div className="grid gap-4 lg:grid-cols-3">

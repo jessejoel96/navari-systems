@@ -1,6 +1,7 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { ArrowLeftRight } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
+import { AppPageHeader } from "@/components/layout/AppPageHeader";
 
 export const dynamic = "force-dynamic";
 
@@ -21,12 +22,10 @@ export default async function IntercompanyPage() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-xl font-semibold text-gray-900">Intercompany</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Shared invoice splits across entities. Each allocation generates intercompany lines in the Sage export.
-        </p>
-      </div>
+      <AppPageHeader
+        title="Intercompany"
+        description="Shared invoice splits across entities. Each allocation generates intercompany lines in the Sage export."
+      />
 
       {/* Interco code reference */}
       <div className="rounded-xl border border-gray-100 bg-white">

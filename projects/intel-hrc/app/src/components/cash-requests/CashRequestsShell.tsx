@@ -7,6 +7,7 @@ import {
   Plus, Bell, MessageSquare, Upload, Check, X, Eye,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { AppPageHeader } from "@/components/layout/AppPageHeader";
 
 /* ──────────────────────── Types ──────────────────────── */
 
@@ -877,24 +878,22 @@ export default function CashRequestsShell({ initialCycles }: { initialCycles: Cy
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800">Cash Requests</h1>
-          <p className="text-slate-500 text-sm mt-1">
-            Monthly collection — requests on the 24th, justifications &amp; expense sheets alongside
-          </p>
-        </div>
+      <AppPageHeader
+        title="Cash Requests"
+        description="Monthly collection — requests on the 24th, justifications & expense sheets alongside"
+        className="mb-8"
+      >
         <div className="flex items-center gap-2">
           <button onClick={refresh} disabled={refreshing}
-            className="p-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-500 transition-colors">
+            className="rounded-lg border border-white/25 bg-white/10 p-2 text-white transition-colors hover:bg-white/20">
             <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`} />
           </button>
           <button onClick={() => setShowModal(true)}
-            className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-colors">
+            className="flex items-center gap-1.5 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-brand-blue-deep transition-colors hover:bg-blue-50">
             <Plus className="w-4 h-4" /> New Cycle
           </button>
         </div>
-      </div>
+      </AppPageHeader>
 
       {cycles.length === 0 && (
         <div className="text-center py-16 bg-white border border-dashed border-slate-200 rounded-2xl">

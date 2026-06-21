@@ -1,6 +1,7 @@
 import { createServiceClient } from "@/lib/supabase/server";
 import { BarChart3 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
+import { AppPageHeader } from "@/components/layout/AppPageHeader";
 
 export const dynamic = "force-dynamic";
 
@@ -32,12 +33,10 @@ export default async function ReportsPage() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-xl font-semibold text-gray-900">Reports</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          AP summary across all entities. Syncs to Airtable for extended dashboards.
-        </p>
-      </div>
+      <AppPageHeader
+        title="Reports"
+        description="AP summary across all entities. Syncs to Airtable for extended dashboards."
+      />
 
       {/* Summary cards */}
       <div className="grid grid-cols-3 gap-4">
