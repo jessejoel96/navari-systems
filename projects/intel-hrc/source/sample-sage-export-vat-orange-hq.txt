@@ -1,4 +1,0 @@
-Day	Voucher no.	General account no.	BP account no.	Entry description	Maturity date	Journal position	Debit	Credit	Reference
-15	="19"	="62811100"		FCT N°0026488593 - ORANGE - MAY 			504654		
-15	="19"	="44520000"		FCT N°0026488593 - ORANGE - MAY 			97146		
-15	="19"	="40100000"	FR0001	FCT N°0026488593 - ORANGE - MAY 	2026-06-15			601800	
