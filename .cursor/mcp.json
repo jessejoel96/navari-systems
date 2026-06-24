@@ -79,6 +79,16 @@
         "hostinger-ecommerce-mcp"
       ],
       "envFile": "${workspaceFolder}/projects/intel-hrc/.env.local"
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@brave/brave-search-mcp-server",
+        "--transport",
+        "stdio"
+      ],
+      "envFile": "${workspaceFolder}/.env.local"
     }
   }
 }

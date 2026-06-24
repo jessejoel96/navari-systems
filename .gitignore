@@ -42,3 +42,7 @@ next-env.d.ts
 
 # agent skill registries (large clones; pull brands via npx typeui.sh pull)
 .agents/skills/awesome-design-skills-registry/
+
+# Outbound lead-gen outputs
+tools/lead-gen/reports/*.csv
+tools/lead-gen/node_modules/

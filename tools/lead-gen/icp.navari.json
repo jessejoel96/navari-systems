@@ -1,0 +1,30 @@
+{
+  "name": "navari-default",
+  "discovery_provider": "web",
+  "description": "Business owners and ops leaders at SMBs losing time to manual processes — Navari Systems ICP",
+  "person_titles": [
+    "Founder",
+    "Co-Founder",
+    "CEO",
+    "Owner",
+    "Managing Director",
+    "Operations Director",
+    "COO",
+    "Head of Operations"
+  ],
+  "person_seniorities": ["owner", "founder", "c_suite", "vp", "director"],
+  "organization_industries": [
+    "professional services",
+    "real estate",
+    "financial services",
+    "law practice",
+    "marketing & advertising",
+    "e-learning",
+    "retail"
+  ],
+  "organization_num_employees_ranges": ["11,20", "21,50", "51,100", "101,200"],
+  "person_locations": ["United States", "United Kingdom", "Canada", "Australia"],
+  "keywords": ["workflow automation", "operations", "manual processes"],
+  "per_page": 25,
+  "max_pages": 2
+}

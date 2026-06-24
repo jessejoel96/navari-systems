@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "lead:fetch": "npm run fetch --prefix tools/lead-gen",
+    "lead:fetch:dry": "npm run fetch:dry --prefix tools/lead-gen",
+    "lead:outreach": "npm run outreach --prefix tools/lead-gen",
+    "lead:outreach:dry": "npm run outreach:dry --prefix tools/lead-gen",
+    "lead:deliver": "npm run deliver --prefix tools/lead-gen",
+    "lead:export": "npm run export --prefix tools/lead-gen"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
