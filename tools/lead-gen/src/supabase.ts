@@ -1,6 +1,35 @@
 import { createClient } from "@supabase/supabase-js";
 import { requireEnv } from "./env.js";
+import {
+  completeLocalFetchRun,
+  createLocalFetchRun,
+  getLocalPipelineStats,
+  getLocalProspectsForOutreach,
+  isSchemaMissingError,
+  queueLocalOutreachMessage,
+  saveLocalProspects,
+} from "./local-store.js";
 import type { FetchRunSummary, IcpConfig, Prospect } from "./types.js";
+
+let outboundSchemaUnavailable = false;
+
+function errorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  if (error && typeof error === "object" && "message" in error) {
+    return String((error as { message: unknown }).message);
+  }
+  return String(error);
+}
+
+function useLocalStore(error: unknown): boolean {
+  if (outboundSchemaUnavailable) return true;
+  if (isSchemaMissingError(errorMessage(error))) {
+    outboundSchemaUnavailable = true;
+    console.warn("Supabase outbound tables unavailable — using local .cache store.");
+    return true;
+  }
+  return false;
+}
 
 export function createLeadClient() {
   const url =
@@ -14,6 +43,8 @@ export function createLeadClient() {
 }
 
 export async function createFetchRun(icp: IcpConfig) {
+  if (outboundSchemaUnavailable) return createLocalFetchRun(icp.name);
+
   const supabase = createLeadClient();
   const { data, error } = await supabase
     .from("lead_fetch_runs")
@@ -25,11 +56,19 @@ export async function createFetchRun(icp: IcpConfig) {
     .select("id")
     .single();
 
-  if (error) throw new Error(`Failed to create fetch run: ${error.message}`);
+  if (error) {
+    if (useLocalStore(error)) return createLocalFetchRun(icp.name);
+    throw new Error(`Failed to create fetch run: ${error.message}`);
+  }
   return data.id as string;
 }
 
 export async function completeFetchRun(runId: string, summary: FetchRunSummary, status: "completed" | "failed") {
+  if (outboundSchemaUnavailable) {
+    completeLocalFetchRun(runId, summary, status);
+    return;
+  }
+
   const supabase = createLeadClient();
   const { error } = await supabase
     .from("lead_fetch_runs")
@@ -40,11 +79,18 @@ export async function completeFetchRun(runId: string, summary: FetchRunSummary, 
     })
     .eq("id", runId);
 
-  if (error) throw new Error(`Failed to update fetch run: ${error.message}`);
+  if (error) {
+    if (useLocalStore(error)) {
+      completeLocalFetchRun(runId, summary, status);
+      return;
+    }
+    throw new Error(`Failed to update fetch run: ${error.message}`);
+  }
 }
 
 export async function saveProspects(runId: string, prospects: Prospect[]) {
   if (prospects.length === 0) return 0;
+  if (outboundSchemaUnavailable) return saveLocalProspects(runId, prospects);
 
   const supabase = createLeadClient();
   const rows = prospects.map((p) => ({
@@ -81,13 +127,17 @@ export async function saveProspects(runId: string, prospects: Prospect[]) {
       onConflict: "email",
       ignoreDuplicates: false,
     });
-    if (error) throw new Error(`Failed to save prospects: ${error.message}`);
+    if (error) {
+      if (useLocalStore(error)) return saveLocalProspects(runId, prospects);
+      throw new Error(`Failed to save prospects: ${error.message}`);
+    }
     saved += withEmail.length;
   }
 
   if (withoutEmail.length > 0) {
     const { error } = await supabase.from("outbound_prospects").insert(withoutEmail);
     if (error && !error.message.includes("duplicate")) {
+      if (useLocalStore(error)) return saveLocalProspects(runId, prospects);
       throw new Error(`Failed to save prospects without email: ${error.message}`);
     }
     if (!error) saved += withoutEmail.length;
@@ -168,6 +218,8 @@ export async function exportRunToCsv(runId: string): Promise<string> {
 }
 
 export async function getProspectsForOutreach(tier: "hot" | "warm", limit: number) {
+  if (outboundSchemaUnavailable) return getLocalProspectsForOutreach(tier, limit);
+
   const supabase = createLeadClient();
   const { data, error } = await supabase
     .from("outbound_prospects")
@@ -178,7 +230,10 @@ export async function getProspectsForOutreach(tier: "hot" | "warm", limit: numbe
     .order("icp_score", { ascending: false })
     .limit(limit);
 
-  if (error) throw new Error(`Failed to list outreach prospects: ${error.message}`);
+  if (error) {
+    if (useLocalStore(error)) return getLocalProspectsForOutreach(tier, limit);
+    throw new Error(`Failed to list outreach prospects: ${error.message}`);
+  }
   return data ?? [];
 }
 
@@ -190,6 +245,11 @@ export async function queueOutreachMessage(input: {
   body: string;
   status: string;
 }) {
+  if (outboundSchemaUnavailable) {
+    queueLocalOutreachMessage(input);
+    return;
+  }
+
   const supabase = createLeadClient();
   const { error } = await supabase.from("outreach_messages").insert({
     prospect_id: input.prospect_id,
@@ -200,7 +260,13 @@ export async function queueOutreachMessage(input: {
     status: input.status,
     sent_at: input.status === "sent" ? new Date().toISOString() : null,
   });
-  if (error) throw new Error(`Failed to queue message: ${error.message}`);
+  if (error) {
+    if (useLocalStore(error)) {
+      queueLocalOutreachMessage(input);
+      return;
+    }
+    throw new Error(`Failed to queue message: ${error.message}`);
+  }
 }
 
 export async function markOutreachSent(prospectId: string, step: number) {
@@ -234,6 +300,8 @@ function hasObservation(raw: unknown): boolean {
 }
 
 export async function getOutboundPipelineStats(): Promise<PipelineStats> {
+  if (outboundSchemaUnavailable) return getLocalPipelineStats();
+
   const supabase = createLeadClient();
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
@@ -286,7 +354,10 @@ export async function getOutboundPipelineStats(): Promise<PipelineStats> {
     .in("outreach_status", ["pending", "in_sequence"])
     .limit(300);
 
-  if (error) throw new Error(`Failed to load hot prospects: ${error.message}`);
+  if (error) {
+    if (useLocalStore(error)) return getLocalPipelineStats();
+    throw new Error(`Failed to load hot prospects: ${error.message}`);
+  }
 
   const rows = hotWithEmail ?? [];
   const missingObservationHot = rows.filter((r) => !hasObservation(r.raw)).length;
@@ -317,4 +388,37 @@ export async function listRecentHotProspects(limit = 20) {
 
   if (error) throw new Error(`Failed to list recent hot prospects: ${error.message}`);
   return data ?? [];
+}
+
+export async function updateProspectObservation(
+  id: string,
+  observation: string,
+  observationSource: string,
+  persona?: string,
+) {
+  const supabase = createLeadClient();
+  const { data: row, error: fetchError } = await supabase
+    .from("outbound_prospects")
+    .select("raw, icp_score, icp_tier")
+    .eq("id", id)
+    .single();
+
+  if (fetchError) throw new Error(`Prospect not found: ${fetchError.message}`);
+
+  const raw = { ...((row.raw as Record<string, unknown> | null) ?? {}), observation, observation_source: observationSource };
+  if (persona) raw.persona = persona;
+
+  let icpScore = (row.icp_score as number) ?? 0;
+  let icpTier = (row.icp_tier as string) ?? "cold";
+  if (observation.trim().length > 20 && icpScore >= 53) {
+    icpScore = Math.min(100, icpScore + 12);
+    icpTier = "hot";
+  }
+
+  const { error } = await supabase
+    .from("outbound_prospects")
+    .update({ raw, icp_score: icpScore, icp_tier: icpTier, updated_at: new Date().toISOString() })
+    .eq("id", id);
+
+  if (error) throw new Error(`Failed to update observation: ${error.message}`);
 }

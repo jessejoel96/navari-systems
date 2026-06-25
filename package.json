@@ -14,7 +14,10 @@
     "lead:status": "npm run status --prefix tools/lead-gen",
     "lead:daily": "npm run daily --prefix tools/lead-gen",
     "lead:deliver": "npm run deliver --prefix tools/lead-gen",
-    "lead:export": "npm run export --prefix tools/lead-gen"
+    "lead:export": "npm run export --prefix tools/lead-gen",
+    "lead:setup-db": "npm run setup-db --prefix tools/lead-gen",
+    "lead:apply-research": "npm run apply-research --prefix tools/lead-gen",
+    "lead:sync-cache": "npm run sync-cache --prefix tools/lead-gen"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",

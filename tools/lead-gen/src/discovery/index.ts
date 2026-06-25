@@ -95,7 +95,12 @@ export async function discoverProspects(icp: IcpConfig, options: { dryRun?: bool
     }
 
     if (hasApolloKey()) {
-      batches.push(...(await discoverApolloProspects(icp)));
+      try {
+        batches.push(...(await discoverApolloProspects(icp)));
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        console.warn(`Apollo discovery skipped: ${message.slice(0, 200)}`);
+      }
     }
 
     if (batches.length === 0) {
