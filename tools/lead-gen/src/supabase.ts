@@ -13,10 +13,17 @@ import type { FetchRunSummary, IcpConfig, Prospect } from "./types.js";
 
 let outboundSchemaUnavailable = false;
 
+function errorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  if (error && typeof error === "object" && "message" in error) {
+    return String((error as { message: unknown }).message);
+  }
+  return String(error);
+}
+
 function useLocalStore(error: unknown): boolean {
   if (outboundSchemaUnavailable) return true;
-  const message = error instanceof Error ? error.message : String(error);
-  if (isSchemaMissingError(message)) {
+  if (isSchemaMissingError(errorMessage(error))) {
     outboundSchemaUnavailable = true;
     console.warn("Supabase outbound tables unavailable — using local .cache store.");
     return true;
