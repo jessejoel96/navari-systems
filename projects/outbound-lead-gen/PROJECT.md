@@ -3,7 +3,9 @@
 **Owner:** Navari Systems  
 **Site:** [navari.systems](https://navari.systems)  
 **Status:** Active — MVP pipeline built, enrichment substitutes in progress  
-**Goal:** Find B2B leads and execute personalized outreach at scale with AI and automation — **without Apollo, Clearbit, or Proxycurl**
+**Goal:** Find B2B leads and execute **Layer One observation-based outreach** at scale — not generic cold pitching.
+
+**Method docs:** [OUTREACH-METHOD.md](./OUTREACH-METHOD.md) · [BUYER-PERSONAS.md](./BUYER-PERSONAS.md)
 
 ---
 
@@ -13,12 +15,12 @@ Apollo-like outcomes from an owned stack:
 
 | Capability | Approach |
 |------------|----------|
-| Find prospects | Web + neural search (Brave, Exa, Tavily) |
-| Enrich contacts | Hunter.io email waterfall |
+| Find prospects | Exa + Brave + Apollo hybrid search |
+| Enrich contacts | Apollo (free: search only + credit-capped enrich) → Renidly → Hunter → Snov |
 | Company intel | Firecrawl + Exa Content + Tavily signals |
 | Score fit | ICP rubric + buying signals (planned) |
-| Personalize | OpenAI per-prospect copy |
-| Send sequences | Resend 3-touch automation |
+| Personalize | OpenAI — observation → bridge → offer structure |
+| Send sequences | Resend 3-touch (Layer One method) |
 | Store & deliver | Supabase + CSV export |
 
 **Implementation:** `tools/lead-gen/`  
@@ -38,10 +40,9 @@ Apollo-like outcomes from an owned stack:
                                    │
 ┌──────────────────────────────────▼───────────────────────────────────────┐
 │ DISCOVER          ENRICH           SCORE           OUTREACH               │
-│ Brave Search  →   Hunter find  →   ICP rubric  →   OpenAI personalize  │
-│ Exa people/co     Hunter verify     hot/warm/cold    Resend send         │
-│ Tavily signals    Firecrawl team*   signals*         3-touch sequence   │
-│ Exa Content*      Snov (optional)*                                        │
+│ Exa people/co  →  Renidly     →   ICP rubric  →   OpenAI personalize  │
+│ Brave Search      Hunter find       hot/warm/cold    Resend send         │
+│ Tavily signals*   Snov fallback*                      3-touch sequence   │
 └──────────────────────────────────┬───────────────────────────────────────┘
                                    │
                           ┌────────▼────────┐
@@ -71,9 +72,14 @@ Define who Navari sells to. Default config: `tools/lead-gen/icp.navari.json`.
 | Industries | Professional services, real estate, law, financial, marketing, e-learning |
 | Company size | 11–200 employees |
 | Geos | US, UK, Canada, Australia |
-| Discovery | `discovery_provider: "web"` (no Apollo) |
+| Discovery | `discovery_provider: "hybrid"` (Exa + Brave + Apollo when keyed) |
+| Apollo | `apollo_plan: "free"`, `apollo_enrich_limit: 10` |
 
 Custom campaigns: copy to `icp.<campaign>.json` and pass `--icp`.
+
+Discovery modes: `exa`, `web`, `hybrid` (all keyed sources, deduped), `apollo` (Apollo search only).
+
+**Apollo free plan:** People API Search (`mixed_people/api_search`) costs **0 credits**. Enrichment (`people/bulk_match`) costs **1 credit/contact** — on free plan only prospects with `has_email: true` are enriched, capped by `apollo_enrich_limit` (default 10/run, ~50 credits/month total).
 
 ### Phase 2 — Discover
 
@@ -83,6 +89,7 @@ Build prospect list from open sources.
 |--------|------|----------------|
 | **Brave Search API** | Keyword + LinkedIn URL discovery | API key |
 | **Exa Search** | Semantic people + company search | Free tier (20k req/mo) |
+| **Apollo.io** | Filtered people search + selective enrich | Free: search free, ~50 enrich credits/mo |
 | **Tavily MCP** | News, hiring, funding signals | Installed |
 | **Firecrawl MCP** | Team/about page parsing | In mcp-configs |
 
@@ -93,8 +100,7 @@ Build prospect list from open sources.
 Email waterfall (no invented addresses):
 
 ```
-Hunter name + domain → Hunter domain roster → Hunter verify
-(Optional: Snov.io as second source)
+Apollo enrich (free: has_email only, credit-capped) → Renidly → Hunter → Snov → Hunter verify
 ```
 
 ### Phase 4 — Score
@@ -189,9 +195,13 @@ Add to repo root `.env.local`:
 # Discovery
 BRAVE_API_KEY=
 EXA_API_KEY=
+APOLLO_API_KEY=
 
 # Enrichment
+RENIDLY_API_KEY=
 HUNTER_API_KEY=
+SNOV_CLIENT_ID=
+SNOV_CLIENT_SECRET=
 
 # Personalization + send
 OPENAI_API_KEY=

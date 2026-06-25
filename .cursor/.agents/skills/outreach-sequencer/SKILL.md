@@ -1,28 +1,46 @@
 ---
 name: outreach-sequencer
-description: Design and run multi-touch outbound email sequences with AI personalization for Navari Systems. Use when executing cold outreach, follow-ups, or scaling personalized email after lead discovery.
+description: Layer One observation-based multi-touch outbound for Navari. Opening → Bridge → Offer. Use for cold email sequences after lead discovery and 15-min research.
 ---
 
 # Outreach Sequencer
 
-Personalized outbound at scale — without Apollo. Works on prospects from `lead-intelligence` / `tools/lead-gen`.
+**Method:** `projects/outbound-lead-gen/OUTREACH-METHOD.md`  
+**Personas:** `projects/outbound-lead-gen/BUYER-PERSONAS.md`
 
-## Sequence structure
+Observation-based outbound — never generic cold pitch.
 
-Default: `tools/lead-gen/sequences/navari-intro-3.json`
+## Sequence
 
-| Step | Day | Purpose |
-|------|-----|---------|
-| 1 | 0 | Problem + Navari offer |
-| 2 | 3 | Follow-up with value |
-| 3 | 5 | Final bump |
+`tools/lead-gen/sequences/navari-intro-3.json`
 
-## Personalization inputs
+| Step | Day | Purpose | Structure |
+|------|-----|---------|-----------|
+| 1 | 0 | First contact | Observation → Bridge → Offer |
+| 2 | 3 | Value follow-up | Proof point, no hard pitch |
+| 3 | 5 | Final bump | Restate offer to send findings |
 
-Per prospect, the writer uses:
+## Touch 1 template
+
+```
+[Opening — specific observation about their visible situation]
+
+[Bridge — what this costs them]
+
+[Offer — low-friction CTA]
+I mapped out three specific changes that would shift this within 60 days.
+Would it be useful if I sent you what I found?
+
+— Jesse, Navari Systems
+AI Automation Specialist
+```
+
+## Personalization inputs (required for touch 1)
+
+- `observation` — from 15-min research (**mandatory**)
+- `observation_source` — website, jobs page, etc.
+- `persona` — from BUYER-PERSONAS
 - `full_name`, `title`, `company_name`, `company_industry`
-- Navari positioning from `src/lib/constants.ts` and `src/lib/workflows.ts`
-- `brand-voice` profile when available
 
 ## Commands
 
@@ -34,24 +52,27 @@ npm run lead:outreach -- --sequence navari-intro-3 --tier warm
 
 ## Copy rules
 
-1. Under 120 words (step 1), under 90 (follow-ups)
-2. One specific pain — manual ops, slow lead response, scattered tools
-3. One CTA — reply or navari.systems
-4. No "I hope this finds you well", no hype
-5. Sign as Jesse, Navari Systems
+1. Touch 1 ≤120 words; follow-ups ≤90
+2. **No compliment-only openers** — observation must be specific
+3. **No "hire me" on touch 1** — offer to send findings
+4. One CTA per email
+5. Sign: Jesse, Navari Systems (AI Automation Specialist in signature)
+6. Banned: "I hope this finds you well", "I wanted to reach out", hype
+
+## Job-board trigger (alternate touch 1)
+
+When `buying_signal` = hiring for manual role:
+
+> I noticed [Company] is hiring for [role] to manage [task]. I build automation systems that handle this without the ongoing headcount cost — most clients see payback in 6–8 weeks versus a salaried hire. Worth a 20-minute look?
 
 ## Agent handoff
 
-- `outreach-writer` drafts and reviews copy
-- `lead-delivery` confirms tier + email status before send
-- `lead-crew` approves batch before `npm run lead:outreach`
-
-## Logging
-
-Sent messages stored in Supabase `outreach_messages`. Prospect `outreach_step` tracks sequence progress.
+- `prospect-researcher` → documents observation
+- `outreach-writer` → drafts + dry-run
+- `lead-crew` → blocks if >20% missing observations
+- `lead-delivery` → CSV + Supabase log
 
 ## After send
 
-- Hot replies → manual follow-up or Calendly
+- Reply → manual follow-up / Calendly
 - No reply after step 3 → mark cold, pause sequence
-- Sync contacts to Resend segment via `src/lib/resend/contacts.ts`

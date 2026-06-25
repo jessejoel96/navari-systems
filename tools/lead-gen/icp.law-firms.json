@@ -1,0 +1,23 @@
+{
+  "name": "law-firms-stretched-partner",
+  "description": "Persona 1 — The Stretched Partner. Solo to 5-partner law firms, UK/US/CA/AU.",
+  "discovery_provider": "hybrid",
+  "apollo_plan": "free",
+  "apollo_enrich_limit": 10,
+  "persona": "The Stretched Partner",
+  "person_titles": [
+    "Managing Partner",
+    "Founder",
+    "Senior Partner",
+    "Practice Owner",
+    "Partner"
+  ],
+  "person_seniorities": ["owner", "founder", "partner"],
+  "organization_industries": ["law practice", "legal services"],
+  "organization_num_employees_ranges": ["11,20", "21,50", "51,100"],
+  "person_locations": ["United Kingdom", "United States", "Canada", "Australia"],
+  "keywords": ["law firm intake", "client onboarding", "engagement letter", "legal CRM"],
+  "observation_focus": "Non-billable intake, manual engagement letters, info@ routing, no visible CRM handoff",
+  "per_page": 25,
+  "max_pages": 2
+}

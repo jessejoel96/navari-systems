@@ -1,18 +1,15 @@
 import { optionalEnv, requireEnv } from "../env.js";
+import type { DiscoveryResult } from "./parse.js";
 
 const BRAVE_BASE = "https://api.search.brave.com/res/v1/web/search";
 
-export type BraveResult = {
-  title: string;
-  url: string;
-  description: string;
-};
+export type BraveResult = DiscoveryResult;
 
 export function hasBraveKey(): boolean {
   return Boolean(optionalEnv("BRAVE_API_KEY"));
 }
 
-export async function braveSearch(query: string, count = 20): Promise<BraveResult[]> {
+export async function braveSearch(query: string, count = 20): Promise<DiscoveryResult[]> {
   const key = requireEnv("BRAVE_API_KEY");
   const params = new URLSearchParams({ q: query, count: String(count) });
 

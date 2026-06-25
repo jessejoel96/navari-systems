@@ -41,6 +41,10 @@ export function scoreProspect(prospect: Prospect, icp: IcpConfig): Prospect {
   if (prospect.email_status === "verified" || prospect.email_status === "valid") score += 10;
   if (prospect.linkedin_url) score += 5;
 
+  const observation =
+    prospect.observation ?? (typeof prospect.raw?.observation === "string" ? prospect.raw.observation : undefined);
+  if (observation && observation.length > 20) score += 12;
+
   const employees = Number(prospect.company_size ?? 0);
   if (employees >= 11 && employees <= 200) score += 8;
 

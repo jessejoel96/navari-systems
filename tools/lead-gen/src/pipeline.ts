@@ -3,7 +3,12 @@ import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { discoverProspects } from "./discovery/index.js";
 import { enrichProspect } from "./enrichment.js";
-import { hasApolloKey, mapApolloPerson, searchPeople } from "./apollo.js";
+import {
+  discoverApolloProspects,
+  enrichApolloProspects,
+  getApolloEnrichCreditsUsed,
+  hasApolloKey,
+} from "./apollo.js";
 import { scoreProspect } from "./score.js";
 import {
   completeFetchRun,
@@ -28,16 +33,22 @@ async function discover(icp: IcpConfig): Promise<Prospect[]> {
     if (!hasApolloKey()) {
       throw new Error("APOLLO_API_KEY required when discovery_provider is apollo");
     }
-    const people = await searchPeople(icp);
-    return people.map((p) => mapApolloPerson(p));
+    return discoverApolloProspects(icp);
   }
   return discoverProspects(icp);
 }
 
 export async function runFetch(icp: IcpConfig, options: { dryRun?: boolean } = {}) {
-  const provider = icp.discovery_provider ?? "web";
+  const provider = icp.discovery_provider ?? "hybrid";
   const runId = options.dryRun ? `dry-${Date.now()}` : await createFetchRun(icp);
-  const discovered = await discover(icp);
+  let discovered = await discover(icp);
+
+  if (!options.dryRun && hasApolloKey() && icp.apollo_enrich_limit > 0) {
+    const hasApolloProspects = discovered.some((p) => p.apollo_id || p.source.startsWith("apollo"));
+    if (hasApolloProspects) {
+      discovered = await enrichApolloProspects(discovered, icp);
+    }
+  }
 
   const enriched: Prospect[] = [];
   for (const prospect of discovered) {
@@ -59,6 +70,7 @@ export async function runFetch(icp: IcpConfig, options: { dryRun?: boolean } = {
     hot: enriched.filter((p) => p.icp_tier === "hot").length,
     warm: enriched.filter((p) => p.icp_tier === "warm").length,
     cold: enriched.filter((p) => p.icp_tier === "cold").length,
+    apollo_credits_used: getApolloEnrichCreditsUsed(),
   };
 
   if (!options.dryRun) {

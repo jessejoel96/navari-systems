@@ -1,106 +1,98 @@
 ---
 name: lead-intelligence
-description: Define ICP, discover B2B prospects via web research, enrich contacts, score fit, and deliver qualified leads with AI outreach for Navari Systems. No Apollo required. Use for outbound targeting, prospect lists, and automated personalized email.
+description: Layer One observation-based outbound for Navari — ICP personas, hybrid discovery, enrichment, observation scoring, AI outreach. Use for B2B prospect lists and personalized cold email.
 ---
 
 # Lead Intelligence
 
-Apollo-like outbound for Navari Systems — **without a proprietary B2B database**. Discover via web search, enrich via Hunter, personalize via OpenAI, send via Resend.
+Observation-based outbound for Navari Systems. **Not generic cold pitch** — specific observation → cost bridge → low-friction offer.
+
+**Canonical docs:**
+- `projects/outbound-lead-gen/OUTREACH-METHOD.md`
+- `projects/outbound-lead-gen/BUYER-PERSONAS.md`
 
 ## Architecture
 
 ```
-ICP → Web discovery (Brave) → Email enrichment (Hunter) → ICP score
-    → Supabase → AI personalization (OpenAI) → Outreach sequence (Resend)
+ICP + persona → Hybrid discovery → 15-min observation research → Enrichment waterfall
+    → ICP score (+observation bonus) → Supabase → AI personalization → Resend sequence
 ```
 
-Agents orchestrate; `tools/lead-gen` CLI runs the automated pipeline.
+## Layer One message structure
+
+| Part | Content |
+|------|---------|
+| Opening | Specific observation (not compliment) |
+| Bridge | What it costs them |
+| Offer | Send findings — not "hire me" on touch 1 |
 
 ## When to Activate
 
-- building outbound prospect lists
-- refining ICP for a vertical campaign
-- running personalized cold email at scale
-- connecting inbound audit leads to nurture sequences
+- building persona-targeted prospect lists
+- vertical campaigns (law, mortgage, estate agency)
+- observation-based cold email at scale
+- job-board trigger outreach (data entry / bookkeeper hires)
 
-## Navari ICP (default)
+## Navari ICP
 
-`tools/lead-gen/icp.navari.json` — founders and ops leaders at 11–200 employee SMBs in professional services, real estate, law, financial services, marketing, e-learning.
+| File | Use |
+|------|-----|
+| `tools/lead-gen/icp.navari.json` | Default multi-persona |
+| `tools/lead-gen/icp.law-firms.json` | Persona 1 — Stretched Partner |
+| `tools/lead-gen/icp.mortgage-brokers.json` | Persona 2 — Volume Broker |
+| `tools/lead-gen/icp.estate-agents.json` | Persona 3 — Agency Director |
 
-## Discovery (no Apollo)
+Pass `--icp path/to/icp.json` to fetch commands.
 
-**Provider:** `discovery_provider: "web"` (default)
+## Discovery (hybrid)
 
-1. Build search queries from ICP (titles + industries + geos)
-2. **Brave Search API** — LinkedIn profiles, company sites, team pages
-3. Parse results into prospects (name, title, company, domain, LinkedIn)
-4. **Hunter** — email finder + domain search + verification
-
-**Agent-assisted discovery** (Cursor MCP):
-- `brave-search` — deeper company research, buying signals
-- `deep-research` / `market-research` — vertical intel before ICP lock
-- `exa-search` — neural company search (if Exa MCP active)
-
-Optional: set `discovery_provider: "apollo"` in ICP JSON only if you have `APOLLO_API_KEY`.
-
-## Enrichment waterfall
-
-```
-Hunter name+domain → Hunter domain search (match title) → Hunter verify
-```
-
-Never invent emails. Mark status: verified, valid, likely, guessed, invalid.
+Exa + Brave + Apollo (search free) → dedupe → enrich waterfall:
+Apollo (capped) → Renidly → Hunter → Snov → verify
 
 ## Scoring
 
-| Tier | Score | Criteria |
-|------|-------|----------|
-| hot | ≥75 | Decision-maker title + email + ICP industry |
-| warm | ≥55 | Good title or company fit |
-| cold | <55 | Weak fit or missing data |
+| Tier | Criteria |
+|------|----------|
+| hot | ≥75 — decision-maker + email + industry + **observation documented** |
+| warm | ≥55 — good fit, observation pending |
+| cold | <55 or no email |
 
-## Outreach automation
+**+12 score** when `observation` field present (>20 chars).
+
+## Outreach
 
 ```bash
-npm run lead:fetch          # discover + enrich + save
-npm run lead:outreach:dry   # preview AI emails
-npm run lead:outreach       # send step 1 to hot leads via Resend
+npm run lead:fetch:dry
+npm run lead:fetch
+npm run lead:outreach:dry   # verify observation quality
+npm run lead:outreach       # user approval required
 ```
 
-Sequence: `tools/lead-gen/sequences/navari-intro-3.json` (3-touch)
+Sequence: `sequences/navari-intro-3.json` — observation + bridge + offer
 
-Personalization uses `OPENAI_API_KEY` + Navari positioning. Falls back to templates if unset.
+Personalization: `personalize.ts` uses observation when set; flags `[NEEDS RESEARCH]` otherwise.
 
 ## Agent network
 
 | Agent | Role |
 |-------|------|
-| `lead-crew` | Orchestrator |
-| `prospect-researcher` | Web + Brave discovery |
-| `lead-enricher` | Hunter email waterfall |
-| `outreach-writer` | AI copy + sequence |
-| `lead-delivery` | CSV export, Resend sync |
+| `lead-crew` | Orchestrator — blocks send without observations |
+| `prospect-researcher` | Discovery + 15-min observation research |
+| `lead-enricher` | Email waterfall, preserve observation fields |
+| `outreach-writer` | Layer One copy |
+| `lead-delivery` | CSV with observation columns |
 
 Invoke via `/lead-gen`.
 
 ## Required keys (.env.local)
 
-| Key | Purpose |
-|-----|---------|
-| `BRAVE_API_KEY` | Web prospect discovery |
-| `HUNTER_API_KEY` | Email find + verify |
-| `OPENAI_API_KEY` | Personalized outreach |
-| `RESEND_API_KEY` | Send sequences |
-| Supabase keys | Store prospects + message log |
+`EXA_API_KEY`, `BRAVE_API_KEY`, `HUNTER_API_KEY`, `OPENAI_API_KEY`, `RESEND_API_KEY`, Supabase keys. Optional: `APOLLO_API_KEY`, `RENIDLY_API_KEY`, Snov.
 
 ## Compliance
 
-- CAN-SPAM: include unsubscribe path via Resend
-- GDPR: business emails only, legitimate interest
-- LinkedIn: manual connection requests; no scraping automation without user approval
+CAN-SPAM via Resend unsubscribe · GDPR business email · No LinkedIn scrape automation without approval
 
 ## Related
 
-- `outreach-sequencer` — sequence design and copy rules
-- `brand-voice` — tone lock across campaigns
-- `marketing-agent` — campaign angles before outreach
+- `outreach-sequencer` — sequence + copy rules
+- `brand-voice` — tone lock

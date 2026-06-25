@@ -139,6 +139,9 @@ export async function exportRunToCsv(runId: string): Promise<string> {
     "company_name",
     "company_domain",
     "linkedin_url",
+    "persona",
+    "observation",
+    "observation_source",
     "icp_score",
     "icp_tier",
     "location",
@@ -146,10 +149,15 @@ export async function exportRunToCsv(runId: string): Promise<string> {
 
   const lines = [headers.join(",")];
   for (const row of data ?? []) {
+    const r = row as Record<string, unknown>;
+    const raw = (r.raw as Record<string, unknown> | undefined) ?? {};
     lines.push(
       headers
         .map((h) => {
-          const value = String((row as Record<string, unknown>)[h] ?? "");
+          let value = String(r[h] ?? "");
+          if (!value && (h === "persona" || h === "observation" || h === "observation_source")) {
+            value = String(raw[h] ?? "");
+          }
           return value.includes(",") ? `"${value.replace(/"/g, '""')}"` : value;
         })
         .join(","),

@@ -1,5 +1,10 @@
-import type { BraveResult } from "./brave.js";
 import type { Prospect } from "../types.js";
+
+export type DiscoveryResult = {
+  title: string;
+  url: string;
+  description: string;
+};
 
 const LINKEDIN_RE = /linkedin\.com\/in\/([a-zA-Z0-9_-]+)/i;
 const DOMAIN_RE = /(?:https?:\/\/)?(?:www\.)?([a-z0-9][-a-z0-9]*\.[a-z]{2,})/i;
@@ -29,7 +34,7 @@ function extractDomain(url: string): string | undefined {
   }
 }
 
-function parseLinkedInProspect(result: BraveResult): Prospect | null {
+function parseLinkedInProspect(result: DiscoveryResult): Prospect | null {
   const match = result.url.match(LINKEDIN_RE);
   if (!match) return null;
 
@@ -51,11 +56,13 @@ function parseLinkedInProspect(result: BraveResult): Prospect | null {
     company_name: companyPart,
     linkedin_url: result.url.split("?")[0],
     source: "web-linkedin",
+    icp_score: 0,
+    icp_tier: "cold" as const,
     raw: { search_result: result },
   };
 }
 
-function parseCompanyProspect(result: BraveResult): Prospect | null {
+function parseCompanyProspect(result: DiscoveryResult): Prospect | null {
   const domain = extractDomain(result.url);
   if (!domain) return null;
 
@@ -65,11 +72,13 @@ function parseCompanyProspect(result: BraveResult): Prospect | null {
     company_name,
     company_domain: domain,
     source: "web-company",
+    icp_score: 0,
+    icp_tier: "cold" as const,
     raw: { search_result: result },
   };
 }
 
-export function parseSearchResults(results: BraveResult[]): Prospect[] {
+export function parseSearchResults(results: DiscoveryResult[]): Prospect[] {
   const seen = new Set<string>();
   const prospects: Prospect[] = [];
 

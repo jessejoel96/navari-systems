@@ -7,7 +7,40 @@ export type PersonalizedEmail = {
   hook: string;
 };
 
-const NAVARI_CONTEXT = `Navari Systems maps a business's three costliest manual processes and automates them at a fixed price and timeline. Target buyers: founders and ops leaders at SMBs (11–200 employees) losing time to manual workflows. Site: navari.systems`;
+const OUTREACH_METHOD = `Layer One observation-based outreach (NOT generic cold pitch):
+1. Opening — one specific observation proving you studied their business (not a compliment)
+2. Bridge — what that costs them (lost leads, billable hours, delayed cash, competitor advantage)
+3. Offer — low-friction next step: offer to send mapped findings, never "hire me" on touch 1
+Example CTA: "I mapped out three specific changes that would shift this within 60 days. Would it be useful if I sent you what I found?"
+Sign-off: Jesse, Navari Systems | Title: AI Automation Specialist (not Founder in cold email)`;
+
+const NAVARI_CONTEXT = `Navari Systems identifies the three processes costing an SMB the most time and money, then builds AI automation to eliminate them. Most clients recover 15–20 hours/week within 60 days. Entry: Navari Audit $497. Site: navari.systems`;
+
+function prospectField(prospect: Prospect, key: "observation" | "persona" | "observation_source"): string | undefined {
+  const top = prospect[key];
+  if (top) return top;
+  const raw = prospect.raw?.[key];
+  return typeof raw === "string" ? raw : undefined;
+}
+
+function industryObservationFallback(prospect: Prospect): string | undefined {
+  const industry = (prospect.company_industry ?? "").toLowerCase();
+  const company = prospect.company_name ?? "your firm";
+
+  if (industry.includes("law")) {
+    return `I noticed ${company}'s intake still routes through a generic contact path with no visible automated handoff between enquiry and case setup.`;
+  }
+  if (industry.includes("real estate") || industry.includes("property")) {
+    return `I noticed listing status on ${company}'s site doesn't appear to stay in sync with portal feeds — several properties look stale compared to major portals.`;
+  }
+  if (industry.includes("financial") || industry.includes("mortgage")) {
+    return `I noticed ${company}'s lead capture still ends at "we'll call you back" with no visible instant follow-up or document collection path.`;
+  }
+  if (industry.includes("account") || industry.includes("bookkeep")) {
+    return `I noticed client onboarding at ${company} still looks like email-and-attachment chase rather than a single tracked portal.`;
+  }
+  return undefined;
+}
 
 export function hasOpenAiKey(): boolean {
   return Boolean(optionalEnv("OPENAI_API_KEY"));
@@ -23,7 +56,22 @@ export async function personalizeEmail(
   }
 
   const key = requireEnv("OPENAI_API_KEY");
+  const observation = prospectField(prospect, "observation") ?? (step === 1 ? industryObservationFallback(prospect) : undefined);
+  const persona = prospectField(prospect, "persona");
+  const observationNote = observation
+    ? `Documented observation (MUST use in touch 1 opening): ${observation}`
+    : "WARNING: No observation documented — infer from industry only if unavoidable; prefer [NEEDS RESEARCH] in hook field.";
+
+  const stepRules =
+    step === 1
+      ? `Touch 1 structure: Observation opening → Bridge (cost) → Offer (send findings, not hire me). Under 120 words.`
+      : step === 2
+        ? `Touch 2: Reference original observation or add one proof point. Still no hard pitch. Under 90 words.`
+        : `Touch 3: Final bump — restate offer to send the three-process map. Graceful close. Under 90 words.`;
+
   const prompt = `Write cold email step ${step} for sequence "${sequenceName}".
+
+${OUTREACH_METHOD}
 
 ${NAVARI_CONTEXT}
 
@@ -32,13 +80,13 @@ Prospect:
 - Title: ${prospect.title ?? "leader"}
 - Company: ${prospect.company_name ?? "their company"}
 - Industry: ${prospect.company_industry ?? "professional services"}
+- Persona: ${persona ?? "SMB ops leader"}
+- ${observationNote}
 
-Rules:
-- Under 120 words for step 1, under 90 for follow-ups
-- One specific pain (manual ops, slow lead response, scattered tools)
-- One clear CTA (reply or book at navari.systems)
-- No hype, no "I hope this finds you well"
-- Return JSON only: {"subject":"...","body":"...","hook":"one-line opener"}`;
+${stepRules}
+
+Banned: "I hope this finds you well", "I wanted to reach out", compliments without substance, "hire me" on step 1.
+Return JSON only: {"subject":"...","body":"...","hook":"one-line observation opener"}`;
 
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
@@ -49,7 +97,11 @@ Rules:
     body: JSON.stringify({
       model: process.env.OPENAI_MODEL ?? "gpt-4o-mini",
       messages: [
-        { role: "system", content: "You write concise B2B cold email for Navari Systems. Output valid JSON only." },
+        {
+          role: "system",
+          content:
+            "You write observation-based B2B cold email for Navari Systems. Never generic pitch. Output valid JSON only.",
+        },
         { role: "user", content: prompt },
       ],
       temperature: 0.7,
@@ -77,31 +129,58 @@ Rules:
 function fallbackEmail(prospect: Prospect, step: number): PersonalizedEmail {
   const name = prospect.first_name ?? prospect.full_name?.split(" ")[0] ?? "there";
   const company = prospect.company_name ?? "your team";
+  const observation =
+    prospectField(prospect, "observation") ?? industryObservationFallback(prospect);
 
   if (step === 1) {
+    const opening = observation
+      ? observation
+      : `[NEEDS RESEARCH] I noticed ${company} may still be running critical client workflows through manual handoffs between email, spreadsheets, and disconnected tools.`;
+    const bridge =
+      "That usually means hours each week vanish into non-billable admin — and leads or clients slip to whoever responds fastest.";
+    const offer =
+      "I mapped out three specific changes that would shift this within 60 days. Would it be useful if I sent you what I found?";
+
     return {
-      hook: `Manual ops at ${company}`,
-      subject: `Quick question about ops at ${company}`,
+      hook: observation ?? `[NEEDS RESEARCH] manual ops at ${company}`,
+      subject: observation
+        ? `Re: ${company} — quick observation`
+        : `[NEEDS RESEARCH] ops at ${company}`,
       body: `Hi ${name},
 
-Most ${prospect.title ?? "ops leaders"} I talk to are still losing hours each week to manual intake, follow-ups, and status checks — work that never shows up on the P&L until you add it up.
+${opening}
 
-Navari maps your three costliest manual processes and automates them at a fixed price and timeline.
+${bridge}
 
-Worth a 15-minute look? Reply here or grab time at navari.systems.
+${offer}
+
+— Jesse, Navari Systems
+AI Automation Specialist`,
+    };
+  }
+
+  if (step === 2) {
+    return {
+      hook: `Following up — ${company}`,
+      subject: `Re: ${company}`,
+      body: `Hi ${name},
+
+Circling back on my note — most firms in your space recover 15–20 hours a week once intake, follow-up, and status updates stop living in inboxes and one-off spreadsheets.
+
+Happy to send the three-process map I mentioned — no pitch on the first pass.
 
 — Jesse, Navari Systems`,
     };
   }
 
   return {
-    hook: `Following up — ${company}`,
-    subject: `Re: ops at ${company}`,
+    hook: `Final note — ${company}`,
+    subject: `Last note — ${company}`,
     body: `Hi ${name},
 
-Circling back — if manual workflows are still eating time at ${company}, I can send a 2-minute overview of how we scope and fix the top three.
+Last note from me — if trimming manual ops is on your radar this quarter, I can send the specific changes I'd make at ${company}.
 
-Interested?
+Reply "send it" and I'll share what I found.
 
 — Jesse`,
   };

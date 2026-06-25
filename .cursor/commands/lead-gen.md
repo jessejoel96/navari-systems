@@ -1,64 +1,82 @@
 ---
-description: Discover, enrich, and run personalized outbound for Navari — no Apollo required. Web discovery, Hunter emails, AI copy, Resend sequences.
+description: Layer One observation-based outbound for Navari — persona ICP, hybrid discovery, 15-min research, AI copy, Resend sequences.
 allowed_tools: ["Read", "Grep", "Glob", "Shell", "Write"]
 ---
 
 # /lead-gen
 
-Outbound lead system for navari.systems — find leads and execute personalized outreach with AI and automation.
+**Observation-based outbound** for navari.systems — not generic cold pitching.
+
+**Read first:**
+- `projects/outbound-lead-gen/OUTREACH-METHOD.md`
+- `projects/outbound-lead-gen/BUYER-PERSONAS.md`
 
 ## Usage
 
 ```
-/lead-gen                              # Full pipeline overview
-/lead-gen icp                          # Refine ICP before running
-/lead-gen fetch [--limit 25]           # Web discovery → enrich → Supabase
+/lead-gen                              # Pipeline overview + persona selection
+/lead-gen icp                          # Refine ICP / pick persona campaign
+/lead-gen research                     # 15-min observation pass on prospects
+/lead-gen fetch [--limit 25]           # Hybrid discovery → enrich → Supabase
 /lead-gen fetch --dry-run              # Preview without saving
-/lead-gen outreach [--tier hot]        # AI-personalized email (preview with --dry-run)
-/lead-gen deliver                      # Export hot/warm CSV
+/lead-gen outreach [--tier hot]        # Observation-based AI email
+/lead-gen outreach --dry-run           # Review before send (check observations)
+/lead-gen deliver                      # Export CSV with observation columns
 ```
 
-## Pipeline (no Apollo)
+## Layer One method
 
 ```
-Brave web search → parse LinkedIn + companies → Hunter emails → ICP score
-→ Supabase → OpenAI personalization → Resend 3-touch sequence
+Identify business → 15 min research → document ONE visible problem
+→ Opening (observation) → Bridge (cost) → Offer (send findings, not hire me)
 ```
+
+## Pipeline
+
+```
+Exa + Brave + Apollo → Renidly/Hunter/Snov → observation scoring
+→ Supabase → OpenAI (observation-aware) → Resend 3-touch
+```
+
+## Persona ICP files
+
+| Campaign | File |
+|----------|------|
+| Default | `tools/lead-gen/icp.navari.json` |
+| Law firms | `tools/lead-gen/icp.law-firms.json` |
+| Mortgage brokers | `tools/lead-gen/icp.mortgage-brokers.json` |
+| Estate agents | `tools/lead-gen/icp.estate-agents.json` |
 
 ## Prerequisites (.env.local)
 
-- `BRAVE_API_KEY` — discovery
-- `HUNTER_API_KEY` — emails
-- `OPENAI_API_KEY` — personalization
-- `RESEND_API_KEY` — sending
-- Supabase keys
+`EXA_API_KEY`, `BRAVE_API_KEY`, `HUNTER_API_KEY`, `OPENAI_API_KEY`, `RESEND_API_KEY`, Supabase keys. Optional: Apollo, Renidly, Snov.
 
 ## Agent network
 
 | Agent | Role |
 |-------|------|
-| `lead-crew` | Orchestrator |
-| `prospect-researcher` | Web discovery |
-| `lead-enricher` | Hunter waterfall |
-| `outreach-writer` | AI sequences |
-| `lead-delivery` | Export + handoff |
+| `lead-crew` | Orchestrator — enforces observation gate |
+| `prospect-researcher` | Discovery + 15-min observations |
+| `lead-enricher` | Email waterfall |
+| `outreach-writer` | Layer One copy |
+| `lead-delivery` | Export + logging |
 
 Skills: `lead-intelligence`, `outreach-sequencer`, `brand-voice`
 
 ## Examples
 
 ```
-/lead-gen fetch 30 US professional services founders
+/lead-gen icp for law firms — Stretched Partner persona — then fetch
 ```
 
 ```
-/lead-gen outreach --dry-run for top 5 hot leads
+/lead-gen research top 10 warm leads from last fetch — document observations
 ```
 
 ```
-/lead-gen icp for mortgage brokers — then fetch
+/lead-gen outreach --dry-run for hot leads with observations only
 ```
 
 ---
 
-*Navari outbound — discover + personalize + automate*
+*Navari Layer One — observe, bridge, offer*

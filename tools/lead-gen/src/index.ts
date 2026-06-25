@@ -88,11 +88,13 @@ Commands:
   deliver                                         Export hot/warm leads to CSV
   export <run-id>                                 Export a fetch run
 
-Default discovery: Brave web search + Hunter email enrichment
-Optional: set discovery_provider to "apollo" in ICP JSON
+Default discovery: Exa + Brave + Apollo hybrid (when keys are set)
+Apollo free plan: search is free; enrichment only when has_email=true (cap: apollo_enrich_limit)
+Enrichment waterfall: Renidly → Hunter → Snov → Hunter verify
 
 Setup (.env.local):
-  BRAVE_API_KEY, HUNTER_API_KEY, OPENAI_API_KEY, RESEND_API_KEY, Supabase keys
+  EXA_API_KEY, BRAVE_API_KEY, APOLLO_API_KEY (optional), RENIDLY_API_KEY, HUNTER_API_KEY, SNOV_*
+  OPENAI_API_KEY, RESEND_API_KEY, Supabase keys
 
 ICP: ${resolve(toolRoot, "icp.navari.json")}
 `);
