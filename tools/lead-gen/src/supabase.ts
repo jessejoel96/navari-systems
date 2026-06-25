@@ -389,3 +389,36 @@ export async function listRecentHotProspects(limit = 20) {
   if (error) throw new Error(`Failed to list recent hot prospects: ${error.message}`);
   return data ?? [];
 }
+
+export async function updateProspectObservation(
+  id: string,
+  observation: string,
+  observationSource: string,
+  persona?: string,
+) {
+  const supabase = createLeadClient();
+  const { data: row, error: fetchError } = await supabase
+    .from("outbound_prospects")
+    .select("raw, icp_score, icp_tier")
+    .eq("id", id)
+    .single();
+
+  if (fetchError) throw new Error(`Prospect not found: ${fetchError.message}`);
+
+  const raw = { ...((row.raw as Record<string, unknown> | null) ?? {}), observation, observation_source: observationSource };
+  if (persona) raw.persona = persona;
+
+  let icpScore = (row.icp_score as number) ?? 0;
+  let icpTier = (row.icp_tier as string) ?? "cold";
+  if (observation.trim().length > 20 && icpScore >= 53) {
+    icpScore = Math.min(100, icpScore + 12);
+    icpTier = "hot";
+  }
+
+  const { error } = await supabase
+    .from("outbound_prospects")
+    .update({ raw, icp_score: icpScore, icp_tier: icpTier, updated_at: new Date().toISOString() })
+    .eq("id", id);
+
+  if (error) throw new Error(`Failed to update observation: ${error.message}`);
+}

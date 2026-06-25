@@ -137,6 +137,35 @@ export function getLocalPipelineStats() {
   };
 }
 
+export function updateLocalProspectObservation(
+  id: string,
+  observation: string,
+  observationSource: string,
+  persona?: string,
+) {
+  const rows = readProspects();
+  const updated = rows.map((row) => {
+    if (row.id !== id) return row;
+    const raw = { ...(row.raw ?? {}), observation, observation_source: observationSource };
+    if (persona) raw.persona = persona;
+    const next = {
+      ...row,
+      observation,
+      observation_source: observationSource,
+      persona: persona ?? row.persona,
+      raw,
+    };
+    // Re-score tier when observation added (+12 can push warm → hot)
+    if (observation.trim().length > 20 && next.icp_score >= 53) {
+      next.icp_tier = "hot";
+      next.icp_score = Math.min(100, next.icp_score + 12);
+    }
+    return next;
+  });
+  writeProspects(updated);
+  return updated.find((r) => r.id === id) ?? null;
+}
+
 export function queueLocalOutreachMessage(input: {
   prospect_id: string;
   sequence_name: string;

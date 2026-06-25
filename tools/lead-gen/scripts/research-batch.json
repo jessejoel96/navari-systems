@@ -1,0 +1,72 @@
+[
+  {
+    "id": "46072e8e-b9e2-4fb7-b532-6004d5052406",
+    "company": "Right Choice Conveyancing",
+    "observation": "I noticed Right Choice Conveyancing still routes new enquiries through a basic contact form that promises a callback, while actively hiring office-based administrators to support remote conveyancing teams.",
+    "observation_source": "rightcc.co.uk/contact + Aug 2023 careers post for Milton Keynes administrators",
+    "persona": "The Stretched Partner"
+  },
+  {
+    "id": "027416b6-0ca2-46b3-a1d5-3319883fb4c3",
+    "company": "Kingfields Solicitors",
+    "observation": "I noticed Kingfields funnels every new enquiry through one mail@kingfields.co.uk inbox and a generic online form promising a response same day or next working day, with no visible matter-type routing on intake.",
+    "observation_source": "kingfields.co.uk/contact-us",
+    "persona": "The Stretched Partner"
+  },
+  {
+    "id": "93b596f3-26a6-4298-9463-26dd3aa6fc66",
+    "company": "Liberty Legacy Law Group",
+    "observation": "I noticed Liberty Legacy Law Group's contact page runs two nearly identical intake forms and routes everything through a single phone line without visible automated scheduling or practice-area triage.",
+    "observation_source": "mdestateplanninglaw.com/contact",
+    "persona": "The Stretched Partner"
+  },
+  {
+    "id": "f41c0419-30a2-49bc-8316-f32d75e4090a",
+    "company": "Johnson & Oshan Law",
+    "observation": "I noticed Johnson & Oshan Law's public contact page offers no structured intake fields for startup enquiries—prospective clients must reach out manually rather than submit deal basics through a self-serve form.",
+    "observation_source": "jolaw.co/contact",
+    "persona": "The Operator GC"
+  },
+  {
+    "id": "eb075d90-6dbd-45a2-80ea-51123f163fa3",
+    "company": "maloco mowat parker",
+    "observation": "I noticed maloco mowat parker uses one generic enquiry form routed to info@maloco.co.uk despite offering both estate agency and conveyancing under one roof, with no separate intake paths by service line.",
+    "observation_source": "maloco.co.uk/contact",
+    "persona": "The Stretched Partner"
+  },
+  {
+    "id": "07c5bc8e-29ce-42d3-9bdb-4a1435ff13b4",
+    "company": "Versant Law Group",
+    "observation": "I noticed Versant Law Group's contact page is a plain name/email/phone/message form with no practice-area routing or self-booking for commercial real estate enquiries.",
+    "observation_source": "versantlaw.com/contact",
+    "persona": "The Stretched Partner"
+  },
+  {
+    "id": "d370c4ee-3979-4b98-8e34-46a5a930538d",
+    "company": "Lyons Bowe Solicitors",
+    "observation": "I noticed Lyons Bowe asks new clients to choose between WhatsApp, SMS, email, or phone while still routing physical post to a central office for manual allocation to the right team.",
+    "observation_source": "lyonsbowe.co.uk/contact",
+    "persona": "The Stretched Partner"
+  },
+  {
+    "id": "8c60eb7b-8764-473e-bf2a-0d9d63fad209",
+    "company": "Scarab Title & Escrow",
+    "observation": "I noticed Scarab Title & Escrow operates as a boutique title agency where new transaction intake likely still depends on direct agent outreach rather than a visible self-serve quote or status portal on their public site.",
+    "observation_source": "LinkedIn company profile + title agency category norms",
+    "persona": "The Stretched Partner"
+  },
+  {
+    "id": "76e1a386-6605-4de6-9a07-8c36b9d68f27",
+    "company": "Reda | Ciprian | Magnone",
+    "observation": "I noticed Reda | Ciprian | Magnone presents as a small Illinois litigation boutique with partner-led intake and no visible online scheduling or automated client onboarding flow on their public presence.",
+    "observation_source": "LinkedIn profile + firm website category",
+    "persona": "The Stretched Partner"
+  },
+  {
+    "id": "9c372727-871f-4909-b471-a0ee4564aa1c",
+    "company": "Marathon Law P.C.",
+    "observation": "I noticed Marathon Law P.C. positions as a solo/small immigration practice where new client intake appears partner-led rather than through structured online matter routing.",
+    "observation_source": "LinkedIn profile + firm positioning",
+    "persona": "The Stretched Partner"
+  }
+]

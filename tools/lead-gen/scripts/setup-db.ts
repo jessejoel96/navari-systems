@@ -22,7 +22,12 @@ GRANT ALL ON TABLE public.outreach_messages TO service_role;
 NOTIFY pgrst, 'reload schema';
 `;
 
-const connectionString = process.env.DATABASE_URL ?? process.env.SUPABASE_DB_URL;
+const connectionString =
+  process.env.DATABASE_URL ??
+  process.env.SUPABASE_DB_URL ??
+  process.env.SUPABASE_DATABASE_URL ??
+  process.env.POSTGRES_URL ??
+  process.env.DIRECT_URL;
 if (!connectionString) {
   console.error(
     "Missing DATABASE_URL or SUPABASE_DB_URL.\n" +
