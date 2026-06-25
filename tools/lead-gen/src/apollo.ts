@@ -187,6 +187,10 @@ export function mapApolloPerson(person: ApolloPerson, enriched?: ApolloPerson | 
 }
 
 export function discoverApolloProspects(icp: IcpConfig): Promise<Prospect[]> {
+  // Apollo free plan: people search API is not available; enrich-only via bulk_match.
+  if (icp.apollo_plan === "free") {
+    return Promise.resolve([]);
+  }
   return searchPeople(icp).then((people) => people.map((person) => mapApolloPerson(person)));
 }
 
