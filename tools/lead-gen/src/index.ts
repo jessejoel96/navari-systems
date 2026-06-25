@@ -2,6 +2,7 @@
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import "./env.js";
+import { formatDailyOverview, getDailyOverview } from "./daily.js";
 import { loadIcp, runDeliver, runExport, runFetch, runOutreach } from "./pipeline.js";
 
 const [, , command, ...args] = process.argv;
@@ -78,15 +79,32 @@ async function main() {
     return;
   }
 
+  if (command === "status" || command === "daily") {
+    const icpPath = flag("--icp");
+    const icp = loadIcp(icpPath);
+    const overview = await getDailyOverview(icp);
+    console.log(formatDailyOverview(overview));
+
+    if (command === "daily" && hasFlag("--json")) {
+      console.log(JSON.stringify(overview, null, 2));
+    }
+    return;
+  }
+
   const toolRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
   console.log(`
 Navari Outbound — discover leads + personalized outreach (no Apollo required)
 
 Commands:
+  status | daily [--icp path] [--json]     Credit budget + pipeline overview + today's plan
   fetch [--icp path] [--limit N] [--dry-run]     Web discovery → enrich → score → Supabase
   outreach [--tier hot|warm] [--dry-run]          AI-personalized email via Resend
   deliver                                         Export hot/warm leads to CSV
   export <run-id>                                 Export a fetch run
+
+Daily workflow: npm run lead:status → research observations → lead:fetch:dry → lead:fetch → lead:outreach:dry
+Budget file: ${resolve(toolRoot, "budget.defaults.json")} (override: budget.local.json)
+State cache: ${resolve(toolRoot, ".cache/budget-state.json")}
 
 Default discovery: Exa + Brave + Apollo hybrid (when keys are set)
 Apollo free plan: search is free; enrichment only when has_email=true (cap: apollo_enrich_limit)

@@ -62,11 +62,20 @@ Apollo (capped) → Renidly → Hunter → Snov → verify
 ## Outreach
 
 ```bash
+npm run lead:status         # budget + pipeline before spending credits
+npm run lead:daily          # recommended morning plan
 npm run lead:fetch:dry
-npm run lead:fetch
+npm run lead:fetch          # budget-gated (Apollo enrich capped)
 npm run lead:outreach:dry   # verify observation quality
-npm run lead:outreach       # user approval required
+npm run lead:outreach       # user approval + daily send cap
 ```
+
+## Credit budget
+
+- Config: `tools/lead-gen/budget.defaults.json`, override `budget.local.json`
+- State: `tools/lead-gen/.cache/budget-state.json`
+- Skill: `outbound-daily` · Command: `/lead-daily` · UI: `/outbound?key=LEAD_FETCH_SECRET`
+- **Never** run live fetch/outreach without checking status first on free Apollo plan
 
 Sequence: `sequences/navari-intro-3.json` — observation + bridge + offer
 

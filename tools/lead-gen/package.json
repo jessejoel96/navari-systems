@@ -8,6 +8,8 @@
     "fetch:dry": "tsx src/index.ts fetch --dry-run",
     "outreach": "tsx src/index.ts outreach",
     "outreach:dry": "tsx src/index.ts outreach --dry-run",
+    "status": "tsx src/index.ts status",
+    "daily": "tsx src/index.ts daily",
     "deliver": "tsx src/index.ts deliver",
     "export": "tsx src/index.ts export"
   },

@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { optionalEnv, requireEnv } from "./env.js";
+import { assertBudget, loadBudgetLimits, recordBudgetUsage } from "./budget.js";
 import { personalizeEmail } from "./personalize.js";
 import {
   getProspectsForOutreach,
@@ -60,10 +61,20 @@ export async function runOutreach(options: {
   tier?: "hot" | "warm";
   limit?: number;
   dryRun?: boolean;
+  skipBudget?: boolean;
 }) {
   const sequence = loadSequence(options.sequence);
   const tier = options.tier ?? "hot";
-  const limit = options.limit ?? 10;
+  const limits = loadBudgetLimits();
+  const requestedLimit = options.limit ?? 10;
+  const maxBatch = limits.per_run.outreach_batch_max ?? 10;
+
+  if (!options.dryRun && !options.skipBudget) {
+    assertBudget("outreach_sends", Math.min(requestedLimit, maxBatch));
+    assertBudget("openai_outreach", Math.min(requestedLimit, maxBatch));
+  }
+
+  const limit = Math.min(requestedLimit, maxBatch);
   const prospects = await getProspectsForOutreach(tier, limit);
 
   const results: Array<{
@@ -106,6 +117,10 @@ export async function runOutreach(options: {
       status: "sent",
     });
     await markOutreachSent(prospect.id, nextStep);
+
+    if (!options.dryRun && !options.skipBudget) {
+      recordBudgetUsage({ outreach_sends: 1, openai_outreach: 1, resend_emails: 1 });
+    }
 
     results.push({
       prospect_id: prospect.id,

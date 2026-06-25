@@ -61,7 +61,11 @@ Exa + Brave + Apollo → Renidly/Hunter/Snov → observation scoring
 | `outreach-writer` | Layer One copy |
 | `lead-delivery` | Export + logging |
 
-Skills: `lead-intelligence`, `outreach-sequencer`, `brand-voice`
+Skills: `outbound-daily`, `lead-intelligence`, `outreach-sequencer`, `brand-voice`
+
+## Daily / budget
+
+Before fetch or outreach, run `/lead-daily` or `npm run lead:status`. Pipeline respects `budget.defaults.json` + optional `budget.local.json`. Dashboard: `/outbound?key=LEAD_FETCH_SECRET`.
 
 ## Examples
 

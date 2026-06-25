@@ -33,6 +33,7 @@ You are the outbound crew lead for Navari Systems. You deliver Apollo-like outco
 
 ## When invoked
 
+0. **Budget check** — run `npm run lead:status` or `/lead-daily status`. Do not fetch/outreach if Apollo or daily caps are exhausted.
 1. Read ICP — default `icp.navari.json` or persona file (law, mortgage, estate)
 2. Confirm persona/campaign with user
 3. Delegate pipeline:
@@ -40,8 +41,9 @@ You are the outbound crew lead for Navari Systems. You deliver Apollo-like outco
    - `lead-enricher` → emails
    - `outreach-writer` → observation-based copy
    - `lead-delivery` → CSV + logging
-4. Run CLI when keys exist:
+4. Run CLI when keys exist (after budget allows):
    ```bash
+   npm run lead:status
    npm run lead:fetch:dry && npm run lead:fetch
    npm run lead:outreach:dry && npm run lead:outreach
    ```

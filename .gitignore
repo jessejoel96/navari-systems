@@ -46,3 +46,5 @@ next-env.d.ts
 # Outbound lead-gen outputs
 tools/lead-gen/reports/*.csv
 tools/lead-gen/node_modules/
+tools/lead-gen/.cache/
+tools/lead-gen/budget.local.json

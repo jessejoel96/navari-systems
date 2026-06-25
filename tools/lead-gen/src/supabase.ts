@@ -215,3 +215,106 @@ export async function markOutreachSent(prospectId: string, step: number) {
     .eq("id", prospectId);
   if (error) throw new Error(`Failed to update outreach status: ${error.message}`);
 }
+
+export type PipelineStats = {
+  hot: number;
+  warm: number;
+  cold: number;
+  readyForOutreach: number;
+  missingObservationHot: number;
+  inSequence: number;
+  contactedToday: number;
+  pendingResearch: number;
+};
+
+function hasObservation(raw: unknown): boolean {
+  if (!raw || typeof raw !== "object") return false;
+  const obs = (raw as Record<string, unknown>).observation;
+  return typeof obs === "string" && obs.trim().length > 20;
+}
+
+export async function getOutboundPipelineStats(): Promise<PipelineStats> {
+  const supabase = createLeadClient();
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+
+  const countTier = async (tier: string) => {
+    const { count, error } = await supabase
+      .from("outbound_prospects")
+      .select("*", { count: "exact", head: true })
+      .eq("icp_tier", tier);
+    if (error) throw new Error(`Count failed: ${error.message}`);
+    return count ?? 0;
+  };
+
+  const [hot, warm, cold, inSequence, contactedToday, warmNoEmail] = await Promise.all([
+    countTier("hot"),
+    countTier("warm"),
+    countTier("cold"),
+    supabase
+      .from("outbound_prospects")
+      .select("*", { count: "exact", head: true })
+      .in("outreach_status", ["in_sequence", "contacted"])
+      .then(({ count, error }) => {
+        if (error) throw new Error(`Count failed: ${error.message}`);
+        return count ?? 0;
+      }),
+    supabase
+      .from("outbound_prospects")
+      .select("*", { count: "exact", head: true })
+      .gte("last_contacted_at", todayStart.toISOString())
+      .then(({ count, error }) => {
+        if (error) throw new Error(`Count failed: ${error.message}`);
+        return count ?? 0;
+      }),
+    supabase
+      .from("outbound_prospects")
+      .select("*", { count: "exact", head: true })
+      .eq("icp_tier", "warm")
+      .is("email", null)
+      .then(({ count, error }) => {
+        if (error) throw new Error(`Count failed: ${error.message}`);
+        return count ?? 0;
+      }),
+  ]);
+
+  const { data: hotWithEmail, error } = await supabase
+    .from("outbound_prospects")
+    .select("raw, outreach_status")
+    .eq("icp_tier", "hot")
+    .not("email", "is", null)
+    .in("outreach_status", ["pending", "in_sequence"])
+    .limit(300);
+
+  if (error) throw new Error(`Failed to load hot prospects: ${error.message}`);
+
+  const rows = hotWithEmail ?? [];
+  const missingObservationHot = rows.filter((r) => !hasObservation(r.raw)).length;
+  const readyForOutreach = rows.filter((r) => hasObservation(r.raw)).length;
+
+  return {
+    hot,
+    warm,
+    cold,
+    readyForOutreach,
+    missingObservationHot,
+    inSequence,
+    contactedToday,
+    pendingResearch: warmNoEmail,
+  };
+}
+
+export async function listRecentHotProspects(limit = 20) {
+  const supabase = createLeadClient();
+  const { data, error } = await supabase
+    .from("outbound_prospects")
+    .select(
+      "id, full_name, title, company_name, email, icp_score, icp_tier, outreach_status, outreach_step, raw, last_contacted_at",
+    )
+    .eq("icp_tier", "hot")
+    .order("icp_score", { ascending: false })
+    .limit(limit);
+
+  if (error) throw new Error(`Failed to list recent hot prospects: ${error.message}`);
+  return data ?? [];
+}

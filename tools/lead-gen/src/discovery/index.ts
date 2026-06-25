@@ -2,7 +2,8 @@ import { braveSearch, hasBraveKey } from "./brave.js";
 import { buildDiscoveryQueries } from "./queries.js";
 import { discoverWithExa, hasExaKey } from "./exa.js";
 import { parseSearchResults } from "./parse.js";
-import { discoverApolloProspects, hasApolloKey } from "../apollo.js";
+import { discoverApolloProspects, hasApolloKey, resetApolloEnrichBudget } from "../apollo.js";
+import { recordBudgetUsage } from "../budget.js";
 import type { IcpConfig, Prospect } from "../types.js";
 
 function dedupeProspects(prospects: Prospect[]): Prospect[] {
@@ -45,15 +46,29 @@ async function discoverWithExaPeople(icp: IcpConfig): Promise<Prospect[]> {
   }));
 }
 
-export async function discoverProspects(icp: IcpConfig): Promise<Prospect[]> {
+export async function discoverProspects(icp: IcpConfig, options: { dryRun?: boolean } = {}): Promise<Prospect[]> {
+  resetApolloEnrichBudget();
   const provider = icp.discovery_provider ?? "hybrid";
   const limit = icp.per_page * icp.max_pages;
+  let exaQueries = 0;
+  let braveQueries = 0;
+
+  const finish = (prospects: Prospect[]) => {
+    if (!options.dryRun) {
+      recordBudgetUsage({
+        exa_searches: exaQueries,
+        brave_searches: braveQueries,
+      });
+    }
+    return prospects.slice(0, limit);
+  };
 
   if (provider === "exa") {
     if (!hasExaKey()) {
       throw new Error("EXA_API_KEY is required when discovery_provider is exa.");
     }
-    return (await discoverWithExaPeople(icp)).slice(0, limit);
+    exaQueries = icp.max_pages;
+    return finish(await discoverWithExaPeople(icp));
   }
 
   if (provider === "web") {
@@ -62,17 +77,20 @@ export async function discoverProspects(icp: IcpConfig): Promise<Prospect[]> {
         "BRAVE_API_KEY is required for web discovery. Add it to .env.local (or set discovery_provider to exa/hybrid with EXA_API_KEY).",
       );
     }
-    return (await discoverWithBrave(icp)).slice(0, limit);
+    braveQueries = buildDiscoveryQueries(icp).length;
+    return finish(await discoverWithBrave(icp));
   }
 
   if (provider === "hybrid") {
     const batches: Prospect[] = [];
 
     if (hasExaKey()) {
+      exaQueries = icp.max_pages;
       batches.push(...(await discoverWithExaPeople(icp)));
     }
 
     if (hasBraveKey()) {
+      braveQueries = buildDiscoveryQueries(icp).length;
       batches.push(...(await discoverWithBrave(icp)));
     }
 
@@ -86,7 +104,7 @@ export async function discoverProspects(icp: IcpConfig): Promise<Prospect[]> {
       );
     }
 
-    return dedupeProspects(batches).slice(0, limit);
+    return finish(dedupeProspects(batches));
   }
 
   throw new Error(`Unsupported discovery_provider: ${provider}`);

@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { assertBudget, clampApolloEnrichLimit, recordBudgetUsage } from "./budget.js";
 import { discoverProspects } from "./discovery/index.js";
 import { enrichProspect } from "./enrichment.js";
 import {
@@ -28,40 +29,53 @@ export function loadIcp(path?: string): IcpConfig {
   return icpSchema.parse(raw);
 }
 
-async function discover(icp: IcpConfig): Promise<Prospect[]> {
+async function discover(icp: IcpConfig, dryRun?: boolean): Promise<Prospect[]> {
   if (icp.discovery_provider === "apollo") {
     if (!hasApolloKey()) {
       throw new Error("APOLLO_API_KEY required when discovery_provider is apollo");
     }
     return discoverApolloProspects(icp);
   }
-  return discoverProspects(icp);
+  return discoverProspects(icp, { dryRun });
 }
 
-export async function runFetch(icp: IcpConfig, options: { dryRun?: boolean } = {}) {
+export async function runFetch(icp: IcpConfig, options: { dryRun?: boolean; skipBudget?: boolean } = {}) {
   const provider = icp.discovery_provider ?? "hybrid";
-  const runId = options.dryRun ? `dry-${Date.now()}` : await createFetchRun(icp);
-  let discovered = await discover(icp);
+  if (!options.dryRun && !options.skipBudget) {
+    assertBudget("fetch_runs", 1);
+  }
 
-  if (!options.dryRun && hasApolloKey() && icp.apollo_enrich_limit > 0) {
+  const effectiveIcp = { ...icp };
+  if (!options.dryRun && !options.skipBudget && hasApolloKey() && icp.apollo_enrich_limit > 0) {
+    effectiveIcp.apollo_enrich_limit = clampApolloEnrichLimit(icp.apollo_enrich_limit);
+    if (effectiveIcp.apollo_enrich_limit === 0) {
+      effectiveIcp.apollo_enrich_limit = 0;
+    }
+  }
+
+  const runId = options.dryRun ? `dry-${Date.now()}` : await createFetchRun(effectiveIcp);
+  let discovered = await discover(effectiveIcp, options.dryRun);
+
+  if (!options.dryRun && hasApolloKey() && effectiveIcp.apollo_enrich_limit > 0) {
     const hasApolloProspects = discovered.some((p) => p.apollo_id || p.source.startsWith("apollo"));
     if (hasApolloProspects) {
-      discovered = await enrichApolloProspects(discovered, icp);
+      discovered = await enrichApolloProspects(discovered, effectiveIcp);
     }
   }
 
   const enriched: Prospect[] = [];
   for (const prospect of discovered) {
-    let current = scoreProspect(prospect, icp);
+    let current = scoreProspect(prospect, effectiveIcp);
     if (!options.dryRun) {
-      current = scoreProspect(await enrichProspect(current, icp), icp);
+      current = scoreProspect(await enrichProspect(current, effectiveIcp), effectiveIcp);
     }
     enriched.push(current);
   }
 
+  const apolloUsed = getApolloEnrichCreditsUsed();
   const summary: FetchRunSummary = {
     run_id: runId,
-    icp_name: icp.name,
+    icp_name: effectiveIcp.name,
     provider,
     searched: discovered.length,
     enriched: enriched.filter((p) => p.email).length,
@@ -70,12 +84,16 @@ export async function runFetch(icp: IcpConfig, options: { dryRun?: boolean } = {
     hot: enriched.filter((p) => p.icp_tier === "hot").length,
     warm: enriched.filter((p) => p.icp_tier === "warm").length,
     cold: enriched.filter((p) => p.icp_tier === "cold").length,
-    apollo_credits_used: getApolloEnrichCreditsUsed(),
+    apollo_credits_used: apolloUsed,
   };
 
   if (!options.dryRun) {
     summary.saved = await saveProspects(runId, enriched);
     await completeFetchRun(runId, summary, "completed");
+    recordBudgetUsage({
+      fetch_runs: 1,
+      apollo_enrich_credits: apolloUsed,
+    });
   }
 
   return { runId, summary, prospects: enriched };

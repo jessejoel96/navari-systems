@@ -1,0 +1,26 @@
+{
+  "description": "Free-plan defaults — override via budget.local.json (gitignored)",
+  "monthly": {
+    "apollo_enrich_credits": 50,
+    "exa_searches": 500,
+    "brave_searches": 1000,
+    "hunter_requests": 50,
+    "renidly_requests": 50,
+    "snov_requests": 25,
+    "openai_outreach": 150,
+    "resend_emails": 100
+  },
+  "daily": {
+    "apollo_enrich_credits": 10,
+    "fetch_runs": 2,
+    "outreach_sends": 15,
+    "openai_outreach": 25,
+    "exa_searches": 50,
+    "brave_searches": 100
+  },
+  "per_run": {
+    "apollo_enrich_limit_max": 10,
+    "apollo_max_pages_free": 2,
+    "outreach_batch_max": 10
+  }
+}

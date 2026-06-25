@@ -71,7 +71,21 @@ npm run lead:fetch          # discover → enrich → save
 npm run lead:outreach:dry   # preview AI emails
 npm run lead:outreach       # send to hot leads
 npm run lead:deliver        # export CSV
+npm run lead:status         # credit meters + pipeline (CLI)
+npm run lead:daily          # daily overview + recommendations
 ```
+
+## Credit budget (free Apollo plan)
+
+Defaults in `budget.defaults.json` (50 Apollo enrich/month, 10/day, etc.). Override locally:
+
+```bash
+cp tools/lead-gen/budget.local.example.json tools/lead-gen/budget.local.json
+```
+
+Usage is tracked in `tools/lead-gen/.cache/budget-state.json` (gitignored).
+
+**Daily workflow:** `/lead-daily` or `npm run lead:status` before fetch/outreach. Web UI: `/outbound?key=LEAD_FETCH_SECRET`.
 
 ## ICP
 
