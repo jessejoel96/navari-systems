@@ -17,7 +17,7 @@ export function LoadingScreen({ title, sub, theme = "gold" }: Props) {
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center">
       <div className={`w-10 h-10 border-2 rounded-full animate-spin mb-6 ${spinner[theme]}`} />
-      <h2 className="text-xl font-bold text-white mb-2">{title}</h2>
+      <h2 className="font-display text-xl font-bold text-white mb-2">{title}</h2>
       <p className="text-white/50 text-sm max-w-sm">{sub}</p>
     </div>
   );

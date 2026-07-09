@@ -32,7 +32,7 @@ export function loadSequence(name = "navari-intro-3"): OutreachSequence {
 
 async function sendViaResend(to: string, subject: string, body: string) {
   const key = requireEnv("RESEND_API_KEY");
-  const from = optionalEnv("RESEND_FROM_EMAIL") ?? "Navari Systems <jesse@navari.systems>";
+  const from = optionalEnv("RESEND_FROM_EMAIL") ?? "Navari Systems <jessejoel@navari.systems>";
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",

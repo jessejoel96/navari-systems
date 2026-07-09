@@ -27,7 +27,7 @@ export function Cta() {
               href="/discovery"
               className="inline-flex items-center gap-2 rounded bg-gold px-9 py-4 font-display text-[15px] font-bold tracking-wide text-navy transition-all hover:-translate-y-px hover:bg-gold-light"
             >
-              Start Your AI Consultation →
+              Tell us about your business →
             </Link>
             <Link
               href={SITE.calendly}

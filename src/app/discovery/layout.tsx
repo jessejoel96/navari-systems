@@ -1,41 +1,16 @@
 import type { Metadata } from "next";
-import { Audiowide, Roboto } from "next/font/google";
-
-const audiowide = Audiowide({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-audiowide",
-  display: "swap",
-});
-
-const roboto = Roboto({
-  weight: ["300", "400", "500", "700"],
-  subsets: ["latin"],
-  variable: "--font-roboto",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
-  title: "AI Consultation",
+  title: "Tell us about your business",
   description:
-    "Tell Navari about your business. In 5–8 minutes, get a personalized summary, service recommendations, and investment estimate.",
+    "A few questions so Navari knows how we can help. Takes about 5 minutes — then book a call if you like.",
   openGraph: {
-    title: "Start Your AI Consultation",
+    title: "Tell Navari about your business",
     description:
-      "AI-powered discovery — not a contact form. Get a tailored brief before you ever book a call.",
+      "Share where you are today and what you need. We'll send a short summary and suggested next steps.",
   },
 };
 
-export default function DiscoveryLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <div
-      className={`${audiowide.variable} ${roboto.variable} min-h-dvh [font-family:var(--font-roboto),system-ui,sans-serif]`}
-    >
-      {children}
-    </div>
-  );
+export default function DiscoveryLayout({ children }: { children: React.ReactNode }) {
+  return <div className="min-h-dvh font-body">{children}</div>;
 }

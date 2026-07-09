@@ -96,7 +96,7 @@ export async function POST(request: Request) {
   }
 
   const from = process.env.RESEND_FROM_EMAIL ?? "Navari Systems <hello@navari.systems>";
-  const notifyTo = process.env.NOTIFICATION_EMAIL ?? "jesse@navari.systems";
+  const notifyTo = process.env.NOTIFICATION_EMAIL ?? "jessejoel@navari.systems";
 
   try {
     const resend = getResend();

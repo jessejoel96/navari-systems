@@ -25,7 +25,7 @@ export function StepHeader({ title, subtitle, progress, minutesLeft, theme = "go
     <header className="mb-6 sm:mb-8 space-y-3 sm:space-y-4">
       <div className="flex items-center justify-between gap-3">
         <span className={`text-[11px] sm:text-xs font-mono tracking-widest uppercase ${accent[theme]}`}>
-          {minutesLeft != null ? `~${minutesLeft} min left` : "Consultation"}
+          {minutesLeft != null ? `~${minutesLeft} min left` : "Your answers"}
         </span>
         <span className="text-[11px] sm:text-xs font-mono text-white/40 shrink-0">
           {Math.round(progress)}%
@@ -37,15 +37,12 @@ export function StepHeader({ title, subtitle, progress, minutesLeft, theme = "go
           style={{ width: `${progress}%` }}
         />
       </div>
-      <div className="pt-1 sm:pt-2 space-y-2">
-        <h2
-          className="text-xl sm:text-3xl font-bold text-white leading-snug sm:leading-tight tracking-tight break-words"
-          style={{ fontFamily: "var(--font-audiowide), var(--font-roboto), sans-serif" }}
-        >
+      <div className="pt-2 sm:pt-3 space-y-3">
+        <h2 className="font-display text-xl sm:text-3xl font-bold text-white leading-snug sm:leading-tight tracking-tight break-words [text-wrap:balance]">
           {title}
         </h2>
         {subtitle ? (
-          <p className="text-sm sm:text-base text-white/60 leading-relaxed max-w-prose">
+          <p className="text-sm sm:text-base text-white/60 leading-relaxed max-w-prose [text-wrap:pretty]">
             {subtitle}
           </p>
         ) : null}

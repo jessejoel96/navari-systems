@@ -319,7 +319,7 @@ export default function DiscoveryWizard() {
         if (!res.ok) {
           dispatch({
             type: "SET_ERROR",
-            error: data.error ?? "Could not save your consultation. Please try again.",
+            error: data.error ?? "We couldn't save your answers. Try again.",
           });
           goTo("contact");
           return;
@@ -340,7 +340,7 @@ export default function DiscoveryWizard() {
       const res = await fetch("/api/discovery/session", { method: "POST" });
       const data = await res.json();
       if (!res.ok) {
-        dispatch({ type: "SET_ERROR", error: data.error ?? "Could not start consultation" });
+        dispatch({ type: "SET_ERROR", error: data.error ?? "Something went wrong. Try again." });
         return;
       }
       dispatch({
@@ -372,9 +372,9 @@ export default function DiscoveryWizard() {
   };
 
   return (
-    <div ref={topRef} className="min-h-dvh bg-[#060b14] text-white">
+    <div ref={topRef} className="min-h-dvh bg-[#060b14] text-white pt-[7.5rem]">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(14,165,233,0.12)_0%,_transparent_50%)] pointer-events-none" />
-      <div className="relative max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-14 pb-16 safe-pb">
+      <div className="relative max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10 pb-20">
         <AnimatePresence mode="wait" custom={state.direction}>
           <motion.div
             key={state.step}
@@ -418,8 +418,8 @@ export default function DiscoveryWizard() {
                   title="What is your field or specialty?"
                   subtitle={
                     state.businessType === "Consultancy"
-                      ? "Options tailored for consultancy businesses"
-                      : "Showing fields related to your business type"
+                      ? "Common fields for consultancies"
+                      : "Based on your business type"
                   }
                   progress={progress}
                   minutesLeft={minutesLeft}
@@ -444,7 +444,7 @@ export default function DiscoveryWizard() {
               <>
                 <StepHeader
                   title="Where is your business today?"
-                  subtitle="No wrong answers — early-stage businesses welcome"
+                  subtitle="Pick what fits — early-stage is fine"
                   progress={progress}
                   minutesLeft={minutesLeft}
                   theme={THEME}
@@ -526,7 +526,7 @@ export default function DiscoveryWizard() {
               <>
                 <StepHeader
                   title="Annual revenue"
-                  subtitle="Optional — pre-revenue and early-stage answers are welcome"
+                  subtitle="Optional — skip if you're not sure yet"
                   progress={progress}
                   minutesLeft={minutesLeft}
                   theme={THEME}
@@ -560,7 +560,7 @@ export default function DiscoveryWizard() {
               <>
                 <StepHeader
                   title="What would you like to accomplish?"
-                  subtitle="Pick a category — related options appear as you select"
+                  subtitle="Pick one or more"
                   progress={progress}
                   minutesLeft={minutesLeft}
                   theme={THEME}
@@ -582,7 +582,7 @@ export default function DiscoveryWizard() {
               <>
                 <StepHeader
                   title="Biggest blocker to clients or revenue?"
-                  subtitle="Especially if you're starting out or still figuring things out"
+                  subtitle="Helpful if you're still building pipeline"
                   progress={progress}
                   minutesLeft={minutesLeft}
                   theme={THEME}
@@ -607,8 +607,8 @@ export default function DiscoveryWizard() {
 
             {state.step === "loadingDynamic" && (
               <LoadingScreen
-                title="Personalizing your consultation…"
-                sub="Generating follow-up questions from your goals"
+                title="One moment…"
+                sub="Choosing a few follow-up questions"
                 theme={THEME}
               />
             )}
@@ -840,7 +840,7 @@ export default function DiscoveryWizard() {
             {state.step === "aiMaturity" && (
               <>
                 <StepHeader
-                  title="Have you used AI?"
+                  title="Where are you with tools and automation?"
                   progress={progress}
                   minutesLeft={minutesLeft}
                   theme={THEME}
@@ -982,7 +982,7 @@ export default function DiscoveryWizard() {
                       <span className="block font-semibold text-white mb-0.5">
                         Send me a written proposal
                       </span>
-                      Navari will prepare a tailored proposal within 48 hours.
+                      Navari will send a written proposal within 48 hours.
                     </span>
                   </label>
                 </div>
@@ -994,7 +994,7 @@ export default function DiscoveryWizard() {
                     !state.company
                   }
                   onClick={() => goTo("loadingComplete")}
-                  label="Generate my summary →"
+                  label="See my summary →"
                 />
                 <Back onClick={() => goTo("urgency", -1)} />
               </>
@@ -1002,8 +1002,8 @@ export default function DiscoveryWizard() {
 
             {state.step === "loadingComplete" && (
               <LoadingScreen
-                title="Building your consultation brief…"
-                sub="Estimating timeline, investment, and recommended services"
+                title="Almost done…"
+                sub="Putting your summary together"
                 theme={THEME}
               />
             )}
@@ -1037,7 +1037,7 @@ export default function DiscoveryWizard() {
                 <Continue
                   disabled={!state.additionalDetails.trim()}
                   onClick={() => goTo("loadingComplete")}
-                  label="Regenerate summary →"
+                  label="Update summary →"
                 />
               </>
             )}
@@ -1056,37 +1056,46 @@ export default function DiscoveryWizard() {
   );
 }
 
+const WELCOME_FEATURES = [
+  "For new and growing businesses",
+  "Short summary of what you need",
+  "Suggested services and timeline",
+  "Optional written proposal in 48 hours",
+] as const;
+
 function Welcome({ onStart, error }: { onStart: () => void; error: string }) {
   return (
-    <div className="text-center py-6 sm:py-8 px-1">
-      <p className="text-cyan-400 font-mono text-xs sm:text-sm tracking-widest uppercase mb-3 sm:mb-4">
-        Navari AI Consultant
+    <section className="mx-auto flex max-w-lg flex-col items-center px-2 pb-4 pt-8 text-center sm:pb-8 sm:pt-14">
+      <p className="mb-4 font-mono text-xs uppercase tracking-[0.12em] text-gold/90 sm:mb-5 sm:text-sm">
+        Navari Systems
       </p>
-      <h1
-        className="text-2xl sm:text-4xl font-bold text-white mb-3 sm:mb-4 leading-snug tracking-tight"
-        style={{ fontFamily: "var(--font-audiowide), var(--font-roboto), sans-serif" }}
-      >
-        Start your AI consultation
+      <h1 className="font-display mb-5 text-[clamp(28px,5vw,40px)] font-extrabold leading-[1.15] tracking-tight text-white sm:mb-6 [text-wrap:balance]">
+        Tell Navari about your business
       </h1>
-      <p className="text-white/60 max-w-lg mx-auto mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
-        A few questions about your business — consultancy, startup, or still figuring out clients.
-        Takes 5–8 minutes. You&apos;ll get a tailored brief and can book time with us.
+      <p className="mb-8 max-w-md text-sm leading-relaxed text-silver-dark-bg sm:mb-10 sm:text-base [text-wrap:pretty]">
+        A few quick questions so we know how we can help. Takes about 5 minutes.
       </p>
-      <ul className="text-left max-w-sm mx-auto text-white/70 text-sm space-y-2.5 mb-8 sm:mb-10">
-        <li>✓ Works for consultancies &amp; pre-revenue startups</li>
-        <li>✓ Summary of your needs</li>
-        <li>✓ Recommended services &amp; timeline</li>
-        <li>✓ Optional written proposal within 48 hours</li>
+      <ul className="mb-10 inline-flex flex-col gap-3 text-left">
+        {WELCOME_FEATURES.map((feature) => (
+          <li key={feature} className="flex items-start gap-2.5 text-sm text-white/75">
+            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold/15 text-xs text-gold">
+              ✓
+            </span>
+            <span className="leading-snug">{feature}</span>
+          </li>
+        ))}
       </ul>
-      {error ? <p className="text-red-400 text-sm mb-4">{error}</p> : null}
-      <button
-        type="button"
-        onClick={onStart}
-        className="w-full sm:w-auto bg-cyan-400 text-slate-950 font-bold px-10 py-4 rounded-xl hover:bg-cyan-300 transition-colors touch-manipulation text-base"
-      >
-        Ready — let&apos;s begin
-      </button>
-    </div>
+      <div className="flex w-full max-w-sm flex-col items-center gap-4">
+        {error ? <p className="w-full text-center text-sm text-red-400">{error}</p> : null}
+        <button
+          type="button"
+          onClick={onStart}
+          className="w-full rounded bg-gold px-10 py-4 font-display text-[15px] font-bold tracking-wide text-navy transition-all hover:-translate-y-px hover:bg-gold-light touch-manipulation"
+        >
+          Get started →
+        </button>
+      </div>
+    </section>
   );
 }
 
@@ -1101,14 +1110,11 @@ function ResultView({
 }) {
   return (
     <div className="text-center py-4 sm:py-6 px-1">
-      <h2
-        className="text-xl sm:text-2xl font-bold text-white mb-2 leading-snug"
-        style={{ fontFamily: "var(--font-audiowide), var(--font-roboto), sans-serif" }}
-      >
-        You&apos;re all set, {name}
+      <h2 className="font-display text-xl sm:text-2xl font-bold text-white mb-2 leading-snug">
+        Thanks, {name}
       </h2>
       <p className="text-white/60 mb-6 sm:mb-8 text-sm sm:text-base leading-relaxed">
-        Your consultation brief is ready. Book a time below:
+        Here&apos;s what happens next — book a time if you&apos;d like to talk:
       </p>
       {wantsProposal ? (
         <p className="text-cyan-300/90 text-sm mb-6 bg-cyan-400/10 border border-cyan-400/20 rounded-xl px-4 py-3 leading-relaxed">
@@ -1139,7 +1145,7 @@ function Continue({
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className="mt-6 sm:mt-8 w-full sm:w-auto bg-cyan-400 text-slate-950 font-bold px-8 py-3.5 sm:py-4 rounded-xl disabled:opacity-40 hover:bg-cyan-300 transition-colors touch-manipulation text-base"
+      className="mx-auto mt-6 block w-full max-w-md rounded bg-gold px-8 py-3.5 font-display text-[15px] font-bold tracking-wide text-navy transition-all hover:-translate-y-px hover:bg-gold-light disabled:opacity-40 touch-manipulation sm:mx-0 sm:mt-8 sm:w-auto sm:min-w-[12rem]"
     >
       {label}
     </button>
@@ -1151,7 +1157,7 @@ function Back({ onClick }: { onClick: () => void }) {
     <button
       type="button"
       onClick={onClick}
-      className="mt-4 block text-sm text-white/40 hover:text-white py-1 touch-manipulation"
+      className="mx-auto mt-3 block py-2 text-sm text-white/40 transition-colors hover:text-white touch-manipulation sm:mx-0"
     >
       ← Back
     </button>

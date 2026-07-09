@@ -41,8 +41,8 @@ Set in hPanel → Node.js app → Environment:
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 RESEND_API_KEY=re_your_api_key
-RESEND_FROM_EMAIL=Navari Systems <jesse@navari.systems>
-NOTIFICATION_EMAIL=jesse@navari.systems
+RESEND_FROM_EMAIL=Navari Systems <jessejoel@navari.systems>
+NOTIFICATION_EMAIL=jessejoel@navari.systems
 NEXT_PUBLIC_SITE_URL=https://navari.systems
 NODE_ENV=production
 ```
