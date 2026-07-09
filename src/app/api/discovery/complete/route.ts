@@ -26,7 +26,7 @@ const bodySchema = z.object({
 });
 
 function notificationEmail(): string {
-  return process.env.NOTIFICATION_EMAIL ?? "jesse@navari.systems";
+  return process.env.NOTIFICATION_EMAIL ?? "jessejoel@navari.systems";
 }
 
 export async function POST(req: Request) {

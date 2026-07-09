@@ -7,7 +7,7 @@
   shortDescription:
     "We map where your business loses time and money, build the automation that fixes it, and hand it over to your team.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://navari.systems",
-  email: "jesse@navari.systems",
+  email: "jessejoel@navari.systems",
   calendly: "https://calendly.com/jesse-navari",
   founder: "Jesse-Joel S. Nzumafor",
   founderTitle: "AI Automation Specialist & Founder",

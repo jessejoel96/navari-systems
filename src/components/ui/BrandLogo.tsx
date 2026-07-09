@@ -19,6 +19,9 @@ export function BrandLogo({ variant = "full", className, priority = false }: Bra
       height={432}
       className={cn("h-[6.75rem] w-auto", className)}
       priority={priority}
+      loading={priority ? "eager" : "lazy"}
+      fetchPriority={priority ? "high" : "auto"}
+      sizes="(max-width: 768px) 200px, 280px"
     />
   );
 }
