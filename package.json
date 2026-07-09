@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lead:fetch": "npm run fetch --prefix tools/lead-gen",
     "lead:fetch:dry": "npm run fetch:dry --prefix tools/lead-gen",
     "lead:outreach": "npm run outreach --prefix tools/lead-gen",
@@ -39,6 +41,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "^3.2.4"
   }
 }
