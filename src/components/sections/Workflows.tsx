@@ -32,7 +32,7 @@ export function Workflows() {
             </p>
             <div className="mt-6">
               <Link
-                href="/audit"
+                href="/discovery"
                 className="inline-flex items-center gap-2 rounded bg-gold px-8 py-3.5 font-display text-[15px] font-bold tracking-wide text-navy transition-all hover:-translate-y-px hover:bg-gold-light"
               >
                 Take the Free Audit →

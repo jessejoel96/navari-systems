@@ -27,8 +27,8 @@ export function Hero() {
             </p>
 
             <div className="flex flex-wrap justify-center gap-4 lg:justify-start">
-              <Link href="/audit" className="inline-flex items-center gap-2 rounded bg-gold px-8 py-4 font-display text-[15px] font-bold tracking-wide text-navy transition-all hover:-translate-y-px hover:bg-gold-light">
-                Take the Free Audit →
+              <Link href="/discovery" className="inline-flex items-center gap-2 rounded bg-gold px-8 py-4 font-display text-[15px] font-bold tracking-wide text-navy transition-all hover:-translate-y-px hover:bg-gold-light">
+                Start Your AI Consultation →
               </Link>
               <Link href="#how-it-works" className="inline-flex items-center gap-2 rounded border border-white/20 px-8 py-4 font-display text-[15px] font-semibold tracking-wide text-white transition-colors hover:border-white/40 hover:bg-white/5">
                 See How It Works

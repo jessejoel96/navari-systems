@@ -1,0 +1,23 @@
+{
+  "name": "mortgage-volume-broker",
+  "description": "Persona 2 — The Volume Broker. Mortgage brokers and financial advisers.",
+  "discovery_provider": "hybrid",
+  "apollo_plan": "free",
+  "apollo_enrich_limit": 10,
+  "persona": "The Volume Broker",
+  "person_titles": [
+    "Principal",
+    "Director",
+    "Owner",
+    "Managing Director",
+    "Broker Owner"
+  ],
+  "person_seniorities": ["owner", "founder", "director"],
+  "organization_industries": ["financial services", "mortgage", "insurance"],
+  "organization_num_employees_ranges": ["11,20", "21,50", "51,100"],
+  "person_locations": ["United Kingdom", "United States", "Canada", "Australia"],
+  "keywords": ["mortgage broker", "lead response", "document collection", "CRM spreadsheet"],
+  "observation_focus": "Slow first contact, PDF checklists, no instant follow-up, spreadsheet CRM signals",
+  "per_page": 25,
+  "max_pages": 2
+}

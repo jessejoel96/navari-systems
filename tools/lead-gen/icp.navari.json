@@ -1,0 +1,48 @@
+{
+  "name": "navari-default",
+  "discovery_provider": "hybrid",
+  "apollo_plan": "free",
+  "apollo_enrich_limit": 10,
+  "description": "Priority personas — observation-based outreach. Revenue $150K–$2M, 11–200 employees. See projects/outbound-lead-gen/BUYER-PERSONAS.md",
+  "persona": "Multi-persona default (prioritize: law, mortgage, estate agency, accounting, coaching)",
+  "observation_focus": "Spreadsheet ops, CRM underuse, manual copy between tools, hiring for data entry/admin",
+  "person_titles": [
+    "Managing Partner",
+    "Founder",
+    "Co-Founder",
+    "CEO",
+    "Owner",
+    "Principal",
+    "Director",
+    "Managing Director",
+    "Operations Director",
+    "COO",
+    "Head of Operations",
+    "Branch Manager"
+  ],
+  "person_seniorities": ["owner", "founder", "partner", "c_suite", "vp", "director"],
+  "organization_industries": [
+    "law practice",
+    "legal services",
+    "real estate",
+    "financial services",
+    "mortgage",
+    "professional services",
+    "accounting",
+    "marketing & advertising",
+    "e-learning",
+    "staffing and recruiting",
+    "health care"
+  ],
+  "organization_num_employees_ranges": ["11,20", "21,50", "51,100", "101,200"],
+  "person_locations": ["United States", "United Kingdom", "Canada", "Australia"],
+  "keywords": [
+    "workflow automation",
+    "manual processes",
+    "data entry",
+    "bookkeeper part time",
+    "operations administrator"
+  ],
+  "per_page": 25,
+  "max_pages": 2
+}

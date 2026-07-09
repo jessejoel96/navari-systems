@@ -1,0 +1,18 @@
+{
+  "monthly": {
+    "apollo_enrich_credits": 50,
+    "exa_searches": 1000,
+    "openai_outreach": 200,
+    "resend_emails": 100
+  },
+  "daily": {
+    "apollo_enrich_credits": 10,
+    "exa_searches": 50,
+    "brave_searches": 30,
+    "hunter_requests": 25,
+    "openai_outreach": 20,
+    "resend_emails": 10,
+    "fetch_runs": 2,
+    "outreach_sends": 5
+  }
+}

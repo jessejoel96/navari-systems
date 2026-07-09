@@ -1,0 +1,25 @@
+{
+  "name": "@navari/lead-gen",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fetch": "tsx src/index.ts fetch",
+    "fetch:dry": "tsx src/index.ts fetch --dry-run",
+    "outreach": "tsx src/index.ts outreach",
+    "outreach:dry": "tsx src/index.ts outreach --dry-run",
+    "status": "tsx src/index.ts status",
+    "daily": "tsx src/index.ts daily",
+    "deliver": "tsx src/index.ts deliver",
+    "export": "tsx src/index.ts export"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.108.1",
+    "dotenv": "^16.4.7",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.3",
+    "typescript": "^5.9.3"
+  }
+}

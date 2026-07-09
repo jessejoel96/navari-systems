@@ -24,10 +24,10 @@ export function Cta() {
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
-              href="/audit"
+              href="/discovery"
               className="inline-flex items-center gap-2 rounded bg-gold px-9 py-4 font-display text-[15px] font-bold tracking-wide text-navy transition-all hover:-translate-y-px hover:bg-gold-light"
             >
-              Take the Free Audit →
+              Start Your AI Consultation →
             </Link>
             <Link
               href={SITE.calendly}

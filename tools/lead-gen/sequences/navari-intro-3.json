@@ -1,0 +1,10 @@
+{
+  "name": "navari-intro-3",
+  "description": "Layer One observation-based 3-touch sequence — Opening → Bridge → Offer, then value follow-ups",
+  "method": "projects/outbound-lead-gen/OUTREACH-METHOD.md",
+  "steps": [
+    { "step": 1, "delay_days": 0, "name": "Observation + bridge + value offer" },
+    { "step": 2, "delay_days": 3, "name": "Proof point — still no hard pitch" },
+    { "step": 3, "delay_days": 5, "name": "Final bump — offer to send findings" }
+  ]
+}

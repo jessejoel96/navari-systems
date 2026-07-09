@@ -1,0 +1,23 @@
+{
+  "name": "estate-agency-director",
+  "description": "Persona 3 — The Stretched Agency Director. Estate agents and property management.",
+  "discovery_provider": "hybrid",
+  "apollo_plan": "free",
+  "apollo_enrich_limit": 10,
+  "persona": "The Stretched Agency Director",
+  "person_titles": [
+    "Director",
+    "Owner",
+    "Branch Manager",
+    "Managing Director",
+    "Founder"
+  ],
+  "person_seniorities": ["owner", "founder", "director"],
+  "organization_industries": ["real estate", "property management"],
+  "organization_num_employees_ranges": ["11,20", "21,50", "51,100", "101,200"],
+  "person_locations": ["United Kingdom", "United States", "Canada", "Australia"],
+  "keywords": ["estate agent", "property listings", "lead follow up", "Rightmove", "Zillow"],
+  "observation_focus": "Lead lag, stale listings vs portals, manual valuation follow-up, no nurture automation",
+  "per_page": 25,
+  "max_pages": 2
+}
